@@ -30,6 +30,27 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $firstname = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $lastname = null;
+
+    #[ORM\Column]
+    private ?int $age = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $phone = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $address = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $city = null;
+
+    #[ORM\Column]
+    private ?int $zipCode = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -98,5 +119,89 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    public function getFirstname(): ?string
+    {
+        return $this->firstname;
+    }
+
+    public function setFirstname(string $firstname): self
+    {
+        $this->firstname = $firstname;
+
+        return $this;
+    }
+
+    public function getLastname(): ?string
+    {
+        return $this->lastname;
+    }
+
+    public function setLastname(string $lastname): self
+    {
+        $this->lastname = $lastname;
+
+        return $this;
+    }
+
+    public function getAge(): ?int
+    {
+        return $this->age;
+    }
+
+    public function setAge(int $age): self
+    {
+        $this->age = $age;
+
+        return $this;
+    }
+
+    public function getPhone(): ?string
+    {
+        return $this->phone;
+    }
+
+    public function setPhone(string $phone): self
+    {
+        $this->phone = $phone;
+
+        return $this;
+    }
+
+    public function getAddress(): ?string
+    {
+        return $this->address;
+    }
+
+    public function setAddress(string $address): self
+    {
+        $this->address = $address;
+
+        return $this;
+    }
+
+    public function getCity(): ?string
+    {
+        return $this->city;
+    }
+
+    public function setCity(string $city): self
+    {
+        $this->city = $city;
+
+        return $this;
+    }
+
+    public function getZipCode(): ?int
+    {
+        return $this->zipCode;
+    }
+
+    public function setZipCode(int $zipCode): self
+    {
+        $this->zipCode = $zipCode;
+
+        return $this;
     }
 }
