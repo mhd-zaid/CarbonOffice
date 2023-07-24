@@ -5,7 +5,8 @@
 
 # https://docs.docker.com/engine/reference/builder/#understand-how-arg-and-from-interact
 ARG PHP_VERSION=8.1
-ARG CADDY_VERSION=2
+ARG CADDY_VERSION=2.7
+FROM surnet/alpine-wkhtmltopdf:3.16.2-0.12.6-full as wkhtmltopdf
 
 # Prod image
 FROM php:${PHP_VERSION}-fpm-alpine AS app_php
@@ -30,7 +31,20 @@ RUN apk add --no-cache \
 		gettext \
 		git \
         linux-headers \
+		npm\
+		go\
+		gd \
 	;
+RUN apk add --no-cache \
+    freetype-dev \
+    libjpeg-turbo-dev \
+    libpng-dev \
+    libwebp-dev \
+    libxpm-dev \
+    gd
+
+RUN docker-php-ext-configure gd \
+    && docker-php-ext-install -j$(nproc) gd
 
 RUN set -eux; \
 	apk add --no-cache --virtual .build-deps \
@@ -106,6 +120,13 @@ RUN set -eux; \
 		composer clear-cache; \
     fi
 
+# run npm install before copying the rest of the application
+COPY package.json ./
+RUN set -eux; \
+    if [ -f package.json ]; then \
+        npm install; \
+    fi
+	
 # copy sources
 COPY . .
 RUN rm -Rf docker/
@@ -118,7 +139,22 @@ RUN set -eux; \
 		composer run-script --no-dev post-install-cmd; \
 		chmod +x bin/console; sync; \
     fi
-
+RUN apk add --no-cache \
+        libstdc++ \
+        libx11 \
+        libxrender \
+        libxext \
+        libssl1.1 \
+        ca-certificates \
+        fontconfig \
+        freetype \
+        ttf-droid \
+        ttf-freefont \
+        ttf-liberation \
+        # more fonts
+        ;
+# wkhtmltopdf copy bins from ext image
+COPY --from=wkhtmltopdf /bin/wkhtmltopdf /bin/libwkhtmltox.so /bin/
 # Dev image
 FROM app_php AS app_php_dev
 
