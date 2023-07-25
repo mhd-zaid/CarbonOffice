@@ -29,6 +29,7 @@ class Formation
     private ?string $skills = null;
 
     #[ORM\Column]
+    #Relation rewardId 1-n formations
     private ?int $rewardId = null;
 
     public function getId(): ?int

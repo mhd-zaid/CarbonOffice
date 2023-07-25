@@ -15,12 +15,15 @@ class Participations
     private ?int $id = null;
 
     #[ORM\Column]
+    #Relation mentorId n - n participation
     private ?int $mentorId = null;
 
     #[ORM\Column]
+    #Relation userId n - n participation
     private ?int $userId = null;
 
     #[ORM\Column]
+    #Relation dispenseId n - n participation
     private ?int $dispenseId = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]

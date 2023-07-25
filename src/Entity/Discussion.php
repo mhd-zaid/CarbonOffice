@@ -20,6 +20,7 @@ class Discussion
     private ?string $description = null;
 
     #[ORM\Column]
+    # userId n - n mission
     private ?int $technlogyId = null;
 
     public function getId(): ?int

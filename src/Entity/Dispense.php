@@ -15,9 +15,11 @@ class Dispense
     private ?int $id = null;
 
     #[ORM\Column]
+    #Relation mentorId n-n dispense
     private ?int $mentorId = null;
 
     #[ORM\Column]
+    #Relation formationId n-n dispense
     private ?int $formationId = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]

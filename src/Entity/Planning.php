@@ -25,6 +25,7 @@ class Planning
     private ?DateTimeInterface $end_time = null;
 
     #[ORM\Column]
+    #Relation userId 1-n planning
     private ?int $userId = null;
 
     #[ORM\Column(length: 255)]

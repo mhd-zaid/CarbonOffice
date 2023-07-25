@@ -15,7 +15,8 @@ class Mission
     private ?int $id = null;
 
     #[ORM\Column]
-    private ?int $userId = null;
+    #Relation userId n - n mission
+    private ?int $participants= null;
 
     #[ORM\Column(length: 255)]
     private ?string $company = null;
@@ -35,18 +36,6 @@ class Mission
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getUserId(): ?int
-    {
-        return $this->userId;
-    }
-
-    public function setUserId(int $userId): self
-    {
-        $this->userId = $userId;
-
-        return $this;
     }
 
     public function getCompany(): ?string
@@ -107,5 +96,14 @@ class Mission
         $this->status = $status;
 
         return $this;
+    }
+    public function getParticipants(): ?int
+    {
+        return $this->participants;
+    }
+
+    public function setParticipants(?int $participants): void
+    {
+        $this->participants = $participants;
     }
 }
