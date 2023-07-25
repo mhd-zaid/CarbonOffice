@@ -2,10 +2,6 @@
 
 namespace App\Controller\Back;
 
-use App\Entity\Formation;
-use App\Entity\Reward;
-use App\Entity\User;
-use App\Repository\UserRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Config\UserMenu;
