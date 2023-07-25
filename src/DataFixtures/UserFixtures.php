@@ -19,6 +19,13 @@ class UserFixtures extends Fixture
             ->setEmail('admin@user.fr')
             ->setRoles(['ROLE_ADMIN'])
             ->setPassword($pwd)
+            ->setFirstname($faker->firstName)
+            ->setLastname($faker->lastName)
+            ->setAge($faker->randomDigit())
+            ->setPhone($faker->phoneNumber)
+            ->setAddress($faker->address)
+            ->setCity($faker->city)
+            ->setZipCode(str_replace(" ", "", $faker->postcode))
             ->setCreatedAt(new DateTime())
             ->setUpdatedAt(new DateTime())
         ;
