@@ -26,7 +26,7 @@ class Formation
     private ?string $requirements = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $technologies = null;
+    private ?string $skills = null;
 
     #[ORM\Column]
     private ?int $rewardId = null;
@@ -84,14 +84,14 @@ class Formation
         return $this;
     }
 
-    public function getTechnologies(): ?string
+    public function getSkills(): ?string
     {
-        return $this->technologies;
+        return $this->skills;
     }
 
-    public function setTechnologies(string $technologies): self
+    public function setSkills(string $skill): self
     {
-        $this->technologies = $technologies;
+        $this->skills = $skill;
 
         return $this;
     }

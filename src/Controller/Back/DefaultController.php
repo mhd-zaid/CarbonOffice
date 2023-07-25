@@ -42,6 +42,7 @@ class DefaultController extends AbstractDashboardController
     {
         return [
             MenuItem::linkToRoute('User', 'fa fa-user', 'back_default_index'),
+            MenuItem::linkToRoute('Test', 'fa fa-user', 'back_default_index'),
         ];
     }
 }
