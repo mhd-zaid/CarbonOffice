@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\FormationRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: FormationRepository::class)]
@@ -28,9 +30,16 @@ class Formation
     #[ORM\Column(length: 255)]
     private ?string $skills = null;
 
-    #[ORM\Column]
-    #Relation rewardId 1-n formations
-    private ?int $rewardId = null;
+    #[ORM\ManyToMany(targetEntity: Dispense::class, mappedBy: 'formations')]
+    private Collection $dispenses;
+
+    #[ORM\ManyToOne(inversedBy: 'formations')]
+    private ?Reward $reward = null;
+
+    public function __construct()
+    {
+        $this->dispenses = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -97,14 +106,41 @@ class Formation
         return $this;
     }
 
-    public function getRewardId(): ?int
+    /**
+     * @return Collection<int, Dispense>
+     */
+    public function getDispenses(): Collection
     {
-        return $this->rewardId;
+        return $this->dispenses;
     }
 
-    public function setRewardId(int $rewardId): self
+    public function addDispense(Dispense $dispense): self
     {
-        $this->rewardId = $rewardId;
+        if (!$this->dispenses->contains($dispense)) {
+            $this->dispenses->add($dispense);
+            $dispense->addFormation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDispense(Dispense $dispense): self
+    {
+        if ($this->dispenses->removeElement($dispense)) {
+            $dispense->removeFormation($this);
+        }
+
+        return $this;
+    }
+
+    public function getReward(): ?Reward
+    {
+        return $this->reward;
+    }
+
+    public function setReward(?Reward $reward): self
+    {
+        $this->reward = $reward;
 
         return $this;
     }

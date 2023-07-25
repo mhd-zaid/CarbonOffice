@@ -24,12 +24,11 @@ class Planning
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?DateTimeInterface $end_time = null;
 
-    #[ORM\Column]
-    #Relation userId 1-n planning
-    private ?int $userId = null;
-
     #[ORM\Column(length: 255)]
     private ?string $type = null;
+
+    #[ORM\ManyToOne(inversedBy: 'plannings')]
+    private ?User $consultant = null;
 
     public function getId(): ?int
     {
@@ -72,18 +71,6 @@ class Planning
         return $this;
     }
 
-    public function getUserId(): ?int
-    {
-        return $this->userId;
-    }
-
-    public function setUserId(int $userId): self
-    {
-        $this->userId = $userId;
-
-        return $this;
-    }
-
     public function getType(): ?string
     {
         return $this->type;
@@ -92,6 +79,18 @@ class Planning
     public function setType(string $type): self
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    public function getConsultant(): ?User
+    {
+        return $this->consultant;
+    }
+
+    public function setConsultant(?User $consultant): self
+    {
+        $this->consultant = $consultant;
 
         return $this;
     }

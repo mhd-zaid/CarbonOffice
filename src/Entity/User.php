@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -52,6 +54,34 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column]
     private ?int $zipCode = null;
+
+    #[ORM\ManyToMany(targetEntity: Dispense::class, mappedBy: 'mentors')]
+    private Collection $dispenses;
+
+    #[ORM\ManyToMany(targetEntity: Participations::class, mappedBy: 'mentors')]
+    private Collection $participationsMentor;
+
+    #[ORM\ManyToMany(targetEntity: Participations::class, mappedBy: 'consultants')]
+    private Collection $participationsConsultant;
+
+    #[ORM\ManyToMany(targetEntity: Mission::class, mappedBy: 'consultants')]
+    private Collection $missions;
+
+    #[ORM\OneToMany(mappedBy: 'manager', targetEntity: Mission::class)]
+    private Collection $missionsManager;
+
+    #[ORM\OneToMany(mappedBy: 'consultant', targetEntity: Planning::class)]
+    private Collection $plannings;
+
+    public function __construct()
+    {
+        $this->dispenses = new ArrayCollection();
+        $this->participationsMentor = new ArrayCollection();
+        $this->participationsConsultant = new ArrayCollection();
+        $this->missions = new ArrayCollection();
+        $this->missionsManager = new ArrayCollection();
+        $this->plannings = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -218,6 +248,174 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             $this->plainPassword = $plainPassword;
             $this->setUpdatedAt(new \DateTime());
         }
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Dispense>
+     */
+    public function getDispenses(): Collection
+    {
+        return $this->dispenses;
+    }
+
+    public function addDispense(Dispense $dispense): self
+    {
+        if (!$this->dispenses->contains($dispense)) {
+            $this->dispenses->add($dispense);
+            $dispense->addMentor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDispense(Dispense $dispense): self
+    {
+        if ($this->dispenses->removeElement($dispense)) {
+            $dispense->removeMentor($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Participations>
+     */
+    public function getParticipationsMentor(): Collection
+    {
+        return $this->participationsMentor;
+    }
+
+    public function addParticipationsMentor(Participations $participationsMentor): self
+    {
+        if (!$this->participationsMentor->contains($participationsMentor)) {
+            $this->participationsMentor->add($participationsMentor);
+            $participationsMentor->addMentor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeParticipationsMentor(Participations $participationsMentor): self
+    {
+        if ($this->participationsMentor->removeElement($participationsMentor)) {
+            $participationsMentor->removeMentor($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Participations>
+     */
+    public function getParticipationsConsultant(): Collection
+    {
+        return $this->participationsConsultant;
+    }
+
+    public function addParticipationsConsultant(Participations $participationsConsultant): self
+    {
+        if (!$this->participationsConsultant->contains($participationsConsultant)) {
+            $this->participationsConsultant->add($participationsConsultant);
+            $participationsConsultant->addConsultant($this);
+        }
+
+        return $this;
+    }
+
+    public function removeParticipationsConsultant(Participations $participationsConsultant): self
+    {
+        if ($this->participationsConsultant->removeElement($participationsConsultant)) {
+            $participationsConsultant->removeConsultant($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Mission>
+     */
+    public function getMissions(): Collection
+    {
+        return $this->missions;
+    }
+
+    public function addMission(Mission $mission): self
+    {
+        if (!$this->missions->contains($mission)) {
+            $this->missions->add($mission);
+            $mission->addConsultant($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMission(Mission $mission): self
+    {
+        if ($this->missions->removeElement($mission)) {
+            $mission->removeConsultant($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Mission>
+     */
+    public function getMissionsManager(): Collection
+    {
+        return $this->missionsManager;
+    }
+
+    public function addMissionsManager(Mission $missionsManager): self
+    {
+        if (!$this->missionsManager->contains($missionsManager)) {
+            $this->missionsManager->add($missionsManager);
+            $missionsManager->setManager($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMissionsManager(Mission $missionsManager): self
+    {
+        if ($this->missionsManager->removeElement($missionsManager)) {
+            // set the owning side to null (unless already changed)
+            if ($missionsManager->getManager() === $this) {
+                $missionsManager->setManager(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Planning>
+     */
+    public function getPlannings(): Collection
+    {
+        return $this->plannings;
+    }
+
+    public function addPlanning(Planning $planning): self
+    {
+        if (!$this->plannings->contains($planning)) {
+            $this->plannings->add($planning);
+            $planning->setConsultant($this);
+        }
+
+        return $this;
+    }
+
+    public function removePlanning(Planning $planning): self
+    {
+        if ($this->plannings->removeElement($planning)) {
+            // set the owning side to null (unless already changed)
+            if ($planning->getConsultant() === $this) {
+                $planning->setConsultant(null);
+            }
+        }
+
         return $this;
     }
 }
