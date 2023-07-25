@@ -2,6 +2,7 @@
 
 namespace App\Controller\Back;
 
+use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -35,14 +36,14 @@ class DefaultController extends AbstractDashboardController
     public function configureDashboard(): Dashboard
     {
         return Dashboard::new()
-            ->setTitle('App');
+            ->setTitle('Carbon Office');
     }
 
     public function configureMenuItems(): iterable
     {
         return [
-            MenuItem::linkToRoute('User', 'fa fa-user', 'back_default_index'),
-            MenuItem::linkToRoute('Test', 'fa fa-user', 'back_default_index'),
+            MenuItem::linkToRoute('Home', 'fa fa-home', 'back_default_index'),
+            MenuItem::linkToCrud('User', 'fa fa-user', User::class),
         ];
     }
 }
