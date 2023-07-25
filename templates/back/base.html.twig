@@ -1,19 +1,20 @@
 {% extends '@EasyAdmin/layout.html.twig' %}
 {% block configured_stylesheets %}
-    {{ parent() }}
-    {{ encore_entry_link_tags('app') }}
+	{{ parent() }}
+	{{ encore_entry_link_tags('app') }}
 {% endblock %}
 {% block head_javascript %}
-    {{ parent() }}
-    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.5/index.global.min.js" integrity="sha256-dHUNnePy81fXq4D/wfu7cPsEIP7zl6MvLb84jtZf+UY=" crossorigin="anonymous"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-    {{ encore_entry_script_tags('app') }}
-    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+	{{ parent() }}
+	<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.5/index.global.min.js" integrity="sha256-dHUNnePy81fXq4D/wfu7cPsEIP7zl6MvLb84jtZf+UY=" crossorigin="anonymous"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+	{{ encore_entry_script_tags('app') }}
+	<script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
 {% endblock %}
-{% block page_actions %}
-{% endblock %}
+{% block page_actions %}{% endblock %}
+{% block page_actions %}{% endblock %}
+{% block page_actions %}{% endblock %}
 
 {% block body %}
-    {{ parent() }}
+	{{ parent() }}
 
 {% endblock %}
