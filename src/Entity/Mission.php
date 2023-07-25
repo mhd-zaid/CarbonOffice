@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\MissionRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -13,10 +15,6 @@ class Mission
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
-
-    #[ORM\Column]
-    #Relation userId n - n mission
-    private ?int $participants= null;
 
     #[ORM\Column(length: 255)]
     private ?string $company = null;
@@ -32,6 +30,17 @@ class Mission
 
     #[ORM\Column(length: 255)]
     private ?string $status = null;
+
+    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'missions')]
+    private Collection $consultants;
+
+    #[ORM\ManyToOne(inversedBy: 'missionsManager')]
+    private ?User $manager = null;
+
+    public function __construct()
+    {
+        $this->consultants = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -97,13 +106,40 @@ class Mission
 
         return $this;
     }
-    public function getParticipants(): ?int
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getConsultants(): Collection
     {
-        return $this->participants;
+        return $this->consultants;
     }
 
-    public function setParticipants(?int $participants): void
+    public function addConsultant(User $consultant): self
     {
-        $this->participants = $participants;
+        if (!$this->consultants->contains($consultant)) {
+            $this->consultants->add($consultant);
+        }
+
+        return $this;
+    }
+
+    public function removeConsultant(User $consultant): self
+    {
+        $this->consultants->removeElement($consultant);
+
+        return $this;
+    }
+
+    public function getManager(): ?User
+    {
+        return $this->manager;
+    }
+
+    public function setManager(?User $manager): self
+    {
+        $this->manager = $manager;
+
+        return $this;
     }
 }
