@@ -31,6 +31,38 @@ class UserFixtures extends Fixture
         ;
         $manager->persist($object);
 
+        $object = (new User())
+            ->setEmail('rh@user.fr')
+            ->setRoles(['ROLE_RH'])
+            ->setPassword($pwd)
+            ->setFirstname($faker->firstName)
+            ->setLastname($faker->lastName)
+            ->setAge($faker->randomDigit())
+            ->setPhone($faker->phoneNumber)
+            ->setAddress($faker->address)
+            ->setCity($faker->city)
+            ->setZipCode(str_replace(" ", "", $faker->postcode))
+            ->setCreatedAt(new DateTime())
+            ->setUpdatedAt(new DateTime())
+        ;
+        $manager->persist($object);
+
+        $object = (new User())
+            ->setEmail('consultant@user.fr')
+            ->setRoles(['ROLE_CONSULTANT'])
+            ->setPassword($pwd)
+            ->setFirstname($faker->firstName)
+            ->setLastname($faker->lastName)
+            ->setAge($faker->randomDigit())
+            ->setPhone($faker->phoneNumber)
+            ->setAddress($faker->address)
+            ->setCity($faker->city)
+            ->setZipCode(str_replace(" ", "", $faker->postcode))
+            ->setCreatedAt(new DateTime())
+            ->setUpdatedAt(new DateTime())
+        ;
+        $manager->persist($object);
+
 
         $manager->flush();
     }
