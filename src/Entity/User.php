@@ -30,6 +30,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
+    private ?string $plainPassword = null;
+
     #[ORM\Column(length: 255)]
     private ?string $firstname = null;
 
@@ -202,6 +204,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->zipCode = $zipCode;
 
+        return $this;
+    }
+
+    public function getPlainPassword(): ?string
+    {
+        return $this->plainPassword;
+    }
+
+    public function setPlainPassword($plainPassword): self
+    {
+        if ($plainPassword !== null) {
+            $this->plainPassword = $plainPassword;
+            $this->setUpdatedAt(new \DateTime());
+        }
         return $this;
     }
 }
