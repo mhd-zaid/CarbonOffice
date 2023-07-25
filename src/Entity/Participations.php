@@ -21,7 +21,7 @@ class Participations
     private ?int $userId = null;
 
     #[ORM\Column]
-    private ?int $formationId = null;
+    private ?int $dispenseId = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $date = null;
@@ -55,14 +55,14 @@ class Participations
         return $this;
     }
 
-    public function getFormationId(): ?int
+    public function getDispenseId(): ?int
     {
-        return $this->formationId;
+        return $this->dispenseId;
     }
 
-    public function setFormationId(int $formationId): self
+    public function setDispenseId(int $dispenseId): self
     {
-        $this->formationId = $formationId;
+        $this->dispenseId = $dispenseId;
 
         return $this;
     }
