@@ -10,6 +10,7 @@ module.exports = {
   },
   plugins: [
     require("tw-elements/dist/plugin.cjs"),
+    require('@tailwindcss/forms'),
   ],
   darkMode: "class"
 }
