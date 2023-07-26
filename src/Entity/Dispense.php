@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\DispenseRepository;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -18,6 +19,10 @@ class Dispense
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $date = null;
+
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    private ?DateTimeInterface $start_time = null;
+
 
     #[ORM\Column(length: 255)]
     private ?string $link = null;
@@ -63,6 +68,18 @@ class Dispense
     public function setLink(string $link): self
     {
         $this->link = $link;
+
+        return $this;
+    }
+
+    public function getStartTime(): ?DateTimeInterface
+    {
+        return $this->start_time;
+    }
+
+    public function setStarTime(DateTimeInterface $start_time): self
+    {
+        $this->start_time = $start_time;
 
         return $this;
     }

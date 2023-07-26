@@ -73,6 +73,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'consultant', targetEntity: Planning::class)]
     private Collection $plannings;
 
+    #[ORM\ManyToMany(targetEntity: Skills::class, inversedBy: 'users')]
+    private Collection $skills;
+
     public function __construct()
     {
         $this->dispenses = new ArrayCollection();
@@ -81,6 +84,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->missions = new ArrayCollection();
         $this->missionsManager = new ArrayCollection();
         $this->plannings = new ArrayCollection();
+        $this->skills = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -420,6 +424,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $planning->setConsultant(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Skills>
+     */
+    public function getSkills(): Collection
+    {
+        return $this->skills;
+    }
+
+    public function addSkill(Skills $skill): self
+    {
+        if (!$this->skills->contains($skill)) {
+            $this->skills->add($skill);
+        }
+
+        return $this;
+    }
+
+    public function removeSkill(Skills $skill): self
+    {
+        $this->skills->removeElement($skill);
 
         return $this;
     }
