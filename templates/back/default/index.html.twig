@@ -1,73 +1,75 @@
 {#{% extends 'back/base.html.twig' %}#}
 {% extends 'back/base.html.twig' %}
 
-{% block content_title %}The Title of the Page{% endblock %}
+{% block content_title %}The Title of the Page
+{% endblock %}
 
 {% block main %}
-<div class="p-4 dark:border-gray-700 mt-14 container mx-auto">
-   {% for menuItem in ea.mainMenu.items %}
-{#      {{ dump(menuItem) }}#}
-   {% endfor %}
+	<div class="p-4 dark:border-gray-700 mt-14 container mx-auto">
+		{% for menuItem in ea.mainMenu.items %}
+			{#      {{ dump(menuItem) }}#}
+		{% endfor %}
 
-{#   CARD MENTOR  #}
+		{#   CARD MENTOR  #}
 
-   <div class="grid grid-cols-1 gap-x-6 space-y-4">
-      {% for user in users %}
-      <div class="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-         <div class="flex justify-end px-4 pt-4">
-            <button id="dropdownButton" data-dropdown-toggle="dropdown" class="inline-block text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-1.5" type="button">
-               <span class="sr-only">Open dropdown</span>
-               <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 3">
-                  <path d="M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z"/>
-               </svg>
-            </button>
-         </div>
-         <div class="flex flex-col items-center pb-10">
-            <img class="w-24 h-24 mb-3 rounded-full shadow-lg" src="https://picsum.photos/200/300" alt="Bonnie image"/>
-            <h5 class="mb-1 text-xl font-medium text-gray-900 dark:text-white">{{ user.firstname }} {{ user.lastname }}</h5>
-            <span class="text-sm text-gray-500 dark:text-gray-400">Stack technique</span>
-            <div class="flex mt-1">
-               <span class="badge">HTML</span>
-               <span class="badge">CSS</span>
-               <span class="badge">JS</span>
-            </div>
-            <div class="flex mt-4 space-x-3 md:mt-6">
-               <a href="{{ user.email }}" class="button button-blue">Contacter</a>
-               <a href="#" class="button button-red">Reporter</a>
-            </div>
-         </div>
-      </div>
-        {% endfor %}
-    </div>
+		<div class="grid grid-cols-1 gap-x-6 space-y-4">
+			{% for user in users %}
+				<div class="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+					<div class="flex justify-end px-4 pt-4">
+						<button id="dropdownButton" data-dropdown-toggle="dropdown" class="inline-block text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-1.5" type="button">
+							<span class="sr-only">Open dropdown</span>
+							<svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewbox="0 0 16 3">
+								<path d="M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z"/>
+							</svg>
+						</button>
+					</div>
+					<div class="flex flex-col items-center pb-10">
+						<img class="w-24 h-24 mb-3 rounded-full shadow-lg" src="https://picsum.photos/200/300" alt="Bonnie image"/>
+						<h5 class="mb-1 text-xl font-medium text-gray-900 dark:text-white">{{ user.firstname }}
+							{{ user.lastname }}</h5>
+						<span class="text-sm text-gray-500 dark:text-gray-400">Stack technique</span>
+						<div class="flex mt-1">
+							<span class="badge">HTML</span>
+							<span class="badge">CSS</span>
+							<span class="badge">JS</span>
+						</div>
+						<div class="flex mt-4 space-x-3 md:mt-6">
+							<a href="{{ user.email }}" class="button button-blue">Contacter</a>
+							<a href="#" class="button button-red">Reporter</a>
+						</div>
+					</div>
+				</div>
+			{% endfor %}
+		</div>
 
-{#   CARD FORMATION  #}
+		{#   CARD FORMATION  #}
 
-   <div class="card p-4">
-      <div class="flex justify-between items-center mb-2">
-         <p class="font-bold m-0">Débuter avec la stack MERN</p>
-         <button class="button button-blue">Je rejoins !</button>
-      </div>
-      <p>Cette formation est destinée aux personnes qui souhaitent apprendre à développer des applications web avec la stack MERN (MongoDB, Express, React, Node.js).</p>
-      <p><span class="font-bold">Prérequis:</span> Connaissances de base en HTML, CSS et JavaScript</p>
-      <div class="flex space-x-4">
-         <div class="flex items-center space-x-2">
-            <p class="m-0">3h50</p>
-            <i class="fa-regular fa-clock"></i>
-         </div>
-         <div class="flex">
-            <span class="badge">MangoDB</span>
-            <span class="badge">Express</span>
-            <span class="badge">React</span>
-            <span class="badge">Node.js</span>
-         </div>
-      </div>
-   </div>
+		<div class="card p-4">
+			<div class="flex justify-between items-center mb-2">
+				<p class="font-bold m-0">Débuter avec la stack MERN</p>
+				<button class="button button-blue">Je rejoins !</button>
+			</div>
+			<p>Cette formation est destinée aux personnes qui souhaitent apprendre à développer des applications web avec la stack MERN (MongoDB, Express, React, Node.js).</p>
+			<p>
+				<span class="font-bold">Prérequis:</span>
+				Connaissances de base en HTML, CSS et JavaScript</p>
+			<div class="flex space-x-4">
+				<div class="flex items-center space-x-2">
+					<p class="m-0">3h50</p>
+					<i class="fa-regular fa-clock"></i>
+				</div>
+				<div class="flex">
+					<span class="badge">MangoDB</span>
+					<span class="badge">Express</span>
+					<span class="badge">React</span>
+					<span class="badge">Node.js</span>
+				</div>
+			</div>
+		</div>
 
-{#    SORT FRAME#}
+		{#    SORT FRAME#}
 
 
-
-
-</div>
+	</div>
 
 {% endblock %}
