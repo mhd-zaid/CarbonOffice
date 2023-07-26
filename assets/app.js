@@ -16,6 +16,14 @@ a2lix_lib.sfCollection.init()
 import {
     Tab,
     initTE,
-  } from "tw-elements";
-  
-  initTE({ Tab });
+} from "tw-elements";
+
+initTE({ Tab });
+
+const spans = document.querySelectorAll('.badge');
+
+for (const span of spans) {
+    const classes = ['badge-default', 'badge-dark', 'badge-red', 'badge-green', 'badge-yellow', 'badge-indigo', 'badge-purple', 'badge-pink'];
+    const randomClass = classes[Math.floor(Math.random() * classes.length)];
+    span.classList.add(randomClass);
+}

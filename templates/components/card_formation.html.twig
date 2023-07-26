@@ -1,0 +1,21 @@
+   <div class="card p-4">
+      <div class="flex justify-between items-center mb-2">
+         <p class="font-bold m-0">{{ formation.title}}</p>
+          <a href="#">
+            <button class="button button-blue">Je rejoins !</button>
+          </a>
+      </div>
+      <p>{{ formation.description}}</p>
+      <p><span class="font-bold">Prérequis:</span> {{ formation.requirements }}</p>
+      <div class="flex space-x-4">
+         <div class="flex items-center space-x-2">
+            <p class="m-0">{{ formation.duration }}</p>
+            <i class="fa-regular fa-clock"></i>
+         </div>
+         <div class="flex">
+            {% for skill in formation.skills %}
+                <span class="badge">{{ skill }}</span>
+            {% endfor %}
+         </div>
+      </div>
+   </div>
