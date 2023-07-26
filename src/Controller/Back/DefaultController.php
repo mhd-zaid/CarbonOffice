@@ -2,6 +2,8 @@
 
 namespace App\Controller\Back;
 
+use App\Entity\Formation;
+use App\Entity\Planning;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
@@ -70,14 +72,14 @@ class DefaultController extends AbstractDashboardController
                 ->setPermission('ROLE_ADMIN'),
 
             MenuItem::section('Espace formations'),
-                MenuItem::linkToRoute('Formations', 'fa fa-lines-leaning', ''),
+                MenuItem::linkToCrud('Formations', 'fa fa-lines-leaning', Formation::class),
                 MenuItem::linkToRoute('Mentoring', 'fa fa-chalkboard', ''),
 
             MenuItem::section('Espace communauté'),
                 MenuItem::linkToRoute('Actualité', 'fa fa-people-group', ''),
 
             MenuItem::section('Espace planification'),
-                MenuItem::linkToRoute('Planning', 'fa fa-calendar-days', ''),
+                MenuItem::linkToCrud('Planning', 'fa fa-calendar-days', Planning::class),
 
             MenuItem::section('Espace personnel'),
                 MenuItem::linkToRoute('Mon compte', 'fa fa-user', 'back_default_index'),

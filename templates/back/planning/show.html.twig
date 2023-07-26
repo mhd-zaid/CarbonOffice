@@ -1,0 +1,9 @@
+{% extends 'back/base.html.twig' %}
+{% block main %}
+    Liste des plannings
+    <ul>
+        {% for planning in plannings %}
+            <li>{{ planning.id }} - {{ planning.dateStart|date('d/m/Y') }} - {{ planning.dateEnd | date ('d/m/Y') }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
