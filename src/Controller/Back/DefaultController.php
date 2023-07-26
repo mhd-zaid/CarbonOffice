@@ -3,6 +3,7 @@
 namespace App\Controller\Back;
 
 use App\Entity\User;
+use App\Repository\UserRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Config\UserMenu;
@@ -65,7 +66,7 @@ class DefaultController extends AbstractDashboardController
 
             MenuItem::section('Espace entreprise'),
                 MenuItem::linkToRoute('Organigramme', 'fa fa-sitemap', ''),
-                MenuItem::linkToRoute('Nouveau Collaborateur', 'fa fa-user-plus', '')
+                MenuItem::linkToCrud('Nouveau Collaborateur', 'fa fa-user-plus', User::class)
                 ->setPermission('ROLE_ADMIN'),
 
             MenuItem::section('Espace formations'),
