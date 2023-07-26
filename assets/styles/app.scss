@@ -5,6 +5,7 @@
 @import "colors.scss";
 @import "font.scss";
 @import "~bootstrap/scss/bootstrap";
+
 body{
     @apply h-full;
     & a{
@@ -71,13 +72,15 @@ body{
         background-color: $color-background-3;
     }
 
-    & main {
-        //background-color: $color-background-2;
-        & #chart-dashboard{
-            width: 250px;
-        }
+    & .card{
+        @apply relative bg-gray-50 overflow-x-auto shadow-xl sm:rounded-lg mt-14 px-8;
+    }
 
-        & #badge{
+    & .card-consultant{
+        @apply relative bg-gray-50 overflow-x-auto shadow-xl sm:rounded-lg mt-14 ;
+    }
+
+    & #badge{
             & div{
                 & a{
                     @apply no-underline;
@@ -92,9 +95,6 @@ body{
             }
         }
 
-        & .card{
-            @apply relative bg-gray-50 overflow-x-auto shadow-xl sm:rounded-lg mt-14 px-8;
-        }
         & table{
             @apply w-full text-sm text-left text-gray-500 dark:text-gray-400;
             & thead{
@@ -122,7 +122,6 @@ body{
                 }
             }
         }
-    }
         
     
 }
