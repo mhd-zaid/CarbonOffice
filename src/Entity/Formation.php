@@ -15,20 +15,18 @@ class Formation
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 1000)]
     private ?string $title = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 1000)]
     private ?string $description = null;
 
     #[ORM\Column]
     private ?int $duration = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 1000)]
     private ?string $requirements = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $skills = null;
 
     #[ORM\ManyToMany(targetEntity: Dispense::class, mappedBy: 'formations')]
     private Collection $dispenses;
@@ -36,9 +34,13 @@ class Formation
     #[ORM\ManyToOne(inversedBy: 'formations')]
     private ?Reward $reward = null;
 
+    #[ORM\ManyToMany(targetEntity: Skills::class, inversedBy: 'formations')]
+    private Collection $skills;
+
     public function __construct()
     {
         $this->dispenses = new ArrayCollection();
+        $this->skills = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -94,18 +96,6 @@ class Formation
         return $this;
     }
 
-    public function getSkills(): ?string
-    {
-        return $this->skills;
-    }
-
-    public function setSkills(string $skill): self
-    {
-        $this->skills = $skill;
-
-        return $this;
-    }
-
     /**
      * @return Collection<int, Dispense>
      */
@@ -141,6 +131,30 @@ class Formation
     public function setReward(?Reward $reward): self
     {
         $this->reward = $reward;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Skills>
+     */
+    public function getSkills(): Collection
+    {
+        return $this->skills;
+    }
+
+    public function addSkill(Skills $skill): self
+    {
+        if (!$this->skills->contains($skill)) {
+            $this->skills->add($skill);
+        }
+
+        return $this;
+    }
+
+    public function removeSkill(Skills $skill): self
+    {
+        $this->skills->removeElement($skill);
 
         return $this;
     }
