@@ -27,7 +27,7 @@ class PlanningCrudController extends AbstractCrudController
     {
         return Planning::class;
     }
-    
+
     public function configureActions(Actions $actions): Actions
     {
         $showAction = Action::new('Show', '')
@@ -36,9 +36,8 @@ class PlanningCrudController extends AbstractCrudController
 
         return $actions
             ->add(Crud::PAGE_INDEX, $showAction);
-
     }
-    
+
     public function configureFields(string $pageName): iterable
     {
         return [
@@ -60,16 +59,10 @@ class PlanningCrudController extends AbstractCrudController
         ];
     }
 
-    // public function configureCrud(Crud $crud): Crud
-    // {
-    //     return $crud->setPageTitle('index', 'Planning')
-    //         ->setPageTitle('edit', 'Editer un évènement')
-    //         ->setPageTitle('new', 'Créer un évènement')
-    //        // ->overrideTemplate('crud/index', 'back/planning/index.html.twig');
-    //         //->overrideTemplate('crud/edit', 'back/planning/edit.html.twig');
-            
-    //         //setTemplatePath('bundles/EasyAdminBundle/crud/index.html.twig');
-    // }
+    public function configureCrud(Crud $crud): Crud
+    {
+        return $crud->overrideTemplate('crud/new', 'back/planning/new.html.twig');
+    }
 
     public function index(AdminContext $context)
     {
@@ -81,13 +74,13 @@ class PlanningCrudController extends AbstractCrudController
     }
 
     public function show(AdminContext $context)
-    {   
+    {
         $userId = $context->getRequest()->query->get('userId');
         $user = $this->em->getRepository(User::class)->find($userId);
         $plannings = $this->em->getRepository(Planning::class)->findBy(['consultant' => $userId]);
 
         return $this->render('back/planning/show.html.twig', [
-            'user'=> $user,
+            'user' => $user,
             'plannings' => $plannings,
         ]);
     }
