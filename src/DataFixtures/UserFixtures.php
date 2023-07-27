@@ -5,10 +5,11 @@ namespace App\DataFixtures;
 use App\Entity\User;
 use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
 
-class UserFixtures extends Fixture
+class UserFixtures extends Fixture implements OrderedFixtureInterface
 {
     public function load(ObjectManager $manager): void
     {
@@ -65,5 +66,10 @@ class UserFixtures extends Fixture
 
 
         $manager->flush();
+    }
+
+    public function getOrder()
+    {
+        return 1;
     }
 }

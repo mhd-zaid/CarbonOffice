@@ -15,18 +15,27 @@ class Skills
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 1000)]
     private ?string $title = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 1000)]
     private ?string $description = null;
 
     #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'skills')]
     private Collection $users;
 
+    #[ORM\ManyToMany(targetEntity: Formation::class, mappedBy: 'skills')]
+    private Collection $formations;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
+        $this->formations = new ArrayCollection();
+    }
+
+    public function __toString(): string
+    {
+        return $this->title;
     }
 
     public function getId(): ?int
@@ -80,6 +89,33 @@ class Skills
     {
         if ($this->users->removeElement($user)) {
             $user->removeSkill($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Formation>
+     */
+    public function getFormations(): Collection
+    {
+        return $this->formations;
+    }
+
+    public function addFormation(Formation $formation): self
+    {
+        if (!$this->formations->contains($formation)) {
+            $this->formations->add($formation);
+            $formation->addSkill($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFormation(Formation $formation): self
+    {
+        if ($this->formations->removeElement($formation)) {
+            $formation->removeSkill($this);
         }
 
         return $this;

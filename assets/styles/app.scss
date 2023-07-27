@@ -8,6 +8,9 @@
 
 body{
     @apply h-full;
+    & #main{
+        @apply pb-5;
+    }
     & a{
         @apply no-underline;
     }
