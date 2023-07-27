@@ -20,7 +20,7 @@ class FormationCrudController extends AbstractCrudController
             ->setPageTitle('new', 'Créer une formation')
             ->overrideTemplate('crud/index', 'back/formation/index.html.twig')
             ->overrideTemplate('crud/edit', 'back/formation/edit.html.twig')
-            ->overrideTemplate('crud/new', 'back/formation/new.html.twig');
+            ->overrideTemplate('crud/new', 'back/formation/create.html.twig');
     }
     /*
     public function configureFields(string $pageName): iterable

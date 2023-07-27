@@ -15,8 +15,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
-use Faker\Provider\ar_EG\Text;
-use Symfony\Component\Routing\Annotation\Route;
+
 
 class PlanningCrudController extends AbstractCrudController
 {
@@ -84,9 +83,11 @@ class PlanningCrudController extends AbstractCrudController
     public function show(AdminContext $context)
     {   
         $userId = $context->getRequest()->query->get('userId');
+        $user = $this->em->getRepository(User::class)->find($userId);
         $plannings = $this->em->getRepository(Planning::class)->findBy(['consultant' => $userId]);
 
         return $this->render('back/planning/show.html.twig', [
+            'user'=> $user,
             'plannings' => $plannings,
         ]);
     }
