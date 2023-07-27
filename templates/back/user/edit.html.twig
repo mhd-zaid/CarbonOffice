@@ -1,4 +1,49 @@
 {% extends 'back/base.html.twig' %}
+{% form_theme edit_form 'bootstrap_5_layout.html.twig' %}
+
 {% block main %}
-Editer un utilisateur
+	<h1 class="font-bold text-3xl md:text-4xl lg:text-5xl font-heading text-gray-900">Modifier le profil de
+		{{ ea.request.get("userName") }}</h1>
+
+	{% block edit_form %}
+		{{ form_start(edit_form) }}
+		<div class="border-gray-200 bg-white shadow-md shadow-gray-400 rounded-lg p-6 mt-14 mb-4">
+			{{ form_errors(edit_form) }}
+			<div>
+				{{ form_row(edit_form.lastname) }}
+			</div>
+			<div>
+				{{ form_row(edit_form.firstname) }}
+			</div>
+			<div>
+				{{ form_row(edit_form.email) }}
+			</div>
+			<div>
+				{{ form_row(edit_form.plainPassword) }}
+			</div>
+			<div>
+				{{ form_row(edit_form.age) }}
+			</div>
+
+			<div>
+				{{ form_row(edit_form.phone) }}
+			</div>
+			<div>
+				{{ form_row(edit_form.address) }}
+			</div>
+			<div>
+				{{ form_row(edit_form.city) }}
+			</div>
+			<div>
+				{{ form_row(edit_form.zipCode) }}
+			</div>
+			<div>
+				{{ form_row(edit_form.skills) }}
+			</div>
+			<button type="submit" class="mt-6 btn btn-primary" name="ea[newForm][btn]" value="saveAndReturn" data-action-name="saveAndReturn" form="edit-User-form">Sauvegarder</button>
+
+		</div>
+		{{ form_end(edit_form) }}
+	{% endblock edit_form %}
+
 {% endblock %}

@@ -1,5 +1,123 @@
 {% extends 'back/base.html.twig' %}
 {% block main %}
-    Liste des users
-    
+	<h2 class="text-base font-bold text-gray-900">Nous avons
+		<span class=" font-black text-emerald-600 text-lg">{{ users|length }}</span>
+		consultant sur notre plateforme</h2>
+	<h1 class="font-bold text-3xl md:text-4xl lg:text-5xl font-heading text-gray-900">Liste des consultants</h1>
+
+
+	{% set url = ea_url()
+        .setController('App\\Controller\\Back\\UserCrudController')
+        .setAction('new')
+         %}
+	<a href="{{url}}">Créer un utilisateur</a>
+
+	<section class="flex justify-center border-t border-gray-200 py-6">
+		<div class="w-2/4 flex sm:flex-row flex-col space-y-4 items-center justify-between">
+			<div class="relative z-10 inline-block text-left">
+				<div class=" flex items-center">
+					<button class="group inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900">
+						Trier
+						<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" aria-hidden="true" class="flex-shrink-0 -mr-1 ml-1 h-5 w-5 text-gray-400 group-hover:text-gray-500">
+							<path fill-rule="evenodd" d="M12.53 16.28a.75.75 0 01-1.06 0l-7.5-7.5a.75.75 0 011.06-1.06L12 14.69l6.97-6.97a.75.75 0 111.06 1.06l-7.5 7.5z" clip-rule="evenodd"></path>
+						</svg>
+					</button>
+					<div class="ml-6 group flex items-center  text-sm font-medium text-gray-700 hover:text-gray-900">Reset<svg stroke="currentColor" fill="currentColor" stroke-width="0" version="1.1" viewbox="0 0 16 16" class=" text-red-600 cursor-pointer ml-1" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+							<path d="M15.854 12.854c-0-0-0-0-0-0l-4.854-4.854 4.854-4.854c0-0 0-0 0-0 0.052-0.052 0.090-0.113 0.114-0.178 0.066-0.178 0.028-0.386-0.114-0.529l-2.293-2.293c-0.143-0.143-0.351-0.181-0.529-0.114-0.065 0.024-0.126 0.062-0.178 0.114 0 0-0 0-0 0l-4.854 4.854-4.854-4.854c-0-0-0-0-0-0-0.052-0.052-0.113-0.090-0.178-0.114-0.178-0.066-0.386-0.029-0.529 0.114l-2.293 2.293c-0.143 0.143-0.181 0.351-0.114 0.529 0.024 0.065 0.062 0.126 0.114 0.178 0 0 0 0 0 0l4.854 4.854-4.854 4.854c-0 0-0 0-0 0-0.052 0.052-0.090 0.113-0.114 0.178-0.066 0.178-0.029 0.386 0.114 0.529l2.293 2.293c0.143 0.143 0.351 0.181 0.529 0.114 0.065-0.024 0.126-0.062 0.178-0.114 0-0 0-0 0-0l4.854-4.854 4.854 4.854c0 0 0 0 0 0 0.052 0.052 0.113 0.090 0.178 0.114 0.178 0.066 0.386 0.029 0.529-0.114l2.293-2.293c0.143-0.143 0.181-0.351 0.114-0.529-0.024-0.065-0.062-0.126-0.114-0.178z"></path>
+						</svg>
+					</div>
+
+				</div>
+			</div>
+			<div class="flex sm:flex-row space-x-4  justify-center flex-row items-center sm:space-x-8">
+				<div class="relative z-50 inline-block text-left">
+					<div>
+						<button id="categoryButton" class="group inline-flex items-center justify-center text-sm font-medium text-gray-700 hover:text-gray-900">
+							<span>Skills</span>
+							<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" aria-hidden="true" class="flex-shrink-0 -mr-1 ml-1 h-5 w-5 text-gray-400 group-hover:text-gray-500">
+								<path fill-rule="evenodd" d="M12.53 16.28a.75.75 0 01-1.06 0l-7.5-7.5a.75.75 0 011.06-1.06L12 14.69l6.97-6.97a.75.75 0 111.06 1.06l-7.5 7.5z" clip-rule="evenodd"></path>
+							</svg>
+						</button>
+					</div>
+					<div id="categoryDropdown" class="hidden origin-top-right absolute left-0 mt-2 bg-white rounded-md shadow-2xl p-4 ring-1 ring-black ring-opacity-5 focus:outline-none max-h-96 overflow-auto transform opacity-100 scale-100">
+						<form class="space-y-4 ">
+							<div class="flex  items-center">
+								<input type="checkbox" name="0[]" class="h-4 w-4 accent-emerald-600 cursor-pointer  border-gray-300 rounded text-emerald-600 focus:ring-emerald-500">
+								<label class="ml-3 pr-6 cursor-pointer text-sm font-medium text-gray-900 whitespace-nowrap">all</label>
+							</div>
+							<div class="flex  items-center">
+								<input type="checkbox" name="1[]" class="h-4 w-4 accent-emerald-600 cursor-pointer  border-gray-300 rounded text-emerald-600 focus:ring-emerald-500">
+								<label class="ml-3 pr-6 cursor-pointer text-sm font-medium text-gray-900 whitespace-nowrap">node js</label>
+							</div>
+							<div class="flex  items-center">
+								<input type="checkbox" name="2[]" class="h-4 w-4 accent-emerald-600 cursor-pointer  border-gray-300 rounded text-emerald-600 focus:ring-emerald-500">
+								<label class="ml-3 pr-6 cursor-pointer text-sm font-medium text-gray-900 whitespace-nowrap">react</label>
+							</div>
+							<div class="flex  items-center">
+								<input type="checkbox" name="3[]" class="h-4 w-4 accent-emerald-600 cursor-pointer  border-gray-300 rounded text-emerald-600 focus:ring-emerald-500">
+								<label class="ml-3 pr-6 cursor-pointer text-sm font-medium text-gray-900 whitespace-nowrap">html</label>
+							</div>
+							<div class="flex  items-center">
+								<input type="checkbox" name="4[]" class="h-4 w-4 accent-emerald-600 cursor-pointer  border-gray-300 rounded text-emerald-600 focus:ring-emerald-500">
+								<label class="ml-3 pr-6 cursor-pointer text-sm font-medium text-gray-900 whitespace-nowrap">css</label>
+							</div>
+							<div class="flex  items-center">
+								<input type="checkbox" name="5[]" class="h-4 w-4 accent-emerald-600 cursor-pointer  border-gray-300 rounded text-emerald-600 focus:ring-emerald-500">
+								<label class="ml-3 pr-6 cursor-pointer text-sm font-medium text-gray-900 whitespace-nowrap">java</label>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<div class="bg-gray-100 p-4 dark:border-gray-700 mt-14 container mx-auto">
+		{% for menuItem in ea.mainMenu.items %}
+			{#      {{ dump(menuItem) }}#}
+		{% endfor %}
+		{#   {{ dump(users) }}#}
+		<div class="grid grid-cols-4 gap-x-6 space-y-4">
+			{% for user in users %}
+				<div class="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+					<div class="py-6 flex flex-col items-center pb-10">
+						<img class="w-24 h-24 mb-3 rounded-full shadow-lg" src="https://picsum.photos/200/300" alt="Bonnie image"/>
+						<h5 class="mb-1 text-xl font-medium text-gray-900 dark:text-white">{{ user.firstname }}
+							{{ user.lastname }}</h5>
+						<div class="flex mt-6 items-center pb-10">
+							{% for skill in user.skills.toArray() %}
+								<span class="bg-emerald-100 text-emerald-700 text-sm font-medium mr-2  px-2.5 py-0.5 rounded-full">{{ skill.title }}</span>
+							{% endfor %}
+						</div>
+						<span class="text-sm text-gray-500 dark:text-gray-400">Senior Front End Developer</span>
+						<div class="flex mt-4 space-x-3 md:mt-6">
+							<a href="#" class="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Voir profil</a>
+						</div>
+						<div class="flex flex-row justify-end px-4 pt-4">
+							{% set url = ea_url()
+                                .setController('App\\Controller\\Back\\UserCrudController')
+                                .setAction('edit')
+                                .set('entityId', user.id)
+                                .set('userName', user.firstname)
+                                 %}
+							<a href="{{url}}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Edit</a>
+							<a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Delete</a>
+						</div>
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+
+	</div>
+
+	<script>
+		document.addEventListener("DOMContentLoaded", function () {
+const categoryButton = document.getElementById("categoryButton");
+const categoryDropdown = document.getElementById("categoryDropdown");
+
+categoryButton.addEventListener("click", function () {
+categoryDropdown.classList.toggle("hidden");
+});
+});
+	</script>
 {% endblock %}
