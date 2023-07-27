@@ -3,6 +3,7 @@
 namespace App\Controller\Back;
 
 use App\Entity\Discussion;
+use App\Entity\Dispense;
 use App\Entity\Formation;
 use App\Entity\Mentor;
 use App\Entity\Planning;
@@ -81,6 +82,7 @@ class DefaultController extends AbstractDashboardController
 
             MenuItem::section('Espace planification'),
             MenuItem::linkToCrud('Planning', 'fa fa-calendar-days', Planning::class),
+            MenuItem::linkToCrud('Dispenses', 'fa fa-calendar-check', Dispense::class),
 
             MenuItem::section('Espace personnel'),
             MenuItem::linkToRoute('Mon compte', 'fa fa-user', 'back_profile_index'),

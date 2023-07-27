@@ -1,0 +1,17 @@
+{% extends 'back/base.html.twig' %}
+
+{% set url_new_dispense = ea_url()
+    .setController('App\\Controller\\Back\\DispenseCrudController')
+    .setAction('new')
+%}
+{% block main %}
+    <div class="flex justify-between items-center">
+        {% include 'components/page_header.html.twig' with {'page_title': 'Liste des formations planifiées'} %}
+        <a href="{{url_new_dispense}}">
+            <button class="button button-blue">Planifier une formation</button>
+        </a>
+    </div>
+    {% for dispense in entities %}
+        {% include 'components/card_dispense.html.twig' with {'dispense': dispense.instance} %}
+    {% endfor %}
+{% endblock %}
