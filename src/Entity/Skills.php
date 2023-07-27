@@ -26,6 +26,8 @@ class Skills
 
     #[ORM\ManyToMany(targetEntity: Formation::class, mappedBy: 'skills')]
     private Collection $formations;
+    #[ORM\OneToMany(mappedBy: 'skill', targetEntity: Discussion::class)]
+    private Collection $discussions;
 
     public function __construct()
     {
@@ -36,6 +38,7 @@ class Skills
     public function __toString(): string
     {
         return $this->title;
+        $this->discussions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -108,6 +111,22 @@ class Skills
             $this->formations->add($formation);
             $formation->addSkill($this);
         }
+        return $this;
+    }
+    /*
+    * @return Collection<int, Discussion>
+     */
+    public function getDiscussions(): Collection
+    {
+        return $this->discussions;
+    }
+
+    public function addDiscussion(Discussion $discussion): self
+    {
+        if (!$this->discussions->contains($discussion)) {
+            $this->discussions->add($discussion);
+            $discussion->setSkill($this);
+        }
 
         return $this;
     }
@@ -116,6 +135,18 @@ class Skills
     {
         if ($this->formations->removeElement($formation)) {
             $formation->removeSkill($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDiscussion(Discussion $discussion): self
+    {
+        if ($this->discussions->removeElement($discussion)) {
+            // set the owning side to null (unless already changed)
+            if ($discussion->getSkill() === $this) {
+                $discussion->setSkill(null);
+            }
         }
 
         return $this;

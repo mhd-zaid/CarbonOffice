@@ -27,20 +27,15 @@ class Dispense
     #[ORM\Column(length: 255)]
     private ?string $link = null;
 
+    #[ORM\ManyToOne(inversedBy: 'dispenses')]
+    private ?Mentor $mentor = null;
+
     #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'dispenses')]
-    private Collection $mentors;
-
-    #[ORM\ManyToMany(targetEntity: Formation::class, inversedBy: 'dispenses')]
-    private Collection $formations;
-
-    #[ORM\ManyToMany(targetEntity: Participations::class, mappedBy: 'dispenses')]
-    private Collection $participations;
+    private Collection $consultants;
 
     public function __construct()
     {
-        $this->mentors = new ArrayCollection();
-        $this->formations = new ArrayCollection();
-        $this->participations = new ArrayCollection();
+        $this->consultants = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -84,77 +79,38 @@ class Dispense
         return $this;
     }
 
+    public function getMentor(): ?Mentor
+    {
+        return $this->mentor;
+    }
+
+    public function setMentor(?Mentor $mentor): self
+    {
+        $this->mentor = $mentor;
+
+        return $this;
+    }
+
     /**
      * @return Collection<int, User>
      */
-    public function getMentor(): Collection
+    public function getConsultants(): Collection
     {
-        return $this->mentors;
+        return $this->consultants;
     }
 
-    public function addMentor(User $mentor): self
+    public function addConsultant(User $consultant): self
     {
-        if (!$this->mentors->contains($mentor)) {
-            $this->mentors->add($mentor);
+        if (!$this->consultants->contains($consultant)) {
+            $this->consultants->add($consultant);
         }
 
         return $this;
     }
 
-    public function removeMentor(User $mentor): self
+    public function removeConsultant(User $consultant): self
     {
-        $this->mentors->removeElement($mentor);
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Formation>
-     */
-    public function getFormation(): Collection
-    {
-        return $this->formations;
-    }
-
-    public function addFormation(Formation $formation): self
-    {
-        if (!$this->formations->contains($formation)) {
-            $this->formations->add($formation);
-        }
-
-        return $this;
-    }
-
-    public function removeFormation(Formation $formation): self
-    {
-        $this->formations->removeElement($formation);
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Participations>
-     */
-    public function getParticipations(): Collection
-    {
-        return $this->participations;
-    }
-
-    public function addParticipation(Participations $participation): self
-    {
-        if (!$this->participations->contains($participation)) {
-            $this->participations->add($participation);
-            $participation->addDispense($this);
-        }
-
-        return $this;
-    }
-
-    public function removeParticipation(Participations $participation): self
-    {
-        if ($this->participations->removeElement($participation)) {
-            $participation->removeDispense($this);
-        }
+        $this->consultants->removeElement($consultant);
 
         return $this;
     }

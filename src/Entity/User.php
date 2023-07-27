@@ -55,15 +55,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?int $zipCode = null;
 
-    #[ORM\ManyToMany(targetEntity: Dispense::class, mappedBy: 'mentors')]
-    private Collection $dispenses;
-
-    #[ORM\ManyToMany(targetEntity: Participations::class, mappedBy: 'mentors')]
-    private Collection $participationsMentor;
-
-    #[ORM\ManyToMany(targetEntity: Participations::class, mappedBy: 'consultants')]
-    private Collection $participationsConsultant;
-
     #[ORM\ManyToMany(targetEntity: Mission::class, mappedBy: 'consultants')]
     private Collection $missions;
 
@@ -76,15 +67,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToMany(targetEntity: Skills::class, inversedBy: 'users')]
     private Collection $skills;
 
+    #[ORM\OneToMany(mappedBy: 'consultant', targetEntity: Mentor::class)]
+    private Collection $mentors;
+
+    #[ORM\ManyToMany(targetEntity: Dispense::class, mappedBy: 'consultants')]
+    private Collection $dispenses;
+
+    #[ORM\OneToMany(mappedBy: 'employee', targetEntity: Post::class)]
+    private Collection $posts;
+
     public function __construct()
     {
-        $this->dispenses = new ArrayCollection();
-        $this->participationsMentor = new ArrayCollection();
-        $this->participationsConsultant = new ArrayCollection();
         $this->missions = new ArrayCollection();
         $this->missionsManager = new ArrayCollection();
         $this->plannings = new ArrayCollection();
         $this->skills = new ArrayCollection();
+        $this->yes = new ArrayCollection();
+        $this->dispenses = new ArrayCollection();
+        $this->posts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -261,87 +261,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return Collection<int, Dispense>
-     */
-    public function getDispenses(): Collection
-    {
-        return $this->dispenses;
-    }
-
-    public function addDispense(Dispense $dispense): self
-    {
-        if (!$this->dispenses->contains($dispense)) {
-            $this->dispenses->add($dispense);
-            $dispense->addMentor($this);
-        }
-
-        return $this;
-    }
-
-    public function removeDispense(Dispense $dispense): self
-    {
-        if ($this->dispenses->removeElement($dispense)) {
-            $dispense->removeMentor($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Participations>
-     */
-    public function getParticipationsMentor(): Collection
-    {
-        return $this->participationsMentor;
-    }
-
-    public function addParticipationsMentor(Participations $participationsMentor): self
-    {
-        if (!$this->participationsMentor->contains($participationsMentor)) {
-            $this->participationsMentor->add($participationsMentor);
-            $participationsMentor->addMentor($this);
-        }
-
-        return $this;
-    }
-
-    public function removeParticipationsMentor(Participations $participationsMentor): self
-    {
-        if ($this->participationsMentor->removeElement($participationsMentor)) {
-            $participationsMentor->removeMentor($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Participations>
-     */
-    public function getParticipationsConsultant(): Collection
-    {
-        return $this->participationsConsultant;
-    }
-
-    public function addParticipationsConsultant(Participations $participationsConsultant): self
-    {
-        if (!$this->participationsConsultant->contains($participationsConsultant)) {
-            $this->participationsConsultant->add($participationsConsultant);
-            $participationsConsultant->addConsultant($this);
-        }
-
-        return $this;
-    }
-
-    public function removeParticipationsConsultant(Participations $participationsConsultant): self
-    {
-        if ($this->participationsConsultant->removeElement($participationsConsultant)) {
-            $participationsConsultant->removeConsultant($this);
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection<int, Mission>
      */
     public function getMissions(): Collection
@@ -448,6 +367,93 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function removeSkill(Skills $skill): self
     {
         $this->skills->removeElement($skill);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Mentor>
+     */
+    public function getYes(): Collection
+    {
+        return $this->yes;
+    }
+
+    public function addYe(Mentor $ye): self
+    {
+        if (!$this->yes->contains($ye)) {
+            $this->yes->add($ye);
+            $ye->setConsultant($this);
+        }
+
+        return $this;
+    }
+
+    public function removeYe(Mentor $ye): self
+    {
+        if ($this->yes->removeElement($ye)) {
+            // set the owning side to null (unless already changed)
+            if ($ye->getConsultant() === $this) {
+                $ye->setConsultant(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Dispense>
+     */
+    public function getDispenses(): Collection
+    {
+        return $this->dispenses;
+    }
+
+    public function addDispense(Dispense $dispense): self
+    {
+        if (!$this->dispenses->contains($dispense)) {
+            $this->dispenses->add($dispense);
+            $dispense->addConsultant($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDispense(Dispense $dispense): self
+    {
+        if ($this->dispenses->removeElement($dispense)) {
+            $dispense->removeConsultant($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Post>
+     */
+    public function getPosts(): Collection
+    {
+        return $this->posts;
+    }
+
+    public function addPost(Post $post): self
+    {
+        if (!$this->posts->contains($post)) {
+            $this->posts->add($post);
+            $post->setEmployee($this);
+        }
+
+        return $this;
+    }
+
+    public function removePost(Post $post): self
+    {
+        if ($this->posts->removeElement($post)) {
+            // set the owning side to null (unless already changed)
+            if ($post->getEmployee() === $this) {
+                $post->setEmployee(null);
+            }
+        }
 
         return $this;
     }

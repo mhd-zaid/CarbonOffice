@@ -15,7 +15,7 @@ class Formation
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 1000)]
+    #[ORM\Column(length: 300)]
     private ?string $title = null;
 
     #[ORM\Column(length: 1000)]
@@ -28,21 +28,21 @@ class Formation
     private ?string $requirements = null;
 
 
-    #[ORM\ManyToMany(targetEntity: Dispense::class, mappedBy: 'formations')]
-    private Collection $dispenses;
-
     #[ORM\ManyToOne(inversedBy: 'formations')]
     private ?Reward $reward = null;
 
     #[ORM\ManyToMany(targetEntity: Skills::class, inversedBy: 'formations')]
     private Collection $skills;
 
+    #[ORM\OneToMany(mappedBy: 'formation', targetEntity: Mentor::class)]
+    private Collection $mentors;
+  
     public function __construct()
     {
-        $this->dispenses = new ArrayCollection();
         $this->skills = new ArrayCollection();
-    }
+        $this->mentors = new ArrayCollection();
 
+    }
     public function getId(): ?int
     {
         return $this->id;
@@ -96,33 +96,6 @@ class Formation
         return $this;
     }
 
-    /**
-     * @return Collection<int, Dispense>
-     */
-    public function getDispenses(): Collection
-    {
-        return $this->dispenses;
-    }
-
-    public function addDispense(Dispense $dispense): self
-    {
-        if (!$this->dispenses->contains($dispense)) {
-            $this->dispenses->add($dispense);
-            $dispense->addFormation($this);
-        }
-
-        return $this;
-    }
-
-    public function removeDispense(Dispense $dispense): self
-    {
-        if ($this->dispenses->removeElement($dispense)) {
-            $dispense->removeFormation($this);
-        }
-
-        return $this;
-    }
-
     public function getReward(): ?Reward
     {
         return $this->reward;
@@ -151,10 +124,40 @@ class Formation
 
         return $this;
     }
+    
+
+    /*
+     * @return Collection<int, Mentor>
+     */
+    public function getMentors(): Collection
+    {
+        return $this->mentors;
+    }
+
+    public function addMentor(Mentor $mentor): self
+    {
+        if (!$this->mentors->contains($mentor)) {
+            $this->mentors->add($mentor);
+            $mentor->setFormation($this);
+        }
+
+        return $this;
+    }
 
     public function removeSkill(Skills $skill): self
     {
         $this->skills->removeElement($skill);
+
+        return $this;
+    }
+    public function removeMentor(Mentor $mentor): self
+    {
+        if ($this->mentors->removeElement($mentor)) {
+            // set the owning side to null (unless already changed)
+            if ($mentor->getFormation() === $this) {
+                $mentor->setFormation(null);
+            }
+        }
 
         return $this;
     }
