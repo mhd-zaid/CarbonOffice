@@ -1,7 +1,7 @@
 {% extends 'back/base.html.twig' %}
 {% block main %}
 	<h2 class="text-base font-bold text-gray-900">Nous avons
-		<span class=" font-black text-emerald-600 text-lg">{{ users|length }}</span>
+		<span class=" font-black text-emerald-600 text-lg">{{ entities|length }}</span>
 		consultant sur notre plateforme</h2>
 	<h1 class="font-bold text-3xl md:text-4xl lg:text-5xl font-heading text-gray-900">Liste des consultants</h1>
 
@@ -78,18 +78,18 @@
 		{% endfor %}
 		{#   {{ dump(users) }}#}
 		<div class="grid grid-cols-4 gap-x-6 space-y-4">
-			{% for user in users %}
+			{% for user in entities %}
 				<div class="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
 					<div class="py-6 flex flex-col items-center pb-10">
 						<img class="w-24 h-24 mb-3 rounded-full shadow-lg" src="https://picsum.photos/200/300" alt="Bonnie image"/>
-						<h5 class="mb-1 text-xl font-medium text-gray-900 dark:text-white">{{ user.firstname }}
-							{{ user.lastname }}</h5>
+						<h5 class="mb-1 text-xl font-medium text-gray-900 dark:text-white">{{ user.instance.firstname }}
+							{{ user.instance.lastname }}</h5>
 						<div class="flex mt-6 items-center pb-10">
-							{% for skill in user.skills.toArray() %}
+							{% for skill in user.instance.skills.toArray() %}
 								<span class="bg-emerald-100 text-emerald-700 text-sm font-medium mr-2  px-2.5 py-0.5 rounded-full">{{ skill.title }}</span>
 							{% endfor %}
 						</div>
-						<span class="text-sm text-gray-500 dark:text-gray-400">Senior Front End Developer</span>
+						<span class="text-sm text-gray-500 dark:text-gray-400">Developer</span>
 						<div class="flex mt-4 space-x-3 md:mt-6">
 							<a href="#" class="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Voir profil</a>
 						</div>
@@ -97,11 +97,17 @@
 							{% set url = ea_url()
                                 .setController('App\\Controller\\Back\\UserCrudController')
                                 .setAction('edit')
-                                .set('entityId', user.id)
-                                .set('userName', user.firstname)
+                                .set('entityId', user.instance.id)
+                                .set('userName', user.instance.firstname)
                                  %}
-							<a href="{{url}}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Edit</a>
-							<a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Delete</a>
+							<a href="{{url}}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Modifier</a>
+							{% set url_delete_formation = ea_url()
+								.setController('App\\Controller\\Back\\UserCrudController')
+								.setAction('delete')
+								.setEntityId(user.instance.id)
+							%}
+							<a href="{{ url_delete_formation }}" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Supprimer
+							</a>
 						</div>
 					</div>
 				</div>

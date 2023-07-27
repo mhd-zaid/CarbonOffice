@@ -1,0 +1,131 @@
+{{ form_start(form) }}
+<div class="form-box">
+	{{ form_errors(form) }}
+	<p class="text-main">Informations personnels</p>
+	<div class="list-input">
+		<div>
+			{{ form_row(form.lastname, {'attr': {'class': 'custom-input'}}) }}
+		</div>
+		<div>
+			{{ form_row(form.firstname, {'attr': {'class': 'custom-input'}}) }}
+
+		</div>
+		<div>
+			{{ form_row(form.phone, {'attr': {'class': 'custom-input'}}) }}
+
+		</div>
+		<div>
+			{{ form_row(form.email, {'attr': {'class': 'custom-input'}}) }}
+
+		</div>
+		<div>
+			{{ form_row(form.currentPassword, {'attr': {'class': 'custom-input'}}) }}
+
+		</div>
+		<div>
+			{{ form_row(form.plainPassword, {'attr': {'class': 'custom-input'}}) }}
+
+		</div>
+		<div>
+			{{ form_row(form.password, {'attr': {'class': 'custom-input'}}) }}
+
+		</div>
+	</div>
+	<p class="input-adress">Adresse</p>
+	<div class="list-input-adress">
+		<div>
+			{{ form_row(form.zipCode) }}
+		</div>
+		<div>
+			{{ form_row(form.city) }}
+		</div>
+		<div>
+			{{ form_row(form.address) }}
+		</div>
+	</div>
+	<div class="buttons-form">
+		<a href="{{ path('back_app_account_edit', {'id': user.id}) }}">
+			<button type="submit" class="custom-button">
+				<iconify-icon icon="dashicons:saved" style="color: white;" width="24" height="24"></iconify-icon>
+				{{ button_label|default('Sauvegarder') }}</button>
+		</a>
+		<a href="http://localhost:8000/admin?routeName=back_profile_index">
+			<button type="button" class="custom-button back">
+				<iconify-icon icon="dashicons:saved" style="color: white;" width="24" height="24"></iconify-icon>
+				{{ button_label|default('Retour') }}</button>
+		</a>
+	</div>
+	{{ form_end(form) }}
+
+	<style>
+		/* Styles pour l'élément avec la classe */
+		.form-box {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			width: 100%;
+			border: 1px solid #E5E7EB;
+			background-color: #FFFFFF;
+			box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+			border-radius: 0.375rem; /* Correspond à 6px de border-radius */
+			padding: 2.5rem; /* Correspond à 24px de padding */
+			margin-top: 2.5rem; /* Correspond à 40px de margin-top */
+			margin-bottom: 1rem; /* Correspond à 16px de margin-bottom */
+		}
+		.text-main {
+			color: #374151; /* Couleur du texte principale */
+			font-size: 1.25rem; /* Taille de police de 20px */
+			font-weight: bold; /* Texte en gras */
+		}
+		.list-input {
+			display: grid; /* Utiliser un affichage en grille */
+			grid-gap: 1.5rem;
+			margin-bottom: 1.5rem;
+		}
+		.input-adress {
+			font-weight: bold; /* Définir le texte en gras */
+			font-size: 1.2rem; /* Définir la taille de la police */
+			color: #333; /* Définir la couleur du texte (ici, un gris foncé) */
+			margin-bottom: 1.5rem; /* 1.5rem est équivalent à 3 unités (1 unité = 1rem) */
+		}
+		.list-input-adress {
+			display: grid;
+			margin-bottom: 1.5rem; /* 1.5rem est équivalent à 6 unités (1 unité = 1rem) */
+			gap: 1.5rem; /* 1.5rem est équivalent à 6 unités (1 unité = 1rem) */
+		}
+		.custom-input {
+			/* Ajoutez ici les styles que vous souhaitez appliquer au champ */
+			border: 1px solid #ccc;
+			padding: 8px;
+			margin-left: 5px;
+			border-radius: 5px;
+			font-size: 16px;
+			/* Autres styles... */
+		}
+		.custom-button {
+			/* Styles pour le bouton */
+			display: inline-block;
+			padding: 12px 24px;
+			background-color: #4CAF50; /* Couleur de fond */
+			color: white; /* Couleur du texte */
+			font-size: 16px;
+			border: none; /* Supprimer la bordure */
+			border-radius: 8px; /* Coins arrondis */
+			cursor: pointer;
+			transition: background-color 0.2s; /* Transition fluide */
+		}
+		.custom-button:hover {
+			background-color: #45a049; /* Couleur de fond au survol */
+		}
+		.back {
+			background-color: #7f00ff; /* Couleur de fond */
+		}
+		.back:hover {
+			background-color: #5200a3; /* Couleur de fond au survol */
+		}
+		.buttons-form {
+			display: flex;
+			justify-content: space-around;
+			gap: 5px;
+		}
+	</style>

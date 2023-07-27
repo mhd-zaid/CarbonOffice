@@ -49,7 +49,7 @@ class DefaultController extends AbstractDashboardController
 
         return $this->render('back/default/index.html.twig', [
             'users' => $users,
-    ]   );
+        ]);
     }
 
     public function configureDashboard(): Dashboard
@@ -57,8 +57,7 @@ class DefaultController extends AbstractDashboardController
         return Dashboard::new()
             ->setTitle('Carbon Office')
             ->renderContentMaximized()
-            ->generateRelativeUrls()
-            ;
+            ->generateRelativeUrls();
     }
 
     public function configureMenuItems(): iterable
@@ -67,28 +66,27 @@ class DefaultController extends AbstractDashboardController
             MenuItem::linkToDashboard('Dashboard', 'fa fa-home'),
 
             MenuItem::section('Espace entreprise'),
-                MenuItem::linkToRoute('Organigramme', 'fa fa-sitemap', ''),
-                MenuItem::linkToCrud('Nouveau Collaborateur', 'fa fa-user-plus', User::class)
+            MenuItem::linkToRoute('Organigramme', 'fa fa-sitemap', ''),
+            MenuItem::linkToCrud('Nouveau Collaborateur', 'fa fa-user-plus', User::class)
                 ->setPermission('ROLE_ADMIN'),
 
             MenuItem::section('Espace formations'),
-                MenuItem::linkToCrud('Formations', 'fa fa-lines-leaning', Formation::class),
-                MenuItem::linkToRoute('Mentoring', 'fa fa-chalkboard', ''),
+            MenuItem::linkToCrud('Formations', 'fa fa-lines-leaning', Formation::class),
+            MenuItem::linkToRoute('Mentoring', 'fa fa-chalkboard', ''),
 
             MenuItem::section('Espace communauté'),
-                MenuItem::linkToRoute('Actualité', 'fa fa-people-group', ''),
+            MenuItem::linkToRoute('Actualité', 'fa fa-people-group', ''),
 
             MenuItem::section('Espace planification'),
-                MenuItem::linkToCrud('Planning', 'fa fa-calendar-days', Planning::class),
+            MenuItem::linkToCrud('Planning', 'fa fa-calendar-days', Planning::class),
 
             MenuItem::section('Espace personnel'),
-                MenuItem::linkToRoute('Mon compte', 'fa fa-user', 'back_default_index'),
-                MenuItem::linkToRoute('Paramètre', 'fa fa-sliders', ''),
+            MenuItem::linkToRoute('Mon compte', 'fa fa-user', 'back_profile_index'),
+            MenuItem::linkToRoute('Paramètre', 'fa fa-sliders', ''),
 
             MenuItem::linkToLogout("Déconnexion", 'fa fa-sign-out-alt'),
 
         ];
-
     }
 
     public function configureUserMenu(User|UserInterface $user): UserMenu
@@ -96,12 +94,11 @@ class DefaultController extends AbstractDashboardController
         return parent::configureUserMenu($user)
             ->setName($user->getFullName())
             ->setGravatarEmail($user->getEmail())
-//
-//            // you can use any type of menu item, except submenus
+            //
+            //            // you can use any type of menu item, except submenus
             ->addMenuItems([
-                MenuItem::linkToRoute('Mon compte', 'fa fa-user', 'back_default_index'),
+                MenuItem::linkToRoute('Mon compte', 'fa fa-user', 'back_profile_index'),
                 MenuItem::linkToRoute('Paramètre', 'fa fa-sliders', ''),
-            ])
-        ;
+            ]);
     }
 }

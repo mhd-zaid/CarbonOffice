@@ -1,0 +1,95 @@
+{% extends 'back/base.html.twig' %}
+
+{% block title %}User
+{% endblock %}
+
+{% block main %}
+
+
+	<div class="max-w-3xl mx-auto px-4 sm:px-6 md:flex md:items-center md:justify-between md:space-x-5 lg:max-w-7xl lg:px-8">
+		<div class="flex items-center space-x-5">
+			<div class="flex-shrink-0">
+				<div class="relative w-36 h-36">
+					<img width="100" height="100" class="w-36 h-36 mb-3 rounded-full shadow-lg" src="https://picsum.photos/200/300" alt="Bonnie image"/>
+					<span class="absolute inset-0 shadow-inner rounded-full" aria-hidden="true"></span>
+				</div>
+			</div>
+			<div class=" flex flex-col justify-start space-y-1">
+				<h1 class="text-2xl font-bold text-gray-900">{{ user.firstname }}
+					{{ user.lastname }}</h1>
+
+				<p class="text-sm font-medium text-gray-500">
+					<span class="text-gray-900">Software frontend architect</span>
+				</p>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="mt-8 max-w-3xl mx-auto grid grid-cols-1 gap-6 sm:px-6 lg:max-w-7xl lg:grid-flow-col-dense lg:grid-cols-3">
+		<div class="space-y-6 lg:col-start-1 lg:col-span-2">
+			<section aria-labelledby="applicant-information-title">
+				<div class="bg-white shadow sm:rounded-lg">
+					<div class="px-4 py-5 sm:px-6">
+						<h2 id="applicant-information-title" class="text-lg leading-6 font-medium text-gray-900">Informations</h2>
+					</div>
+					<div class="border-t border-gray-200 px-4 py-5 sm:px-6">
+						<dl class="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
+							<div class="sm:col-span-1">
+								<dt class="text-sm font-medium text-gray-500">Rôle</dt>
+								<dd class="mt-1 text-sm text-gray-900">
+									<li>{{ user.roles[0] }}</li>
+								</dd>
+							</div>
+							<div class="sm:col-span-1">
+								<dt class="text-sm font-medium text-gray-500">Location</dt>
+								<dd class="mt-1 text-sm text-gray-900">{{ user.address }}
+									,
+									{{ user.city }}
+									,
+									{{ user.zipCode }}
+								</dd>
+							</div>
+							<div class="sm:col-span-2">
+								<dt class="text-sm font-medium text-gray-500">Téléphone</dt>
+								<dd class="mt-1 text-sm text-gray-900">{{ user.phone }}</dd>
+							</div>
+							<div class="sm:col-span-2">
+								<dt class="text-sm font-medium text-gray-500">Skills</dt>
+								<dd class="mt-1 text-sm text-gray-900 flex flex-wrap">
+									{% for skill in user.skills.toArray() %}
+										<span class="bg-emerald-100 text-emerald-700 text-lg font-medium mr-2 mb-2 px-2.5 py-0.5 rounded-full">{{ skill.title }}</span>
+
+									{% endfor %}
+								</dd>
+							</div>
+						</dl>
+						{% set url = ea_url()
+                                .setController('App\\Controller\\Back\\UserCrudController')
+                                .setAction('edit')
+                                .setEntityId(user.id)
+                                .set('userName', user.firstname)
+                                 %}
+						<a href="{{ url }}">edit</a>
+					</div>
+				</div>
+			</section>
+			<div style="position:fixed;z-index:9999;top:16px;left:16px;right:16px;bottom:16px;pointer-events:none"></div>
+			<div>
+				<div style="position:fixed;z-index:9999;top:16px;left:16px;right:16px;bottom:16px;pointer-events:none"></div>
+				<section aria-labelledby="notes-title">
+					<div class="bg-white shadow sm:rounded-lg sm:overflow-hidden"></div>
+				</section>
+			</div>
+
+		</div>
+
+	</div>
+
+
+	{# <a href="{{ path('back_app_user_index') }}">back to list</a>
+																																				
+																																					<a href="{{ path('back_app_user_edit', {'id': user.id}) }}">edit</a>
+																																				
+																																					{{ include('back/user/_delete_form.html.twig') }} #}
+{% endblock %}
