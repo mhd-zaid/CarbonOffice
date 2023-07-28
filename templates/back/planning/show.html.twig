@@ -8,8 +8,8 @@
 	{% set url = ea_url()
                 .setController('App\\Controller\\Back\\PlanningCrudController')
                 .setAction('new') %}
-	<div>
-		<a href="{{url}}">Créer un evenement</a>
+	<div class="container-link-create-event">
+		<a class="link-create-event" href="{{url}}">Créer un evenement</a>
 	</div>
 	<div id="calendar-holder"></div>
 	<script>

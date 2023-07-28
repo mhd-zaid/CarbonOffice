@@ -14,7 +14,6 @@ class Post
     #[ORM\Column]
     private ?int $id = null;
 
-
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $date = null;
 
@@ -80,5 +79,4 @@ class Post
 
         return $this;
     }
-
 }
