@@ -5,6 +5,7 @@ namespace App\Controller\Back;
 use App\Entity\Dispense;
 use App\Entity\Formation;
 use App\Entity\Mentor;
+use App\Entity\Planning;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
@@ -35,6 +36,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Security\Permission;
 use phpDocumentor\Reflection\DocBlock\Tags\Link;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\Routing\Annotation\Route;
 
 class DispenseCrudController extends AbstractCrudController
 {
@@ -93,7 +95,7 @@ class DispenseCrudController extends AbstractCrudController
                         },
                     ],
                 ]),
-            UrlField::new('link'),
+            UrlField::new('link')->setLabel('Lien de la formation'),
         ];
     }
     
@@ -161,5 +163,17 @@ class DispenseCrudController extends AbstractCrudController
         $this->em->flush();
         $this->addFlash('success', 'La formation planifiée a bien été supprimée');
         return $this->redirect($this->container->get(AdminUrlGenerator::class)->setAction(Action::INDEX)->unset(EA::ENTITY_ID)->generateUrl());
+    }
+
+    #[Route('/dispense/delete/{id}/{userId}}', name: 'app_dispense_delete')]
+    public function deleteDispense(int $id,int $userId): RedirectResponse
+    {
+        $dispense = $this->em->getRepository(Dispense::class)->find($id);
+        $this->em->remove($dispense);
+        $this->em->flush();
+        $this->addFlash('success', 'La formation planifiée a bien été supprimée');
+        #rediriger vers la page de show planning
+
+        return $this->redirect($this->container->get(AdminUrlGenerator::class)->setController(PlanningCrudController::class)->set('userId',$userId)->setAction('show')->unset(EA::ENTITY_ID)->generateUrl());
     }
 }

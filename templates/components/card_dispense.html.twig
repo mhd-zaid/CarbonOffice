@@ -17,6 +17,10 @@
     </div>
     <p>{{ dispense.date | date('d/m/Y') }}</p>
     <p>{{ dispense.mentor.consultant.lastname }} - {{ dispense.mentor.consultant.firstname }}</p>
+    <div class="flex items-center space-x-2">
+        <i class="fa fa-link" aria-hidden="true"></i>
+        <a href="{{dispense.link}}"><p class="m-0">{{ dispense.link}}</p></a>
+    </div>
     <div class="flex space-x-4">
         <div class="flex items-center space-x-2">
             <p class="m-0">{{ dispense.mentor.formation.duration }}m</p>
