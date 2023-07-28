@@ -40,9 +40,17 @@ class MentorCrudController extends AbstractCrudController
             $fullName = $mentor->getConsultant()->getFirstname() . ' ' . $mentor->getConsultant()->getLastname();
             $groupedMentors[$fullName][] = $mentor;
         }
-
+        $groupedSkills = [];
+        foreach ($mentors as $mentor) {
+            $skills = $mentor->getConsultant()->getSkills();
+            $fullName = $mentor->getConsultant()->getFirstname() . ' ' . $mentor->getConsultant()->getLastname();
+            foreach ($skills as $skill) {
+                $groupedSkills[$fullName][] = $skills;
+            }
+        }
         return $this->render('back/mentor/index.html.twig', [
             'groupedMentors' => $groupedMentors,
+            'groupedSkills' => $groupedSkills,
             'mentors' => $mentorsDemands,
             'missions' => $missions,
         ]);
