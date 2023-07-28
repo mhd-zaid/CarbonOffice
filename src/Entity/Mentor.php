@@ -107,4 +107,24 @@ class Mentor
 
         return $this;
     }
+
+    public function __serialize(): array
+    {
+        return [
+            'id' => $this->id,
+            'consultant' => $this->consultant,
+            'formation' => $this->formation,
+            'status' => $this->status,
+            'dispenses' => $this->dispenses,
+        ];
+    }
+
+    public function __unserialize(array $data): void
+    {
+        $this->id = $data['id'];
+        $this->consultant = $data['consultant'];
+        $this->formation = $data['formation'];
+        $this->status = $data['status'];
+        $this->dispenses = $data['dispenses'];
+    }
 }

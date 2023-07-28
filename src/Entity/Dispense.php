@@ -33,6 +33,9 @@ class Dispense
     #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'dispenses')]
     private Collection $consultants;
 
+    #[ORM\ManyToOne(inversedBy: 'dispenses')]
+    private ?Formation $formation = null;
+
     public function __construct()
     {
         $this->consultants = new ArrayCollection();
@@ -111,6 +114,18 @@ class Dispense
     public function removeConsultant(User $consultant): self
     {
         $this->consultants->removeElement($consultant);
+
+        return $this;
+    }
+
+    public function getFormation(): ?Formation
+    {
+        return $this->formation;
+    }
+
+    public function setFormation(?Formation $formation): self
+    {
+        $this->formation = $formation;
 
         return $this;
     }
