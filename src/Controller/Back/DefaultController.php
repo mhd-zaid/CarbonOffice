@@ -83,7 +83,6 @@ class DefaultController extends AbstractDashboardController
 
             MenuItem::section('Espace personnel'),
             MenuItem::linkToRoute('Mon compte', 'fa fa-user', 'back_profile_index'),
-            MenuItem::linkToRoute('Paramètre', 'fa fa-sliders', ''),
 
             MenuItem::linkToLogout("Déconnexion", 'fa fa-sign-out-alt'),
 
