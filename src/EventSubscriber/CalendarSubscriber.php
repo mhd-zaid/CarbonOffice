@@ -24,17 +24,16 @@ class CalendarSubscriber implements EventSubscriberInterface
 
     public function onCalendarSetData(CalendarEvent $calendar)
     {
-        
+
         $start = $calendar->getStart();
         $end = $calendar->getEnd();
         $filters = $calendar->getFilters();
 
         $planningsToDisplay = [];
-                        
-        $planningsToDisplay = $this->em->getRepository(Planning::class)->findBy(['consultant'=>$_POST['userId']]);
+
+        $planningsToDisplay = $this->em->getRepository(Planning::class)->findBy(['consultant' => $_POST['userId']]);
 
         $this->displayEvents($calendar, $planningsToDisplay);
-        
     }
 
     public function displayEvents(CalendarEvent $calendar, array $planningsToDisplay)
@@ -52,28 +51,27 @@ class CalendarSubscriber implements EventSubscriberInterface
             if ($event->getTitle() === 'Leave') {
                 $event->addOption(
                     'backgroundColor',
-                    '#f56954'
+                    '#E53F49'
                 );
                 $event->addOption(
                     'borderColor',
-                    '#f56954'
+                    '#E53F49'
                 );
-                
-            } 
-            elseif($event->getTitle() === 'Work') {
+            } elseif ($event->getTitle() === 'Work') {
                 $event->addOption(
                     'backgroundColor',
-                    '#0073b7'
+                    '#5B98D2'
                 );
                 $event->addOption(
                     'borderColor',
-                    '#0073b7'
+                    '#5B98D2'
                 );
             }
         }
     }
 
-    function isDateBetweenTwoDates(\DateTime $date, \DateTime $start, \DateTime $end) {
+    function isDateBetweenTwoDates(\DateTime $date, \DateTime $start, \DateTime $end)
+    {
         return $date >= $start && $date <= $end;
     }
 }

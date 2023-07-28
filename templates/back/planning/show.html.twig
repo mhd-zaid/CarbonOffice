@@ -1,44 +1,50 @@
 {% extends 'back/base.html.twig' %}
 {% block main %}
-    <h1>Planning de {{user.lastname}} - {{user.firstname}} </h1>
-    {% set url = ea_url()
+	<h1>Planning de
+		{{user.lastname}}
+		-
+		{{user.firstname}}
+	</h1>
+	{% set url = ea_url()
                 .setController('App\\Controller\\Back\\PlanningCrudController')
                 .setAction('new') %}
-    <div>
-        <a href="{{url}}">Créer un evenement</a>
-    </div>
-    <div id="calendar-holder"></div>
-<script>
-$(document).ready(function () {
-  var calendarEl = document.getElementById('calendar-holder');
+	<div class="container-link-create-event">
+		<a class="link-create-event" href="{{url}}">Créer un evenement</a>
+	</div>
+	<div id="calendar-holder"></div>
+	<script>
+		$(document).ready(function () {
+var calendarEl = document.getElementById('calendar-holder');
 
-  var calendar = new FullCalendar.Calendar(calendarEl, {
-      editable: true,
-      eventSources: [
-          {
-              url: "/fc-load-events",
-              method: "POST",
-              extraParams: {
-                  filters: JSON.stringify({}),
-                  userId: {{app.request.get('userId')}},
-              },
-              failure: () => {
-                  // alert("There was an error while fetching FullCalendar!");
-              },
-          },
-      ],
-      headerToolbar: {
-          start: 'prev,next today',
-          center: 'title',
-          end: 'dayGridMonth,timeGridWeek,timeGridDay'
-      },
-      timeZone: 'UTC',
-      firstDay: 1,
-      weekends: false,
-  });
-  console.log(calendar);
-  
-  calendar.render();
+var calendar = new FullCalendar.Calendar(calendarEl, {
+editable: true,
+eventSources: [
+{
+url: "/fc-load-events",
+method: "POST",
+extraParams: {
+filters: JSON.stringify({}),
+userId: {{ app.request.get('userId') }}
+},
+failure: () => { // alert("There was an error while fetching FullCalendar!");
+}
+},
+],
+headerToolbar: {
+start: 'prev,next today',
+center: 'title',
+end: 'dayGridMonth,timeGridWeek,timeGridDay'
+},
+timeZone: 'UTC',
+firstDay: 1,
+weekends: false,
+dayHeaderFormat: {
+weekday: 'long'
+} // Définir le format des en-têtes de jour
 });
-</script>
+console.log(calendar);
+
+calendar.render();
+});
+	</script>
 {% endblock %}

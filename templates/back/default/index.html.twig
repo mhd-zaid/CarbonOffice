@@ -133,4 +133,13 @@
 
 	</div>
 
+	<script>
+		document.addEventListener("DOMContentLoaded", function () {
+constcategoryButton = document.getElementById("categoryButton");
+constcategoryDropdown = document.getElementById("categoryDropdown");
+categoryButton.addEventListener("click", function () {
+categoryDropdown.classList.toggle("hidden");
+});
+});
+	</script>
 {% endblock %}
