@@ -3,11 +3,15 @@
 namespace App\Controller\Back;
 
 use App\Entity\Discussion;
+use App\Entity\Dispense;
 use App\Entity\Formation;
 use App\Entity\Mentor;
 use App\Entity\Planning;
 use App\Entity\User;
+use App\Repository\MentorRepository;
 use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping\Entity;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Config\UserMenu;
@@ -21,36 +25,22 @@ class DefaultController extends AbstractDashboardController
 {
     private $userRepository;
     private $security;
+    private $em;
 
-    public function __construct(UserRepository $userRepository, Security $security)
+    public function __construct(UserRepository $userRepository, Security $security,EntityManagerInterface $em)
     {
         $this->userRepository = $userRepository;
         $this->security = $security;
+        $this->em = $em;
     }
 
     #[Route('/', name: 'default_index')]
     public function index(): Response
     {
-        //return parent::index();
-
-        // Option 1. You can make your dashboard redirect to some common page of your backend
-        //
-        // $adminUrlGenerator = $this->container->get(AdminUrlGenerator::class);
-        // return $this->redirect($adminUrlGenerator->setController(OneOfYourCrudController::class)->generateUrl());
-
-        // Option 2. You can make your dashboard redirect to different pages depending on the user
-        //
-        // if ('jane' === $this->getUser()->getUsername()) {
-        //     return $this->redirect('...');
-        // }
-
-        // Option 3. You can render some custom template to display a proper dashboard with widgets, etc.
-        // (tip: it's easier if your template extends from @EasyAdmin/page/content.html.twig)
-        //
-        $users = $this->userRepository->findAll();
+        $dispenses = $this->em->getRepository(Dispense::class)->findAll();
 
         return $this->render('back/default/index.html.twig', [
-            'users' => $users,
+            'dispenses' => $dispenses,
         ]);
     }
 
@@ -81,25 +71,38 @@ class DefaultController extends AbstractDashboardController
 
             MenuItem::section('Espace planification'),
             MenuItem::linkToCrud('Planning', 'fa fa-calendar-days', Planning::class),
+            MenuItem::linkToCrud('Dispenses', 'fa fa-calendar-check', Dispense::class),
 
             MenuItem::section('Espace personnel'),
             MenuItem::linkToRoute('Mon compte', 'fa fa-user', 'back_profile_index'),
-
-            MenuItem::linkToLogout("Déconnexion", 'fa fa-sign-out-alt'),
 
         ];
     }
 
     public function configureUserMenu(User|UserInterface $user): UserMenu
     {
-        return parent::configureUserMenu($user)
-            ->setName($user->getFullName())
-            ->setGravatarEmail($user->getEmail())
-            //
-            //            // you can use any type of menu item, except submenus
-            ->addMenuItems([
-                MenuItem::linkToRoute('Mon compte', 'fa fa-user', 'back_profile_index'),
-                MenuItem::linkToRoute('Paramètre', 'fa fa-sliders', ''),
-            ]);
+        return UserMenu::new()
+        ->displayUserName()
+        ->displayUserAvatar()
+        ->setName($user->getFullName())
+        ->setGravatarEmail($user->getEmail())
+        ->addMenuItems([
+            MenuItem::linkToRoute('Mon compte', 'fa fa-user', 'back_profile_index'),
+            MenuItem::linkToRoute('Paramètre', 'fa fa-sliders', ''),
+            MenuItem::linkToLogout("Déconnexion", 'fa fa-sign-out-alt'),
+        ]);
+    }
+
+    #[Route('/mentor-formation/{formationId}', name: 'app_mentorByFormation')]
+    public function getMentorByFormation(int $formationId): Response
+    {
+        $mentors = $this->em->getRepository(Mentor::class)->findBy(['formation' => $formationId]);
+        $mentors = array_map(function ($mentor) {
+            return [
+                'id' => $mentor->getId(),
+                'consultant' => $mentor->getConsultant()->getFullName(),
+            ];
+        }, $mentors);
+        return $this->json($mentors);
     }
 }

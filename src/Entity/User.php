@@ -82,7 +82,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->missionsManager = new ArrayCollection();
         $this->plannings = new ArrayCollection();
         $this->skills = new ArrayCollection();
-        $this->yes = new ArrayCollection();
+        $this->mentors = new ArrayCollection();
         $this->dispenses = new ArrayCollection();
         $this->posts = new ArrayCollection();
     }
@@ -374,27 +374,27 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @return Collection<int, Mentor>
      */
-    public function getYes(): Collection
+    public function getMentors(): Collection
     {
-        return $this->yes;
+        return $this->mentors;
     }
 
-    public function addYe(Mentor $ye): self
+    public function addMentor(Mentor $mentor): self
     {
-        if (!$this->yes->contains($ye)) {
-            $this->yes->add($ye);
-            $ye->setConsultant($this);
+        if (!$this->mentors->contains($mentor)) {
+            $this->mentors->add($mentor);
+            $mentor->setConsultant($this);
         }
 
         return $this;
     }
 
-    public function removeYe(Mentor $ye): self
+    public function removeMentor(Mentor $mentor): self
     {
-        if ($this->yes->removeElement($ye)) {
+        if ($this->mentors->removeElement($mentor)) {
             // set the owning side to null (unless already changed)
-            if ($ye->getConsultant() === $this) {
-                $ye->setConsultant(null);
+            if ($mentor->getConsultant() === $this) {
+                $mentor->setConsultant(null);
             }
         }
 

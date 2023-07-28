@@ -20,8 +20,8 @@ class Dispense
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $date = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?DateTimeInterface $start_time = null;
+    #[ORM\Column(type: Types::TIME_MUTABLE)]
+    private ?DateTimeInterface $startTime = null;
 
 
     #[ORM\Column(length: 255)]
@@ -32,6 +32,9 @@ class Dispense
 
     #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'dispenses')]
     private Collection $consultants;
+
+    #[ORM\ManyToOne(inversedBy: 'dispenses')]
+    private ?Formation $formation = null;
 
     public function __construct()
     {
@@ -69,12 +72,12 @@ class Dispense
 
     public function getStartTime(): ?DateTimeInterface
     {
-        return $this->start_time;
+        return $this->startTime;
     }
 
-    public function setStarTime(DateTimeInterface $start_time): self
+    public function setStartTime(DateTimeInterface $startTime): self
     {
-        $this->start_time = $start_time;
+        $this->startTime = $startTime;
 
         return $this;
     }
@@ -111,6 +114,18 @@ class Dispense
     public function removeConsultant(User $consultant): self
     {
         $this->consultants->removeElement($consultant);
+
+        return $this;
+    }
+
+    public function getFormation(): ?Formation
+    {
+        return $this->formation;
+    }
+
+    public function setFormation(?Formation $formation): self
+    {
+        $this->formation = $formation;
 
         return $this;
     }

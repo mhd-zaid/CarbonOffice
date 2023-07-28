@@ -36,11 +36,15 @@ class Formation
 
     #[ORM\OneToMany(mappedBy: 'formation', targetEntity: Mentor::class)]
     private Collection $mentors;
+
+    #[ORM\OneToMany(mappedBy: 'formation', targetEntity: Dispense::class)]
+    private Collection $dispenses;
   
     public function __construct()
     {
         $this->skills = new ArrayCollection();
         $this->mentors = new ArrayCollection();
+        $this->dispenses = new ArrayCollection();
 
     }
     public function getId(): ?int
@@ -156,6 +160,36 @@ class Formation
             // set the owning side to null (unless already changed)
             if ($mentor->getFormation() === $this) {
                 $mentor->setFormation(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Dispense>
+     */
+    public function getDispenses(): Collection
+    {
+        return $this->dispenses;
+    }
+
+    public function addDispense(Dispense $dispense): self
+    {
+        if (!$this->dispenses->contains($dispense)) {
+            $this->dispenses->add($dispense);
+            $dispense->setFormation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDispense(Dispense $dispense): self
+    {
+        if ($this->dispenses->removeElement($dispense)) {
+            // set the owning side to null (unless already changed)
+            if ($dispense->getFormation() === $this) {
+                $dispense->setFormation(null);
             }
         }
 

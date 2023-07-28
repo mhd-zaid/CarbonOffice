@@ -1,145 +1,86 @@
 {#{% extends 'back/base.html.twig' %}#}
 {% extends 'back/base.html.twig' %}
-
-{% block content_title %}The Title of the Page
-{% endblock %}
-
+{% block content_title %}Tableau de bord{% endblock %}
 {% block main %}
 
-	<section class="flex justify-center border-t border-gray-200 py-6">
-		<div class="w-2/4 flex sm:flex-row flex-col space-y-4 items-center justify-between">
-			<div class="relative z-10 inline-block text-left">
-				<div class=" flex items-center">
-					<button class="group inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900">
-						Trier
-						<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" aria-hidden="true" class="flex-shrink-0 -mr-1 ml-1 h-5 w-5 text-gray-400 group-hover:text-gray-500">
-							<path fill-rule="evenodd" d="M12.53 16.28a.75.75 0 01-1.06 0l-7.5-7.5a.75.75 0 011.06-1.06L12 14.69l6.97-6.97a.75.75 0 111.06 1.06l-7.5 7.5z" clip-rule="evenodd"></path>
-						</svg>
-					</button>
-					<div class="ml-6 group flex items-center  text-sm font-medium text-gray-700 hover:text-gray-900">Reset<svg stroke="currentColor" fill="currentColor" stroke-width="0" version="1.1" viewbox="0 0 16 16" class=" text-red-600 cursor-pointer ml-1" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
-							<path d="M15.854 12.854c-0-0-0-0-0-0l-4.854-4.854 4.854-4.854c0-0 0-0 0-0 0.052-0.052 0.090-0.113 0.114-0.178 0.066-0.178 0.028-0.386-0.114-0.529l-2.293-2.293c-0.143-0.143-0.351-0.181-0.529-0.114-0.065 0.024-0.126 0.062-0.178 0.114 0 0-0 0-0 0l-4.854 4.854-4.854-4.854c-0-0-0-0-0-0-0.052-0.052-0.113-0.090-0.178-0.114-0.178-0.066-0.386-0.029-0.529 0.114l-2.293 2.293c-0.143 0.143-0.181 0.351-0.114 0.529 0.024 0.065 0.062 0.126 0.114 0.178 0 0 0 0 0 0l4.854 4.854-4.854 4.854c-0 0-0 0-0 0-0.052 0.052-0.090 0.113-0.114 0.178-0.066 0.178-0.029 0.386 0.114 0.529l2.293 2.293c0.143 0.143 0.351 0.181 0.529 0.114 0.065-0.024 0.126-0.062 0.178-0.114 0-0 0-0 0-0l4.854-4.854 4.854 4.854c0 0 0 0 0 0 0.052 0.052 0.113 0.090 0.178 0.114 0.178 0.066 0.386 0.029 0.529-0.114l2.293-2.293c0.143-0.143 0.181-0.351 0.114-0.529-0.024-0.065-0.062-0.126-0.114-0.178z"></path>
-						</svg>
-					</div>
-
-				</div>
+<div class="modal fade" id="show-dispense" tabindex="-1" role="dialog" aria-labelledby="show-dispense" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div id="modal-header" class="modal-header">
+				
 			</div>
-			<div class="flex sm:flex-row space-x-4  justify-center flex-row items-center sm:space-x-8">
-				<div class="relative z-50 inline-block text-left">
-					<div>
-						<button id="categoryButton" class="group inline-flex items-center justify-center text-sm font-medium text-gray-700 hover:text-gray-900">
-							<span>Skills</span>
-							<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" aria-hidden="true" class="flex-shrink-0 -mr-1 ml-1 h-5 w-5 text-gray-400 group-hover:text-gray-500">
-								<path fill-rule="evenodd" d="M12.53 16.28a.75.75 0 01-1.06 0l-7.5-7.5a.75.75 0 011.06-1.06L12 14.69l6.97-6.97a.75.75 0 111.06 1.06l-7.5 7.5z" clip-rule="evenodd"></path>
-							</svg>
-						</button>
-					</div>
-					<div id="categoryDropdown" class="hidden origin-top-right absolute left-0 mt-2 bg-white rounded-md shadow-2xl p-4 ring-1 ring-black ring-opacity-5 focus:outline-none max-h-96 overflow-auto transform opacity-100 scale-100">
-						<form class="space-y-4 ">
-							<div class="flex  items-center">
-								<input type="checkbox" name="0[]" class="h-4 w-4 accent-emerald-600 cursor-pointer  border-gray-300 rounded text-emerald-600 focus:ring-emerald-500">
-								<label class="ml-3 pr-6 cursor-pointer text-sm font-medium text-gray-900 whitespace-nowrap">all</label>
-							</div>
-							<div class="flex  items-center">
-								<input type="checkbox" name="1[]" class="h-4 w-4 accent-emerald-600 cursor-pointer  border-gray-300 rounded text-emerald-600 focus:ring-emerald-500">
-								<label class="ml-3 pr-6 cursor-pointer text-sm font-medium text-gray-900 whitespace-nowrap">node js</label>
-							</div>
-							<div class="flex  items-center">
-								<input type="checkbox" name="2[]" class="h-4 w-4 accent-emerald-600 cursor-pointer  border-gray-300 rounded text-emerald-600 focus:ring-emerald-500">
-								<label class="ml-3 pr-6 cursor-pointer text-sm font-medium text-gray-900 whitespace-nowrap">react</label>
-							</div>
-							<div class="flex  items-center">
-								<input type="checkbox" name="3[]" class="h-4 w-4 accent-emerald-600 cursor-pointer  border-gray-300 rounded text-emerald-600 focus:ring-emerald-500">
-								<label class="ml-3 pr-6 cursor-pointer text-sm font-medium text-gray-900 whitespace-nowrap">html</label>
-							</div>
-							<div class="flex  items-center">
-								<input type="checkbox" name="4[]" class="h-4 w-4 accent-emerald-600 cursor-pointer  border-gray-300 rounded text-emerald-600 focus:ring-emerald-500">
-								<label class="ml-3 pr-6 cursor-pointer text-sm font-medium text-gray-900 whitespace-nowrap">css</label>
-							</div>
-							<div class="flex  items-center">
-								<input type="checkbox" name="5[]" class="h-4 w-4 accent-emerald-600 cursor-pointer  border-gray-300 rounded text-emerald-600 focus:ring-emerald-500">
-								<label class="ml-3 pr-6 cursor-pointer text-sm font-medium text-gray-900 whitespace-nowrap">java</label>
-							</div>
-						</form>
-					</div>
-				</div>
+			<div id="modal-body" class="modal-body">
+				
+			</div>
+			<div id="modal-footer" class="modal-footer">
+				<button id="close-dispense" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 			</div>
 		</div>
-	</section>
-
-	<div class="bg-gray-100 p-4 dark:border-gray-700 mt-14 container mx-auto">
-		{% for menuItem in ea.mainMenu.items %}
-			{#      {{ dump(menuItem) }}#}
-		{% endfor %}
-
-		{#   CARD MENTOR  #}
-
-		<div class="grid grid-cols-1 gap-x-6 space-y-4">
-			{% for user in users %}
-				<div class="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-					<div class="flex justify-end px-4 pt-4">
-						<button id="dropdownButton" data-dropdown-toggle="dropdown" class="inline-block text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-1.5" type="button">
-							<span class="sr-only">Open dropdown</span>
-							<svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewbox="0 0 16 3">
-								<path d="M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z"/>
-							</svg>
-						</button>
-					</div>
-					<div class="flex flex-col items-center pb-10">
-						<img class="w-24 h-24 mb-3 rounded-full shadow-lg" src="https://picsum.photos/200/300" alt="Bonnie image"/>
-						<h5 class="mb-1 text-xl font-medium text-gray-900 dark:text-white">{{ user.firstname }}
-							{{ user.lastname }}</h5>
-						<span class="text-sm text-gray-500 dark:text-gray-400">Stack technique</span>
-						<div class="flex mt-1">
-							<span class="badge">HTML</span>
-							<span class="badge">CSS</span>
-							<span class="badge">JS</span>
-						</div>
-						<div class="flex mt-4 space-x-3 md:mt-6">
-							<a href="{{ user.email }}" class="button button-blue">Contacter</a>
-							<a href="#" class="button button-red">Reporter</a>
-						</div>
-					</div>
-				</div>
-			{% endfor %}
-		</div>
-
-		{#   CARD FORMATION  #}
-
-		<div class="card p-4">
-			<div class="flex justify-between items-center mb-2">
-				<p class="font-bold m-0">Débuter avec la stack MERN</p>
-				<button class="button button-blue">Je rejoins !</button>
-			</div>
-			<p>Cette formation est destinée aux personnes qui souhaitent apprendre à développer des applications web avec la stack MERN (MongoDB, Express, React, Node.js).</p>
-			<p>
-				<span class="font-bold">Prérequis:</span>
-				Connaissances de base en HTML, CSS et JavaScript</p>
-			<div class="flex space-x-4">
-				<div class="flex items-center space-x-2">
-					<p class="m-0">3h50</p>
-					<i class="fa-regular fa-clock"></i>
-				</div>
-				<div class="flex">
-					<span class="badge">MangoDB</span>
-					<span class="badge">Express</span>
-					<span class="badge">React</span>
-					<span class="badge">Node.js</span>
-				</div>
-			</div>
-		</div>
-
-		{#    SORT FRAME#}
-
-
 	</div>
-
-	<script>
-		document.addEventListener("DOMContentLoaded", function () {
+</div>
+<div id="calendar-holder"></div>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
 constcategoryButton = document.getElementById("categoryButton");
 constcategoryDropdown = document.getElementById("categoryDropdown");
 categoryButton.addEventListener("click", function () {
 categoryDropdown.classList.toggle("hidden");
 });
 });
-	</script>
+	$(document).ready(function () {
+		$("#close-dispense").click(function(){
+			$('#show-dispense').modal('hide');
+		});
+	var calendarEl = document.getElementById('calendar-holder');
+	var calendar = new FullCalendar.Calendar(calendarEl, {
+		editable: false,
+		eventSources: [
+			{
+				url: "/fc-load-events",
+				method: "POST",
+				extraParams: {
+					filters: JSON.stringify({}),
+				},
+				failure: () => {
+					// alert("There was an error while fetching FullCalendar!");
+				}, 
+			},
+		],
+		headerToolbar: {
+			start: 'prev,next today',
+			center: 'title',
+			end: 'dayGridMonth,timeGridWeek,timeGridDay'
+		},
+		timeZone: 'UTC',
+		firstDay: 1,
+		weekends: false,
+		eventClick:  function(arg) {
+				$('#show-dispense').modal('show');
+				$('#modal-header').html('<h5 class="modal-title">'+arg.event.title+'</h5>');
+				var displayConsultants = '<ul>'+arg.event.extendedProps.consultants.map(consultant => '<li>'+consultant+'</li>').join('')+'</ul>';
+				$('#modal-body').html(
+					'<p>Début de formation: '+ (new Date(arg.event.start)).toLocaleString(
+						'fr-FR', {
+							timeZone: 'Europe/Paris',
+							format: 'dd/MM/yyyy HH:mm:ss',
+							}
+						)+'</p>'+
+					'<p>Fin de formation: '+ (new Date(arg.event.end)).toLocaleString(
+						'fr-FR', {
+							timeZone: 'Europe/Paris',
+							format: 'dd/MM/yyyy HH:mm:ss',
+							}
+						)+'</p>'+
+					'<p>Durée de formation: '+arg.event.extendedProps.duration+' min</p>'+
+					'<p>Mentor: '+arg.event.extendedProps.mentor+'</p>'+
+					'participants: '+
+					displayConsultants+
+					'<a href="'+arg.event.extendedProps.link+'">'+arg.event.extendedProps.link+'</a>'
+					);
+			},
+	});
+	
+	calendar.render();
+	});
+</script>
 {% endblock %}
