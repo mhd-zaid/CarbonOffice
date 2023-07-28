@@ -1,0 +1,24 @@
+{% extends 'back/base.html.twig' %}
+{% block main %}
+	<h1 class="font-bold text-3xl md:text-4xl lg:text-5xl font-heading text-gray-900">
+		Liste des plannings
+	</h1>
+	<article class="leaderboard">
+		<main class="leaderboard__profiles">
+			{% for user in users %}
+				{% set url = ea_url()
+                .setController('App\\Controller\\Back\\PlanningCrudController')
+                .setAction('show')
+                .set('userId', user.id) %}
+				<a href="{{url}}" class="leaderboard__profile">
+					<img src="https://randomuser.me/api/portraits/men/{{ user.id }}.jpg" alt="Mark Zuckerberg" class="leaderboard__picture">
+					<span class="leaderboard__name">{{user.firstname}}
+						{{user.lastname}}</span>
+					<span class="leaderboard__icon">
+						<i class="fa-solid fa-calendar-days"></i>
+					</span>
+				</span>
+			</a>
+		{% endfor %}
+	</main>
+</article>{% endblock %}

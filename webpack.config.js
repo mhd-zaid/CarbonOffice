@@ -34,6 +34,12 @@ Encore
     // but, you probably want this, unless you're building a single-page app
     .enableSingleRuntimeChunk()
 
+    .configureWatchOptions(function(watchOptions) {
+        // enable polling and check for changes every 250ms
+        // polling is useful when running Encore inside a Virtual Machine
+        watchOptions.poll = 250;
+    })
+
     /*
      * FEATURE CONFIG
      *
@@ -61,6 +67,7 @@ Encore
     .addPlugin(new WatchExternalFilesPlugin({
         files: [
             '/templates',
+            '/assets'
         ],
         verbose: true
     }))

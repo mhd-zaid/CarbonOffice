@@ -12,3 +12,8 @@ controllers_back:
     type: attribute
     prefix: /admin
     name_prefix: back_
+
+profile_index:
+    path: /profile
+    controller: App\Controller\ProfileController::index
+    methods: ['GET']

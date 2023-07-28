@@ -1,0 +1,52 @@
+{% set url_edit_formation = ea_url()
+    .setController('App\\Controller\\Back\\FormationCrudController')
+    .setAction('edit')
+    .set('entityId',formation.id)
+%}
+{% set url_delete_formation = ea_url()
+    .setController('App\\Controller\\Back\\FormationCrudController')
+    .setAction('delete')
+    .setEntityId(formation.id)
+%}
+{% set url_to_mentor = ea_url()
+    .setController('App\\Controller\\Back\\FormationCrudController')
+    .setAction('toMentor')
+    .setEntityId(formation.id)
+%}
+
+<div class="card p-4">
+    <div class="flex justify-between items-center mb-2">
+        <p class="font-bold m-0">{{ formation.getTitle() }}</p>
+        <div>
+            {% if is_granted('ROLE_CONSULTANT') %}
+            <a href="#">
+                <button class="button button-blue">Je rejoins !</button>
+            </a>
+            <a href="{{ url_to_mentor }}">
+                <button class="button button-blue">Devenir Mentor</button>
+            </a>
+            {% endif %}
+            {% if is_granted('ROLE_RH') or is_granted('ROLE_ADMIN') %}
+            <a href="{{ url_edit_formation }}">
+                <button class="button button-blue">Modifier</button>
+            </a>
+            <a href="{{ url_delete_formation }}">
+                <button class="button button-red">Supprimer</button>
+            </a>
+            {% endif %}
+        </div>
+    </div>
+    <p>{{ formation.description}}</p>
+    <p><span class="font-bold">Prérequis:</span> {{ formation.requirements }}</p>
+    <div class="flex space-x-4">
+        <div class="flex items-center space-x-2">
+            <p class="m-0">{{ formation.duration }}m</p>
+            <i class="fa-regular fa-clock"></i>
+        </div>
+        <div class="flex">
+            {% for skill in formation.skills %}
+                <span class="badge">{{ skill.title }}</span>
+            {% endfor %}
+        </div>
+    </div>
+</div>

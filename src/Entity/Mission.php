@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\MissionRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -14,9 +16,6 @@ class Mission
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
-    private ?int $userId = null;
-
     #[ORM\Column(length: 255)]
     private ?string $company = null;
 
@@ -26,27 +25,26 @@ class Mission
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $end_date = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 1000)]
     private ?string $description = null;
 
     #[ORM\Column(length: 255)]
     private ?string $status = null;
 
+    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'missions')]
+    private Collection $consultants;
+
+    #[ORM\ManyToOne(inversedBy: 'missionsManager')]
+    private ?User $manager = null;
+
+    public function __construct()
+    {
+        $this->consultants = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getUserId(): ?int
-    {
-        return $this->userId;
-    }
-
-    public function setUserId(int $userId): self
-    {
-        $this->userId = $userId;
-
-        return $this;
     }
 
     public function getCompany(): ?string
@@ -105,6 +103,42 @@ class Mission
     public function setStatus(string $status): self
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getConsultants(): Collection
+    {
+        return $this->consultants;
+    }
+
+    public function addConsultant(User $consultant): self
+    {
+        if (!$this->consultants->contains($consultant)) {
+            $this->consultants->add($consultant);
+        }
+
+        return $this;
+    }
+
+    public function removeConsultant(User $consultant): self
+    {
+        $this->consultants->removeElement($consultant);
+
+        return $this;
+    }
+
+    public function getManager(): ?User
+    {
+        return $this->manager;
+    }
+
+    public function setManager(?User $manager): self
+    {
+        $this->manager = $manager;
 
         return $this;
     }

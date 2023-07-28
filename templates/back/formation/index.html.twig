@@ -1,0 +1,26 @@
+{% extends 'back/base.html.twig' %}
+
+{% set url_new_formation = ea_url()
+    .setController('App\\Controller\\Back\\FormationCrudController')
+    .setAction('new')
+%}
+{% set url_new_dispense = ea_url()
+    .setController('App\\Controller\\Back\\DispenseCrudController')
+    .setAction('new')
+%}
+{% block main %}
+    <div class="flex justify-between items-center">
+        {% include 'components/page_header.html.twig' with {'page_title': 'Liste des formations'} %}
+        <div class="flex space-x-2">
+             <a href="{{url_new_dispense}}">
+                <button class="button button-blue">Planifier une formation</button>
+            </a>
+            <a href="{{url_new_formation}}">
+                <button class="button button-green">Ajouter une formation</button>
+            </a>
+        </div>
+    </div>
+    {% for formation in entities %}
+        {% include 'components/card_formation.html.twig' with {'formation': formation.instance} %}
+    {% endfor %}
+{% endblock %}

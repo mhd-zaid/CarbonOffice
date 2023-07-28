@@ -6,6 +6,7 @@ use App\Repository\PlanningRepository;
 use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: PlanningRepository::class)]
 class Planning
@@ -15,70 +16,51 @@ class Planning
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Assert\GreaterThanOrEqual(value:'today')]
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?DateTimeInterface $date = null;
+    private ?DateTimeInterface $dateStart = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?DateTimeInterface $start_time = null;
-
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?DateTimeInterface $end_time = null;
-
-    #[ORM\Column]
-    private ?int $userId = null;
+    private ?DateTimeInterface $dateEnd = null;
 
     #[ORM\Column(length: 255)]
     private ?string $type = null;
+
+    #[ORM\ManyToOne(inversedBy: 'plannings')]
+    private ?User $consultant = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getDate(): ?DateTimeInterface
+    public function setId(?int $id): self
     {
-        return $this->date;
-    }
-
-    public function setDate(DateTimeInterface $date): self
-    {
-        $this->date = $date;
+        $this->id = $id;
 
         return $this;
     }
 
-    public function getStartTime(): ?DateTimeInterface
+    public function getDateStart(): ?DateTimeInterface
     {
-        return $this->start_time;
+        return $this->dateStart;
     }
 
-    public function setStarTime(DateTimeInterface $start_time): self
+    public function setDateStart(DateTimeInterface $dateStart): self
     {
-        $this->start_time = $start_time;
+        $this->dateStart = $dateStart;
 
         return $this;
     }
 
-    public function getEndTime(): ?DateTimeInterface
+    public function getDateEnd(): ?DateTimeInterface
     {
-        return $this->end_time;
+        return $this->dateEnd;
     }
 
-    public function setEndTime(DateTimeInterface $end_time): self
+    public function setDateEnd(DateTimeInterface $dateEnd): self
     {
-        $this->end_time = $end_time;
-
-        return $this;
-    }
-
-    public function getUserId(): ?int
-    {
-        return $this->userId;
-    }
-
-    public function setUserId(int $userId): self
-    {
-        $this->userId = $userId;
+        $this->dateEnd = $dateEnd;
 
         return $this;
     }
@@ -91,6 +73,18 @@ class Planning
     public function setType(string $type): self
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    public function getConsultant(): ?User
+    {
+        return $this->consultant;
+    }
+
+    public function setConsultant(?User $consultant): self
+    {
+        $this->consultant = $consultant;
 
         return $this;
     }

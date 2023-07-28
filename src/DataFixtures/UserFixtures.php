@@ -2,18 +2,21 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Skills;
 use App\Entity\User;
 use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
 
-class UserFixtures extends Fixture
+class UserFixtures extends Fixture implements OrderedFixtureInterface
 {
     public function load(ObjectManager $manager): void
     {
         $faker = Factory::create('fr_FR');
         $pwd = '$2y$13$cxyypcYcyj4sQhaeLhojvucbBwbWo789iF/Aqqsvm2Rpcu/jNxIf6';
+        $skills = $manager->getRepository(Skills::class)->findAll();
 
         $object = (new User())
             ->setEmail('admin@user.fr')
@@ -28,6 +31,8 @@ class UserFixtures extends Fixture
             ->setZipCode(str_replace(" ", "", $faker->postcode))
             ->setCreatedAt(new DateTime())
             ->setUpdatedAt(new DateTime())
+            ->addSkill($skills[0])
+            ->addSkill($skills[1])
         ;
         $manager->persist($object);
 
@@ -44,6 +49,8 @@ class UserFixtures extends Fixture
             ->setZipCode(str_replace(" ", "", $faker->postcode))
             ->setCreatedAt(new DateTime())
             ->setUpdatedAt(new DateTime())
+            ->addSkill($skills[1])
+            ->addSkill($skills[2])
         ;
         $manager->persist($object);
 
@@ -60,10 +67,19 @@ class UserFixtures extends Fixture
             ->setZipCode(str_replace(" ", "", $faker->postcode))
             ->setCreatedAt(new DateTime())
             ->setUpdatedAt(new DateTime())
+            ->addSkill($skills[0])
+            ->addSkill($skills[1])
+            ->addSkill($skills[2])
+            ->addSkill($skills[4])
         ;
         $manager->persist($object);
 
 
         $manager->flush();
+    }
+
+    public function getOrder()
+    {
+        return 2;
     }
 }

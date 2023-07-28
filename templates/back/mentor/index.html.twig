@@ -1,0 +1,102 @@
+{% extends 'back/base.html.twig' %}
+{% set index = 0 %}
+{% block main %}
+
+    <ul
+            class="mb-5 flex list-none flex-row flex-wrap border-b-0 pl-0"
+            role="tablist"
+            data-te-nav-ref>
+        <li role="presentation">
+            <a  href="#tabs-home"
+                class="my-2 block border-x-0 border-b-2 border-t-0 border-transparent px-7 pb-3.5 pt-4 text-xs font-medium uppercase leading-tight text-neutral-500 hover:isolate hover:border-transparent hover:bg-neutral-100 focus:isolate focus:border-transparent data-[te-nav-active]:border-primary data-[te-nav-active]:text-primary dark:text-neutral-400 dark:hover:bg-transparent dark:data-[te-nav-active]:border-primary-400 dark:data-[te-nav-active]:text-primary-400"
+                data-te-toggle="pill"
+                data-te-target="#tabs-home"
+                data-te-nav-active
+                role="tab"
+                aria-controls="tabs-home"
+                aria-selected="true"
+            >Liste des mentors</a
+            >
+        </li>
+        {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_RH') %}
+            <li role="presentation">
+                <a
+                        href="#tabs-profile"
+                        class="focus:border-transparen my-2 block border-x-0 border-b-2 border-t-0 border-transparent px-7 pb-3.5 pt-4 text-xs font-medium uppercase leading-tight text-neutral-500 hover:isolate hover:border-transparent hover:bg-neutral-100 focus:isolate data-[te-nav-active]:border-primary data-[te-nav-active]:text-primary dark:text-neutral-400 dark:hover:bg-transparent dark:data-[te-nav-active]:border-primary-400 dark:data-[te-nav-active]:text-primary-400"
+                        data-te-toggle="pill"
+                        data-te-target="#tabs-profile"
+                        role="tab"
+                        aria-controls="tabs-profile"
+                        aria-selected="false"
+                >Demande de mentorat</a
+                >
+            </li>
+        {% endif %}
+    </ul>
+
+    <!--Tabs content-->
+    <div class="mb-6">
+        <div class="hidden opacity-100 transition-opacity duration-150 ease-linear data-[te-tab-active]:block" id="tabs-home" role="tabpanel" aria-labelledby="tabs-home-tab" data-te-tab-active>
+            <div class="grid grid-cols-4 gap-x-4 gap-y-8">
+                {% for fullname, formation in groupedMentors %}
+                    {%  include 'components/card_mentor.html.twig' with {'mentor': formation} %}
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="hidden opacity-0 transition-opacity duration-150 ease-linear data-[te-tab-active]:block" id="tabs-profile" role="tabpanel" aria-labelledby="tabs-profile-tab">
+            <div class="card">
+                <table>
+                    <thead>
+                    <tr>
+                        <th scope="col">Nom</th>
+                        <th scope="col">Prénom</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Formation</th>
+                        {#                        <th scope="col">Compétences</th>#}
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for mentor in mentors %}
+                        {% set url_valid_mentor = ea_url()
+                            .setController('App\\Controller\\Back\\MentorCrudController')
+                            .setAction('validMentor')
+                            .setEntityId(mentor.id)
+                        %}
+                        {% set url_refuse_mentor = ea_url()
+                            .setController('App\\Controller\\Back\\MentorCrudController')
+                            .setAction('refuseMentor')
+                            .setEntityId(mentor.id)
+                        %}
+                        <tr>
+                            <td>{{ mentor.consultant.lastname }}</td>
+                            <td>{{ mentor.consultant.firstname }}</td>
+                            <td>{{ mentor.consultant.email }}</td>
+                            <td>{{ mentor.formation.title }}</td>
+                            {#                            <td>#}
+                            {#                                {% for skill in mentor.consultant.skills %}#}
+                            {#                                    <button class="badge">{{ skill.title }}</button>#}
+                            {#                                {% endfor %}#}
+                            {#                            </td>#}
+                            <td>
+                                <a href="{{ url_valid_mentor }}">
+                                    <button type="button" class="button button-blue">Accepter</button>
+                                </a>
+                            <td>
+                                <a href="{{ url_refuse_mentor }}">
+                                    <button type="button" class="button button-red">Refuser</button>
+                                </a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="7">Aucune demande en attente</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

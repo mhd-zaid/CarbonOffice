@@ -14,33 +14,22 @@ class Post
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
-    private ?int $userId = null;
-
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $date = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 1000)]
     private ?string $message = null;
 
-    #[ORM\Column]
-    private ?int $discussionId = null;
+    #[ORM\ManyToOne(inversedBy: 'posts')]
+    private ?User $employee = null;
+
+    #[ORM\ManyToOne(inversedBy: 'posts')]
+    private ?Discussion $discussion = null;
+
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getUserId(): ?int
-    {
-        return $this->userId;
-    }
-
-    public function setUserId(int $userId): self
-    {
-        $this->userId = $userId;
-
-        return $this;
     }
 
     public function getDate(): ?\DateTimeInterface
@@ -67,14 +56,26 @@ class Post
         return $this;
     }
 
-    public function getDiscussionId(): ?int
+    public function getEmployee(): ?User
     {
-        return $this->discussionId;
+        return $this->employee;
     }
 
-    public function setDiscussionId(int $discussionId): self
+    public function setEmployee(?User $employee): self
     {
-        $this->discussionId = $discussionId;
+        $this->employee = $employee;
+
+        return $this;
+    }
+
+    public function getDiscussion(): ?Discussion
+    {
+        return $this->discussion;
+    }
+
+    public function setDiscussion(?Discussion $discussion): self
+    {
+        $this->discussion = $discussion;
 
         return $this;
     }

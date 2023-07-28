@@ -1,0 +1,31 @@
+{#{{ dump(mentor) }}#}
+<div class="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+    <div class="flex flex-col items-center pb-10 mt-10">
+        <img class="w-24 h-24 mb-3 rounded-full shadow-lg" src="https://picsum.photos/200/300" alt="Bonnie image"/>
+        <h5 class="mb-1 text-xl font-medium text-gray-900 dark:text-white">{{ mentor[0].consultant.firstname }} {{ mentor[0].consultant.lastname }}</h5>
+        <span class="text-sm text-gray-500 dark:text-gray-400">Stack technique</span>
+        <div class="flex mt-1 mb-1">
+            {% for skill in groupedSkills[fullname][0] %}
+                <span class="badge">{{ skill.title }}</span>
+            {% endfor %}
+        </div>
+        <ul class="max-w-md space-y-2 text-gray-500 list-inside dark:text-gray-400 my-4">
+            {% for f in formation %}
+                <a class="no-underline text-black pointer" data-te-toggle="tooltip" title="{{ f.formation.title }}">
+                    <li><span class="flex items-center"><svg class="w-3.5 h-3.5 mr-2 text-green-500 dark:text-green-400 flex-shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z"/>
+                        </svg>
+                        {% if f.formation.title|length < 40 %}
+                            {{ f.formation.title }}
+                        {% else %}
+                        {{ f.formation.title|slice(0,40) ~ '...' }}
+                        {% endif %}</span>
+                    </li>
+                </a>
+            {% endfor %}
+        </ul>
+        <div class="flex mt-4 space-x-3 md:mt-6">
+            <a href="mailto:{{ mentor[0].consultant.email }}" class="button button-blue">Contacter</a>
+        </div>
+    </div>
+</div>
