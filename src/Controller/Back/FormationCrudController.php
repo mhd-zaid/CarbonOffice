@@ -3,6 +3,7 @@
 namespace App\Controller\Back;
 
 use App\Entity\Formation;
+use App\Entity\Mentor;
 use App\Entity\Skills;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
@@ -68,7 +69,6 @@ class FormationCrudController extends AbstractCrudController
         ];
     }
 
-
     public function delete(AdminContext $context): RedirectResponse
     {
         $formation = $context->getEntity()->getInstance();
@@ -77,4 +77,20 @@ class FormationCrudController extends AbstractCrudController
         $this->addFlash('success', 'La formation a bien été supprimée');
         return $this->redirect($this->container->get(AdminUrlGenerator::class)->setAction(Action::INDEX)->unset(EA::ENTITY_ID)->generateUrl());
     }
+
+    public function toMentor(AdminContext $context): RedirectResponse
+    {
+        $formation = $context->getEntity()->getInstance();
+        $mentorRepository = $this->em->getRepository(Mentor::class);
+        $mentor = (new Mentor())
+            ->setConsultant($this->getUser())
+            ->setFormation($formation)
+            ->setStatus(0)
+        ;
+        $this->em->persist($mentor);
+        $this->em->flush();
+        $this->addFlash('success', 'Votre demande a bien été envoyée');
+        return $this->redirect($this->container->get(AdminUrlGenerator::class)->setAction(Action::INDEX)->unset(EA::ENTITY_ID)->generateUrl());
+    }
+
 }

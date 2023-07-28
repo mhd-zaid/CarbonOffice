@@ -32,6 +32,11 @@ class Mentor
         $this->dispenses = new ArrayCollection();
     }
 
+    public function __toString(): string
+    {
+        return $this->consultant->getFirstname() . ' ' . $this->consultant->getLastname();
+    }
+
     public function getId(): ?int
     {
         return $this->id;

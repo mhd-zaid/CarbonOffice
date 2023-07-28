@@ -3,6 +3,7 @@
 namespace App\Controller\Back;
 
 use App\Entity\Formation;
+use App\Entity\Mentor;
 use App\Entity\Planning;
 use App\Entity\User;
 use App\Repository\UserRepository;
@@ -72,7 +73,7 @@ class DefaultController extends AbstractDashboardController
 
             MenuItem::section('Espace formations'),
             MenuItem::linkToCrud('Formations', 'fa fa-lines-leaning', Formation::class),
-            MenuItem::linkToRoute('Mentoring', 'fa fa-chalkboard', ''),
+            MenuItem::linkToCrud('Mentoring', 'fa fa-chalkboard', Mentor::class),
 
             MenuItem::section('Espace communauté'),
             MenuItem::linkToRoute('Actualité', 'fa fa-people-group', ''),

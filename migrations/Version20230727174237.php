@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20230727142810 extends AbstractMigration
+final class Version20230727174237 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -38,8 +38,11 @@ final class Version20230727142810 extends AbstractMigration
         $this->addSql('CREATE TABLE dispense_user (dispense_id INT NOT NULL, user_id INT NOT NULL, PRIMARY KEY(dispense_id, user_id))');
         $this->addSql('CREATE INDEX IDX_A5F462CB3FC9908 ON dispense_user (dispense_id)');
         $this->addSql('CREATE INDEX IDX_A5F462CBA76ED395 ON dispense_user (user_id)');
-        $this->addSql('CREATE TABLE formation (id INT NOT NULL, reward_id INT DEFAULT NULL, title VARCHAR(300) NOT NULL, description VARCHAR(1000) NOT NULL, duration INT NOT NULL, requirements VARCHAR(1000) NOT NULL, skills VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE formation (id INT NOT NULL, reward_id INT DEFAULT NULL, title VARCHAR(300) NOT NULL, description VARCHAR(1000) NOT NULL, duration INT NOT NULL, requirements VARCHAR(1000) NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_404021BFE466ACA1 ON formation (reward_id)');
+        $this->addSql('CREATE TABLE formation_skills (formation_id INT NOT NULL, skills_id INT NOT NULL, PRIMARY KEY(formation_id, skills_id))');
+        $this->addSql('CREATE INDEX IDX_F528185D5200282E ON formation_skills (formation_id)');
+        $this->addSql('CREATE INDEX IDX_F528185D7FF61858 ON formation_skills (skills_id)');
         $this->addSql('CREATE TABLE mentor (id INT NOT NULL, consultant_id INT DEFAULT NULL, formation_id INT DEFAULT NULL, status BOOLEAN NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_801562DE44F779A2 ON mentor (consultant_id)');
         $this->addSql('CREATE INDEX IDX_801562DE5200282E ON mentor (formation_id)');
@@ -54,8 +57,8 @@ final class Version20230727142810 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_5A8A6C8D8C03F15C ON post (employee_id)');
         $this->addSql('CREATE INDEX IDX_5A8A6C8D1ADED311 ON post (discussion_id)');
         $this->addSql('CREATE TABLE public_holiday (id INT NOT NULL, date DATE NOT NULL, name VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
-        $this->addSql('CREATE TABLE reward (id INT NOT NULL, title VARCHAR(255) NOT NULL, description VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
-        $this->addSql('CREATE TABLE skills (id INT NOT NULL, title VARCHAR(255) NOT NULL, description VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE reward (id INT NOT NULL, title VARCHAR(1000) NOT NULL, description VARCHAR(1000) NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE skills (id INT NOT NULL, title VARCHAR(1000) NOT NULL, description VARCHAR(1000) NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE TABLE "user" (id INT NOT NULL, email VARCHAR(180) NOT NULL, roles JSON NOT NULL, password VARCHAR(255) NOT NULL, firstname VARCHAR(255) NOT NULL, lastname VARCHAR(255) NOT NULL, age INT NOT NULL, phone VARCHAR(255) NOT NULL, address VARCHAR(255) NOT NULL, city VARCHAR(255) NOT NULL, zip_code INT NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL, updated_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_8D93D649E7927C74 ON "user" (email)');
         $this->addSql('CREATE TABLE user_skills (user_id INT NOT NULL, skills_id INT NOT NULL, PRIMARY KEY(user_id, skills_id))');
@@ -78,6 +81,8 @@ final class Version20230727142810 extends AbstractMigration
         $this->addSql('ALTER TABLE dispense_user ADD CONSTRAINT FK_A5F462CB3FC9908 FOREIGN KEY (dispense_id) REFERENCES dispense (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE dispense_user ADD CONSTRAINT FK_A5F462CBA76ED395 FOREIGN KEY (user_id) REFERENCES "user" (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE formation ADD CONSTRAINT FK_404021BFE466ACA1 FOREIGN KEY (reward_id) REFERENCES reward (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
+        $this->addSql('ALTER TABLE formation_skills ADD CONSTRAINT FK_F528185D5200282E FOREIGN KEY (formation_id) REFERENCES formation (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
+        $this->addSql('ALTER TABLE formation_skills ADD CONSTRAINT FK_F528185D7FF61858 FOREIGN KEY (skills_id) REFERENCES skills (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE mentor ADD CONSTRAINT FK_801562DE44F779A2 FOREIGN KEY (consultant_id) REFERENCES "user" (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE mentor ADD CONSTRAINT FK_801562DE5200282E FOREIGN KEY (formation_id) REFERENCES formation (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE mission ADD CONSTRAINT FK_9067F23C783E3463 FOREIGN KEY (manager_id) REFERENCES "user" (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
@@ -110,6 +115,8 @@ final class Version20230727142810 extends AbstractMigration
         $this->addSql('ALTER TABLE dispense_user DROP CONSTRAINT FK_A5F462CB3FC9908');
         $this->addSql('ALTER TABLE dispense_user DROP CONSTRAINT FK_A5F462CBA76ED395');
         $this->addSql('ALTER TABLE formation DROP CONSTRAINT FK_404021BFE466ACA1');
+        $this->addSql('ALTER TABLE formation_skills DROP CONSTRAINT FK_F528185D5200282E');
+        $this->addSql('ALTER TABLE formation_skills DROP CONSTRAINT FK_F528185D7FF61858');
         $this->addSql('ALTER TABLE mentor DROP CONSTRAINT FK_801562DE44F779A2');
         $this->addSql('ALTER TABLE mentor DROP CONSTRAINT FK_801562DE5200282E');
         $this->addSql('ALTER TABLE mission DROP CONSTRAINT FK_9067F23C783E3463');
@@ -124,6 +131,7 @@ final class Version20230727142810 extends AbstractMigration
         $this->addSql('DROP TABLE dispense');
         $this->addSql('DROP TABLE dispense_user');
         $this->addSql('DROP TABLE formation');
+        $this->addSql('DROP TABLE formation_skills');
         $this->addSql('DROP TABLE mentor');
         $this->addSql('DROP TABLE mission');
         $this->addSql('DROP TABLE mission_user');

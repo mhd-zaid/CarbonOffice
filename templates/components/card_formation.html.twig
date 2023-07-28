@@ -8,6 +8,11 @@
     .setAction('delete')
     .setEntityId(formation.id)
 %}
+{% set url_to_mentor = ea_url()
+    .setController('App\\Controller\\Back\\FormationCrudController')
+    .setAction('toMentor')
+    .setEntityId(formation.id)
+%}
 
 <div class="card p-4">
     <div class="flex justify-between items-center mb-2">
@@ -16,6 +21,9 @@
             {% if is_granted('ROLE_CONSULTANT') %}
             <a href="#">
                 <button class="button button-blue">Je rejoins !</button>
+            </a>
+            <a href="{{ url_to_mentor }}">
+                <button class="button button-blue">Devenir Mentor</button>
             </a>
             {% endif %}
             {% if is_granted('ROLE_RH') or is_granted('ROLE_ADMIN') %}
