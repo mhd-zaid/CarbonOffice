@@ -55,11 +55,14 @@ class CalendarSubscriber implements EventSubscriberInterface
             }elseif($planning instanceof Collection)
             {
                 foreach($planning as $formation)
-                {
+                {   
+                    $startEvent = new \DateTime($formation->getDate()->format('Y-m-d').' '.$formation->getStartTime()->format('H:i:s'));
+                    $endEvent = (clone $startEvent)->add(new \DateInterval('PT'.$formation->getFormation()->getDuration().'M'));
                     $calendar->addEvent(
                         new Event(
                             "Formation: ".$formation->getFormation()->getTitle(),
-                            $formation->getdate(),
+                            $startEvent,
+                            $endEvent
                         )
                     );
                 }
