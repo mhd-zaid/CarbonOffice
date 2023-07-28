@@ -15,13 +15,16 @@
             {{ form_row(new_form.formation) }}
         </div>
         <div>
-            {# {{ form_row(new_form.mentor) }} #}
-           <select id="Dispense_mentor" name="{{ field_name(new_form.mentor) }}">
-                <option selected value="">Choisir une option</option>
+           {{form_label(new_form.mentor)}}
+           <select id="Dispense_mentor" name="{{ field_name(new_form.mentor) }}"  class="form-select">
+                <option selected>Choisir une option</option>
             </select>
         </div>
         <div>
             {{ form_row(new_form.consultants) }}
+        </div>
+        <div>
+            {{ form_row(new_form.link) }}
         </div>
         {{ form_row(new_form._token) }}
         <button type="submit" class="mt-6 button button-blue" name="ea[newForm][btn]" value="saveAndReturn" data-action-name="saveAndReturn" form="new-Dispense-form">Créer</button>
@@ -36,7 +39,7 @@
                         dataType: 'json',
                         success: function(data) {
                             $("#Dispense_mentor").empty();
-                            $("#Dispense_mentor").append('<option value="">Choisir une option</option>');
+                            $("#Dispense_mentor").append('<option selected>Choisir une option</option>');
                             $.each(data, function(value) {
                                 $("#Dispense_mentor").append('<option value="' + parseInt(data[value].id) + '">' + data[value].consultant + '</option>');
                             });

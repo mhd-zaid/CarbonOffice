@@ -11,6 +11,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\KeyValueStore;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Option\EA;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Event\AfterCrudActionEvent;
@@ -28,10 +29,12 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TimeField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\UrlField;
+use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use EasyCorp\Bundle\EasyAdminBundle\Security\Permission;
-
+use phpDocumentor\Reflection\DocBlock\Tags\Link;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class DispenseCrudController extends AbstractCrudController
 {
@@ -90,6 +93,7 @@ class DispenseCrudController extends AbstractCrudController
                         },
                     ],
                 ]),
+            UrlField::new('link'),
         ];
     }
     
@@ -148,5 +152,14 @@ class DispenseCrudController extends AbstractCrudController
         }
 
         return $responseParameters;
+    }
+
+    public function delete(AdminContext $context): RedirectResponse
+    {
+        $dispense = $context->getEntity()->getInstance();
+        $this->em->remove($dispense);
+        $this->em->flush();
+        $this->addFlash('success', 'La formation planifiée a bien été supprimée');
+        return $this->redirect($this->container->get(AdminUrlGenerator::class)->setAction(Action::INDEX)->unset(EA::ENTITY_ID)->generateUrl());
     }
 }
