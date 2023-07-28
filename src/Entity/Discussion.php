@@ -61,18 +61,6 @@ class Discussion
         return $this;
     }
 
-    public function getTechnlogyId(): ?int
-    {
-        return $this->technlogyId;
-    }
-
-    public function setTechnlogyId(int $technlogyId): self
-    {
-        $this->technlogyId = $technlogyId;
-
-        return $this;
-    }
-
     public function getSkill(): ?Skills
     {
         return $this->skill;

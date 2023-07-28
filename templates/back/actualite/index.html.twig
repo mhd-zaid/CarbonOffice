@@ -1,102 +1,38 @@
 {% extends 'back/base.html.twig' %}
 
 {% block main %}
-	<div class="actualite-top flex justify-between items-center">
-		<h1 class="font-bold text-3xl md:text-4xl lg:text-5xl font-heading text-gray-900">
-			Actualités
-		</h1>
-		{% set url_new_post = ea_url()
-            .setController('App\\Controller\\Back\\PostCrudController')
-            .setAction('new')
-        %}
-		<a href="{{url_new_post}}">Ajouter un post</a>
-	</div>
+<ul
+  class="mb-5 flex list-none flex-row flex-wrap border-b-0 pl-0"
+  role="tablist"
+  data-te-nav-ref>
+  {% for discussion in entities %}
+	<li role="presentation">
+    <a
+      href="#tabs-{{discussion.instance.title}}"
+      class="my-2 block border-x-0 border-b-2 border-t-0 border-transparent px-7 pb-3.5 pt-4 text-xs font-medium uppercase leading-tight text-neutral-500 hover:isolate hover:border-transparent hover:bg-neutral-100 focus:isolate focus:border-transparent data-[te-nav-active]:border-primary data-[te-nav-active]:text-primary dark:text-neutral-400 dark:hover:bg-transparent dark:data-[te-nav-active]:border-primary-400 dark:data-[te-nav-active]:text-primary-400"
+      data-te-toggle="pill"
+      data-te-target="#tabs-{{discussion.instance.title}}"
+      data-te-nav-active
+      role="tab"
+      aria-controls="tabs-{{discussion.instance.title}}"
+      aria-selected="true"
+      >{{discussion.instance.title}}</a
+    >
+  </li>
+  {% endfor %}
+</ul>
 
-
-	<div class="actualite flex justify-center p-[4px] bg-blue-500 relative">
-		{% for discussion in entities %}
-
-			<button class="actualite-fil" type="button" onclick="toggleTab(this)">
-				<span>{{ discussion.instance.skill }}</span>
-			</button>
-
-
-			<div style="display:none" class="discussion w-full absolute mt-[100px]" data-skill="{{ discussion.instance.skill }}">
-				{% for post in discussion.instance.posts %}
-					<!-- component -->
-					<div class="post">
-
-						<div class="flex justify-center bg-gray-100 p-16">
-							<div class="bg-white border rounded-lg max-w-md">
-								<div class="flex items-center px-4 py-3">
-									<img class="h-8 w-8 rounded-full" src="https://randomuser.me/api/portraits/men/{{ post.id }}.jpg"/>
-									<div class="ml-3 ">
-										<span class="text-sm font-semibold antialiased block leading-tight">{{ post.employee.firstname }}
-											{{ post.employee.lastname }}</span>
-									</div>
-								</div>
-								<img src="https://picsum.photos/id/{{ post.id }}/900/900"/>
-								<div class="font-semibold text-sm mx-4 mt-2 mb-4">{{ post.message }}</div>
-							</div>
-						</div>
-
-					</div>
-				{% endfor %}
-				<h3 style="display:none" class="no-post-msg absolute mt-[100px] font-bold text-3xl md:text-4xl lg:text-5xl font-heading text-gray-900">Aucun post associé à ce skill. Soyez le premier à poster ! 😊</h3>
-
-
-				{% if discussion.instance.posts|length == 0 %}
-					<h5 style="display: none;" class="no-post-msg absolute mt-[100px] font-bold text-3xl md:text-4xl lg:text-5xl font-heading text-gray-900">Aucun post associé à ce skill. Soyez le premier à poster ! 😊</h5>
-				{% endif %}
-			</div>
-		{% endfor %}
-	</div>
-
-
-	<script>
-
-		function toggleTab(button) {
-const buttons = button.parentElement.getElementsByTagName('button');
-
-for (let i = 0; i < buttons.length; i++) {
-buttons[i].classList.remove('active');
-}
-
-button.classList.add('active');
-
-// Récupérer le skill sélectionné
-const selectedSkill = button.textContent.trim();
-
-// Récupérer toutes les discussions disponibles
-const discussions = document.getElementsByClassName('discussion');
-
-for (let i = 0; i < discussions.length; i++) {
-const discussion = discussions[i];
-const skill = discussion.getAttribute('data-skill');
-
-if (skill === selectedSkill) {
-discussion.style.display = 'block';
-const noPostMsg = discussion.querySelector('.no-post-msg');
-
-if (noPostMsg) {
-const posts = discussion.getElementsByClassName('post');
-
-if (posts.length === 0) {
-noPostMsg.style.display = 'block';
-} else {
-noPostMsg.style.display = 'none';
-}
-}
-} else {
-discussion.style.display = 'none';
-}
-}
-
-// Afficher les posts associés au skill sélectionné
-const selectedPosts = document.querySelectorAll (`.discussion[data-skill="${selectedSkill}"]`);
-for (let i = 0; i < selectedPosts.length; i++) {
-selectedPosts[i].style.display = 'block';
-}
-}
-	</script>
+<!--Tabs content-->
+<div class="mb-6">
+ {% for discussion in entities %}
+	<div
+    class="hidden opacity-100 transition-opacity duration-150 ease-linear data-[te-tab-active]:block"
+    id="tabs-{{discussion.instance.title}}}"
+    role="tabpanel"
+    aria-labelledby="tabs-{{discussion.instance.title}}-tab"
+    data-te-tab-active>
+    Tab  content
+  </div>
+ {% endfor %}
+</div>
 {% endblock %}
