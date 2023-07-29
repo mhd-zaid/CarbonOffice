@@ -75,8 +75,14 @@ class DefaultController extends AbstractDashboardController
             MenuItem::linkToCrud('Planning', 'fa fa-calendar-days', Planning::class),
             MenuItem::linkToCrud('Dispenses', 'fa fa-calendar-check', Dispense::class),
 
-            MenuItem::section('Espace personnel'),
-            MenuItem::linkToRoute('Mon compte', 'fa fa-user', 'back_profile_index'),
+            MenuItem::section('Nos réseaux'),
+            MenuItem::linkToUrl('LinkedIn', 'fa-brands fa-linkedin', 'https://www.linkedin.com/company/carbon-it/'),
+            MenuItem::linkToUrl('Instagram', 'fa-brands fa-instagram', 'https://www.instagram.com/carbonitparis/?hl=fr'),
+            MenuItem::linkToUrl('Twitter', 'fa-brands fa-twitter', 'https://twitter.com/carbonparis'),
+            MenuItem::linkToUrl('Medium', 'fa-brands fa-medium', 'https://communitycarbonit.medium.com/'),
+
+//            MenuItem::section('Espace personnel'),
+//            MenuItem::linkToRoute('Mon compte', 'fa fa-user', 'back_profile_index'),
 
         ];
     }
@@ -84,15 +90,14 @@ class DefaultController extends AbstractDashboardController
     public function configureUserMenu(User|UserInterface $user): UserMenu
     {
         return UserMenu::new()
-            ->displayUserName()
-            ->displayUserAvatar()
-            ->setName($user->getFullName())
-            ->setGravatarEmail($user->getEmail())
-            ->addMenuItems([
-                MenuItem::linkToRoute('Mon compte', 'fa fa-user', 'back_profile_index'),
-                MenuItem::linkToRoute('Paramètre', 'fa fa-sliders', ''),
-                MenuItem::linkToLogout("Déconnexion", 'fa fa-sign-out-alt'),
-            ]);
+        ->displayUserName()
+        ->displayUserAvatar()
+        ->setName($user->getFullName())
+        ->setGravatarEmail($user->getEmail())
+        ->addMenuItems([
+            MenuItem::linkToRoute('Mon compte', 'fa fa-user', 'back_profile_index'),
+            MenuItem::linkToLogout("Déconnexion", 'fa fa-sign-out-alt'),
+        ]);
     }
 
     #[Route('/mentor-formation/{formationId}', name: 'app_mentorByFormation')]

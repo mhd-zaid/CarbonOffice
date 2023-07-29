@@ -37,7 +37,10 @@
 			<div>
 				{{ form_row(new_form.zipCode) }}
 			</div>
-			<button type="submit" class="mt-6 button button-blue no-underline hover:no-underline focus:no-underline focus:text-white hover:text-white" name="ea[newForm][btn]" value="saveAndReturn" data-action-name="saveAndReturn" form="new-User-form">Créer</button>
+			<div>
+				{{ form_row(new_form.skills) }}
+			</div>
+			<button type="submit" class="mt-6 btn btn-primary" name="ea[newForm][btn]" value="saveAndReturn" data-action-name="saveAndReturn" form="new-User-form">Créer</button>
 
 		</div>
 		{{ form_end(new_form) }}
