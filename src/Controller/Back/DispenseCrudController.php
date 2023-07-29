@@ -6,6 +6,7 @@ use App\Entity\Dispense;
 use App\Entity\Formation;
 use App\Entity\Mentor;
 use App\Entity\Planning;
+use App\Entity\Reward;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
@@ -33,6 +34,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\UrlField;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use EasyCorp\Bundle\EasyAdminBundle\Security\Permission;
+use http\Env\Response;
 use phpDocumentor\Reflection\DocBlock\Tags\Link;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -175,5 +177,25 @@ class DispenseCrudController extends AbstractCrudController
         #rediriger vers la page de show planning
 
         return $this->redirect($this->container->get(AdminUrlGenerator::class)->setController(PlanningCrudController::class)->set('userId',$userId)->setAction('show')->unset(EA::ENTITY_ID)->generateUrl());
+    }
+
+    public function generateReward(AdminContext $context): \Symfony\Component\HttpFoundation\Response
+    {
+        return $this->render('back/reward/new.html.twig', [
+            'dispense' => $context->getEntity()->getInstance(),
+        ]);
+    }
+
+    public function giveReward(AdminContext $context): RedirectResponse
+    {
+        $consultant = $this->em->getRepository(User::class)->find($context->getRequest()->get('consultantId'));
+        $dispense = $this->em->getRepository(Dispense::class)->find($context->getRequest()->get('dispenseId'));
+        $reward = new Reward();
+        $reward->setTitle('Formation : ' . $consultant->getFormation()->getTitle());
+        $reward->setDescription('Vous avez suivi la formation : ' . $consultant->getFormation()->getTitle() . ' le ' . $consultant->getDate()->format('d/m/Y') . ' à ' . $consultant->getStartTime()->format('H:i'));
+        $reward->setDispense($dispense);
+        $reward->addUser($consultant);
+
+        $this->em->persist($reward);
     }
 }

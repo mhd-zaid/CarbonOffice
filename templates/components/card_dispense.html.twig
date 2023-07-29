@@ -4,8 +4,9 @@
     .setEntityId(dispense.id)
 %}
 {% set url_new_reward = ea_url()
-    .setController('App\\Controller\\Back\\RewardCrudController')
-    .setAction('new')
+    .setController('App\\Controller\\Back\\DispenseCrudController')
+    .setAction('generateReward')
+    .setEntityId(dispense.id)
 %}
 <div class="card p-4">
 	<div class="flex justify-between items-center mb-2">

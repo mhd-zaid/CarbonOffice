@@ -2,7 +2,9 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Dispense;
 use App\Entity\Reward;
+use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -11,11 +13,12 @@ class RewardFixtures extends Fixture implements OrderedFixtureInterface
 {
     public function load(ObjectManager $manager): void
     {
-        $technos = ['PHP', 'Java', 'Python', 'C#', 'Ruby'];
-        foreach ($technos as $techno){
+        $consultants = $manager->getRepository(User::class)->findAll();
+        $dispenses = $manager->getRepository(Dispense::class)->findAll();
+        for($i = 0; $i < 10; $i++) {
             $object = (new Reward())
-                ->setTitle('Certificat de développeur ' . $techno)
-                ->setDescription('Ce certificat atteste que le titulaire a terminé une formation de développeur ' . $techno . '.')
+                ->setConsultant($consultants[random_int(0, count($consultants) - 1)])
+                ->setDispense($dispenses[random_int(0, count($dispenses) - 1)])
             ;
             $manager->persist($object);
         }

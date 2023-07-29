@@ -15,52 +15,18 @@ class Reward
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 1000)]
-    private ?string $title = null;
-
-    #[ORM\Column(length: 1000)]
-    private ?string $description = null;
+    #[ORM\Column]
+    private ?int $level = 0;
 
     #[ORM\ManyToOne(inversedBy: 'rewards')]
     private ?Dispense $dispense = null;
 
-    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'rewards')]
-    private Collection $users;
-
-    public function __construct()
-    {
-        $this->users = new ArrayCollection();
-    }
-
-    
+    #[ORM\OneToOne(inversedBy: 'reward', cascade: ['persist', 'remove'])]
+    private ?User $consultant = null;
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getTitle(): ?string
-    {
-        return $this->title;
-    }
-
-    public function setTitle(string $title): self
-    {
-        $this->title = $title;
-
-        return $this;
-    }
-
-    public function getDescription(): ?string
-    {
-        return $this->description;
-    }
-
-    public function setDescription(string $description): self
-    {
-        $this->description = $description;
-
-        return $this;
     }
 
     public function getDispense(): ?Dispense
@@ -75,27 +41,26 @@ class Reward
         return $this;
     }
 
-    /**
-     * @return Collection<int, User>
-     */
-    public function getUsers(): Collection
+    public function getLevel(): ?int
     {
-        return $this->users;
+        return $this->level;
     }
 
-    public function addUser(User $user): static
+    public function setLevel(?int $level): void
     {
-        if (!$this->users->contains($user)) {
-            $this->users->add($user);
-        }
+        $this->level = $level;
+    }
+
+    public function getConsultant(): ?User
+    {
+        return $this->consultant;
+    }
+
+    public function setConsultant(?User $consultant): static
+    {
+        $this->consultant = $consultant;
 
         return $this;
     }
 
-    public function removeUser(User $user): static
-    {
-        $this->users->removeElement($user);
-
-        return $this;
-    }
 }

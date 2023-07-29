@@ -76,8 +76,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'employee', targetEntity: Post::class)]
     private Collection $posts;
 
-    #[ORM\ManyToMany(targetEntity: Reward::class, mappedBy: 'users')]
-    private Collection $rewards;
+    #[ORM\OneToOne(mappedBy: 'consultant', cascade: ['persist', 'remove'])]
+    private ?Reward $reward = null;
 
     public function __construct()
     {
@@ -88,7 +88,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->mentors = new ArrayCollection();
         $this->dispenses = new ArrayCollection();
         $this->posts = new ArrayCollection();
-        $this->rewards = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -462,30 +461,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @return Collection<int, Reward>
-     */
-    public function getRewards(): Collection
+    public function getReward(): ?Reward
     {
-        return $this->rewards;
+        return $this->reward;
     }
 
-    public function addReward(Reward $reward): static
+    public function setReward(?Reward $reward): static
     {
-        if (!$this->rewards->contains($reward)) {
-            $this->rewards->add($reward);
-            $reward->addUser($this);
+        // unset the owning side of the relation if necessary
+        if ($reward === null && $this->reward !== null) {
+            $this->reward->setConsultant(null);
         }
+
+        // set the owning side of the relation if necessary
+        if ($reward !== null && $reward->getConsultant() !== $this) {
+            $reward->setConsultant($this);
+        }
+
+        $this->reward = $reward;
 
         return $this;
     }
 
-    public function removeReward(Reward $reward): static
-    {
-        if ($this->rewards->removeElement($reward)) {
-            $reward->removeUser($this);
-        }
-
-        return $this;
-    }
 }
