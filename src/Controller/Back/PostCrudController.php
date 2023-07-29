@@ -10,6 +10,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\KeyValueStore;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Option\EA;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Event\AfterEntityPersistedEvent;
@@ -27,14 +28,10 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class PostCrudController extends AbstractCrudController
 {
-    private EntityFactory $entityFactory;
-    private AdminUrlGenerator $adminUrlGenerator;
 
-    public function __construct(private EntityManagerInterface $em, EntityFactory $entityFactory, AdminUrlGenerator $adminUrlGenerator)
+    public function __construct(private EntityManagerInterface $em)
     {
         $this->em = $em;
-        $this->entityFactory = $entityFactory;
-        $this->adminUrlGenerator = $adminUrlGenerator;
     }
 
     public static function getEntityFqcn(): string
@@ -45,8 +42,7 @@ class PostCrudController extends AbstractCrudController
     public function configureCrud(Crud $crud): Crud
     {
         return $crud->setPageTitle('index', 'Post')
-            ->setPageTitle('new', 'Créer un post')
-            ->overrideTemplate('crud/new', 'back/post/new.html.twig');
+            ->setPageTitle('new', 'Créer un post');
     }
 
     public function configureFields(string $pageName): iterable
@@ -77,12 +73,9 @@ class PostCrudController extends AbstractCrudController
 
     public function new(AdminContext $context)
     {
+        dump($newForm);
+        die();
         $post = new Post();
-
-        $context->getEntity()->setInstance($this->createEntity($context->getEntity()->getFqcn()));
-        $this->container->get(EntityFactory::class)->processFields($context->getEntity(), FieldCollection::new($this->configureFields(Crud::PAGE_NEW)));
-        $context->getCrud()->setFieldAssets($this->getFieldAssets($context->getEntity()->getFields()));
-        $this->container->get(EntityFactory::class)->processActions($context->getEntity(), $context->getCrud()->getActionsConfig());
 
         $newForm = $this->createNewForm($context->getEntity(), $context->getCrud()->getNewFormOptions(), $context);
         $newForm->handleRequest($context->getRequest());
@@ -97,7 +90,8 @@ class PostCrudController extends AbstractCrudController
             $message = $newForm->get('message')->getData();
             $post->setMessage($message);
 
-            $discussion = $newForm->get('discussion')->getData();
+            $discussionId = $newForm->get('discussionId')->getData();
+            $discussion = $this->em->getRepository(Discussion::class)->find($discussionId);
             $post->setDiscussion($discussion);
 
             // Set the date of the post to today's date
@@ -107,8 +101,8 @@ class PostCrudController extends AbstractCrudController
             $this->em->persist($post);
             $this->em->flush();
 
-            $discussionIndexUrl = $this->adminUrlGenerator->setController(DiscussionCrudController::class)->setAction(Action::INDEX)->generateUrl();
-            return new RedirectResponse($discussionIndexUrl);
+            return $this->redirect($this->container->get(AdminUrlGenerator::class)->setAction(Action::INDEX)->unset(EA::ENTITY_ID)->generateUrl());
+
         }
 
         $responseParameters = $this->configureResponseParameters(KeyValueStore::new([
@@ -120,4 +114,18 @@ class PostCrudController extends AbstractCrudController
 
         return $responseParameters;
     }
+
+    public function sendPost(AdminContext $context): RedirectResponse
+    {
+        $post = new Post();
+        $post->setEmployee($this->getUser());
+        $post->setDate(new \DateTime());
+        $post->setMessage($context->getRequest()->get('post'));
+        $post->setDiscussion($this->em->getRepository(Discussion::class)->find($context->getRequest()->get('discussionId')));
+        $this->em->persist($post);
+        $this->em->flush();
+
+        return $this->redirect($this->container->get(AdminUrlGenerator::class)->setController(DiscussionCrudController::class)->setAction(Action::INDEX)->unset(EA::ENTITY_ID)->generateUrl());
+    }
+
 }

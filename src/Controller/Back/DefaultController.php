@@ -12,10 +12,13 @@ use App\Repository\MentorRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\Entity;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Option\EA;
 use EasyCorp\Bundle\EasyAdminBundle\Config\UserMenu;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
+use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
@@ -58,9 +61,8 @@ class DefaultController extends AbstractDashboardController
             MenuItem::linkToDashboard('Dashboard', 'fa fa-home'),
 
             MenuItem::section('Espace entreprise'),
-            MenuItem::linkToRoute('Organigramme', 'fa fa-sitemap', ''),
-            MenuItem::linkToCrud('Nouveau Collaborateur', 'fa fa-user-plus', User::class)
-                ->setPermission('ROLE_ADMIN'),
+            MenuItem::linkToUrl('Organigramme', 'fa fa-sitemap',  $this->container->get(AdminUrlGenerator::class)->setController(UserCrudController::class)->setAction(Action::INDEX)->unset(EA::ENTITY_ID)->generateUrl()),
+            MenuItem::linkToUrl('Nouveau Collaborateurs', 'fa fa-users', $this->container->get(AdminUrlGenerator::class)->setController(UserCrudController::class)->setAction(Action::NEW)->unset(EA::ENTITY_ID)->generateUrl())->setPermission('ROLE_RH'),
 
             MenuItem::section('Espace formations'),
             MenuItem::linkToCrud('Formations', 'fa fa-lines-leaning', Formation::class),
