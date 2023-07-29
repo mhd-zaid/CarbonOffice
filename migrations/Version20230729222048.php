@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20230728230219 extends AbstractMigration
+final class Version20230729222048 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -58,7 +58,9 @@ final class Version20230728230219 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_5A8A6C8D8C03F15C ON post (employee_id)');
         $this->addSql('CREATE INDEX IDX_5A8A6C8D1ADED311 ON post (discussion_id)');
         $this->addSql('CREATE TABLE public_holiday (id INT NOT NULL, date DATE NOT NULL, name VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
-        $this->addSql('CREATE TABLE reward (id INT NOT NULL, title VARCHAR(1000) NOT NULL, description VARCHAR(1000) NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE reward (id INT NOT NULL, dispense_id INT DEFAULT NULL, consultant_id INT DEFAULT NULL, level INT NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE INDEX IDX_4ED172533FC9908 ON reward (dispense_id)');
+        $this->addSql('CREATE UNIQUE INDEX UNIQ_4ED1725344F779A2 ON reward (consultant_id)');
         $this->addSql('CREATE TABLE skills (id INT NOT NULL, title VARCHAR(1000) NOT NULL, description VARCHAR(1000) NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE TABLE "user" (id INT NOT NULL, email VARCHAR(180) NOT NULL, roles JSON NOT NULL, password VARCHAR(255) NOT NULL, firstname VARCHAR(255) NOT NULL, lastname VARCHAR(255) NOT NULL, age INT NOT NULL, phone VARCHAR(255) NOT NULL, address VARCHAR(255) NOT NULL, city VARCHAR(255) NOT NULL, zip_code INT NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL, updated_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_8D93D649E7927C74 ON "user" (email)');
@@ -93,6 +95,8 @@ final class Version20230728230219 extends AbstractMigration
         $this->addSql('ALTER TABLE planning ADD CONSTRAINT FK_D499BFF644F779A2 FOREIGN KEY (consultant_id) REFERENCES "user" (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE post ADD CONSTRAINT FK_5A8A6C8D8C03F15C FOREIGN KEY (employee_id) REFERENCES "user" (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE post ADD CONSTRAINT FK_5A8A6C8D1ADED311 FOREIGN KEY (discussion_id) REFERENCES discussion (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
+        $this->addSql('ALTER TABLE reward ADD CONSTRAINT FK_4ED172533FC9908 FOREIGN KEY (dispense_id) REFERENCES dispense (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
+        $this->addSql('ALTER TABLE reward ADD CONSTRAINT FK_4ED1725344F779A2 FOREIGN KEY (consultant_id) REFERENCES "user" (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE user_skills ADD CONSTRAINT FK_B0630D4DA76ED395 FOREIGN KEY (user_id) REFERENCES "user" (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE user_skills ADD CONSTRAINT FK_B0630D4D7FF61858 FOREIGN KEY (skills_id) REFERENCES skills (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
     }
@@ -128,6 +132,8 @@ final class Version20230728230219 extends AbstractMigration
         $this->addSql('ALTER TABLE planning DROP CONSTRAINT FK_D499BFF644F779A2');
         $this->addSql('ALTER TABLE post DROP CONSTRAINT FK_5A8A6C8D8C03F15C');
         $this->addSql('ALTER TABLE post DROP CONSTRAINT FK_5A8A6C8D1ADED311');
+        $this->addSql('ALTER TABLE reward DROP CONSTRAINT FK_4ED172533FC9908');
+        $this->addSql('ALTER TABLE reward DROP CONSTRAINT FK_4ED1725344F779A2');
         $this->addSql('ALTER TABLE user_skills DROP CONSTRAINT FK_B0630D4DA76ED395');
         $this->addSql('ALTER TABLE user_skills DROP CONSTRAINT FK_B0630D4D7FF61858');
         $this->addSql('DROP TABLE discussion');

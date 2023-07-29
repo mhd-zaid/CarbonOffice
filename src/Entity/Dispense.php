@@ -36,7 +36,7 @@ class Dispense
     #[ORM\ManyToOne(inversedBy: 'dispenses')]
     private ?Formation $formation = null;
 
-    #[ORM\OneToMany(mappedBy: 'dispense', targetEntity: Reward::class)]
+    #[ORM\ManyToMany(targetEntity: Reward::class, mappedBy: 'dispenses')]
     private Collection $rewards;
 
     public function __construct()
@@ -146,7 +146,7 @@ class Dispense
     {
         if (!$this->rewards->contains($reward)) {
             $this->rewards->add($reward);
-            $reward->setDispense($this);
+            $reward->addDispense($this);
         }
 
         return $this;
@@ -155,12 +155,10 @@ class Dispense
     public function removeReward(Reward $reward): static
     {
         if ($this->rewards->removeElement($reward)) {
-            // set the owning side to null (unless already changed)
-            if ($reward->getDispense() === $this) {
-                $reward->setDispense(null);
-            }
+            $reward->removeDispense($this);
         }
 
         return $this;
     }
+
 }

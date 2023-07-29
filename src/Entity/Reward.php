@@ -18,37 +18,30 @@ class Reward
     #[ORM\Column]
     private ?int $level = 0;
 
-    #[ORM\ManyToOne(inversedBy: 'rewards')]
-    private ?Dispense $dispense = null;
-
     #[ORM\OneToOne(inversedBy: 'reward', cascade: ['persist', 'remove'])]
     private ?User $consultant = null;
+
+    #[ORM\ManyToMany(targetEntity: Dispense::class, inversedBy: 'rewards')]
+    private Collection $dispenses;
+
+    public function __construct()
+    {
+        $this->dispenses = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
         return $this->id;
     }
-
-    public function getDispense(): ?Dispense
-    {
-        return $this->dispense;
-    }
-
-    public function setDispense(?Dispense $dispense): static
-    {
-        $this->dispense = $dispense;
-
-        return $this;
-    }
-
     public function getLevel(): ?int
     {
         return $this->level;
     }
 
-    public function setLevel(?int $level): void
+    public function setLevel(?int $level): self
     {
         $this->level = $level;
+        return $this;
     }
 
     public function getConsultant(): ?User
@@ -59,6 +52,30 @@ class Reward
     public function setConsultant(?User $consultant): static
     {
         $this->consultant = $consultant;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Dispense>
+     */
+    public function getDispenses(): Collection
+    {
+        return $this->dispenses;
+    }
+
+    public function addDispense(Dispense $dispense): static
+    {
+        if (!$this->dispenses->contains($dispense)) {
+            $this->dispenses->add($dispense);
+        }
+
+        return $this;
+    }
+
+    public function removeDispense(Dispense $dispense): static
+    {
+        $this->dispenses->removeElement($dispense);
 
         return $this;
     }

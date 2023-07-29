@@ -1,9 +1,13 @@
 {% extends 'back/base.html.twig' %}
 {% block main %}
-
-    {{ dump(dispense) }}
-
     <div class="card">
+        {{ dump(dispense) }}
+        {% for consultant in dispense.consultants %}
+            cONSULTANT{{ dump(consultant) }}
+        {% endfor %}
+        {% for rewards in dispense.rewards %}
+            Reward{{ dump(rewards) }}
+        {% endfor %}
         <table>
             <thead>
             <tr>
@@ -15,7 +19,7 @@
             <tbody>
             {% for consultant in dispense.consultants %}
                 {% set url_give_reward = ea_url()
-                    .setController('Back\\Consultant\\DispenseCrudController')
+                    .setController('App\\Controller\\Back\\DispenseCrudController')
                     .setAction('giveReward')
                     .set('consultantId', consultant.id)
                     .set('dispenseId', dispense.id)
@@ -24,11 +28,24 @@
                     <td>{{ consultant.lastname }}</td>
                     <td>{{ consultant.firstname }}</td>
                     <td>{{ consultant.email }}</td>
-                    <td>
-                        <a href="#">
-                            <button type="button" class="button button-blue">Donner récompense</button>
-                        </a>
-                    </td>
+                    {% if dispense.rewards|length == 0 %}
+                        <td>ok</td>
+                        <td>
+                            <a href="{{ url_give_reward }}">
+                                <button type="button" class="button button-blue">Ajouter récompense</button>
+                            </a>
+                        </td>
+                    {% endif %}
+                    {% for reward in dispense.rewards %}
+                        {% if reward.consultant != consultant %}
+                        <td>ko</td>
+                            <td>
+                                <a href="{{ url_give_reward }}">
+                                    <button type="button" class="button button-blue">Ajouter récompense</button>
+                                </a>
+                            </td>
+                        {% endif %}
+                    {% endfor %}
                 </tr>
             {% endfor %}
             </tbody>

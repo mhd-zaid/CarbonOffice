@@ -13,12 +13,19 @@ class RewardFixtures extends Fixture implements OrderedFixtureInterface
 {
     public function load(ObjectManager $manager): void
     {
-        $consultants = $manager->getRepository(User::class)->findAll();
+        $users = $manager->getRepository(User::class)->findAll();
+        $consultants = [];
+        foreach ($users as $user) {
+            if ($user->getRoles()[0] == 'ROLE_CONSULTANT') {
+                array_push($consultants, $user);
+            }
+        }
         $dispenses = $manager->getRepository(Dispense::class)->findAll();
-        for($i = 0; $i < 10; $i++) {
+        $tabLevel = [10, 19, 22, 3, 223, 57];
+        for($i = 0; $i < 3; $i++) {
             $object = (new Reward())
-                ->setConsultant($consultants[random_int(0, count($consultants) - 1)])
-                ->setDispense($dispenses[random_int(0, count($dispenses) - 1)])
+                ->setConsultant($consultants[$i])
+                ->setLevel($tabLevel[random_int(0, count($tabLevel) - 1)])
             ;
             $manager->persist($object);
         }
@@ -28,6 +35,6 @@ class RewardFixtures extends Fixture implements OrderedFixtureInterface
 
     public function getOrder()
     {
-        return 3;
+        return 9;
     }
 }
