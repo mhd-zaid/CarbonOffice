@@ -3,7 +3,10 @@
     .setAction('delete')
     .setEntityId(dispense.id)
 %}
-
+{% set url_new_reward = ea_url()
+    .setController('App\\Controller\\Back\\RewardCrudController')
+    .setAction('new')
+%}
 <div class="card p-4">
 	<div class="flex justify-between items-center mb-2">
 		<div class="flex gap-1 items-center">
@@ -12,6 +15,9 @@
 
 		</div>
 		<div>
+        <a href="{{ url_new_reward }}">
+                <button class="button button-green">Attribuer une récompense</button>
+            </a>
 			{% if is_granted('ROLE_RH') or is_granted('ROLE_ADMIN') %}
 				<a href="{{ url_delete_formation }}">
 					<button class="button button-red">Supprimer</button>

@@ -21,13 +21,18 @@ class Reward
     #[ORM\Column(length: 1000)]
     private ?string $description = null;
 
-    #[ORM\OneToMany(mappedBy: 'reward', targetEntity: Formation::class)]
-    private Collection $formations;
+    #[ORM\ManyToOne(inversedBy: 'rewards')]
+    private ?Dispense $dispense = null;
+
+    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'rewards')]
+    private Collection $users;
 
     public function __construct()
     {
-        $this->formations = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
+
+    
 
     public function getId(): ?int
     {
@@ -58,32 +63,38 @@ class Reward
         return $this;
     }
 
-    /**
-     * @return Collection<int, Formation>
-     */
-    public function getFormations(): Collection
+    public function getDispense(): ?Dispense
     {
-        return $this->formations;
+        return $this->dispense;
     }
 
-    public function addFormation(Formation $formation): self
+    public function setDispense(?Dispense $dispense): static
     {
-        if (!$this->formations->contains($formation)) {
-            $this->formations->add($formation);
-            $formation->setReward($this);
+        $this->dispense = $dispense;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(User $user): static
+    {
+        if (!$this->users->contains($user)) {
+            $this->users->add($user);
         }
 
         return $this;
     }
 
-    public function removeFormation(Formation $formation): self
+    public function removeUser(User $user): static
     {
-        if ($this->formations->removeElement($formation)) {
-            // set the owning side to null (unless already changed)
-            if ($formation->getReward() === $this) {
-                $formation->setReward(null);
-            }
-        }
+        $this->users->removeElement($user);
 
         return $this;
     }

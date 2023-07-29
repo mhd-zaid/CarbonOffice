@@ -1,0 +1,17 @@
+{% extends 'back/base.html.twig' %}
+{% form_theme new_form 'bootstrap_5_layout.html.twig' %}
+
+{% block main %}
+	{% block new_form %}
+		{{ form_start(new_form) }}
+		<div class="border-gray-200 bg-white shadow-md shadow-gray-400 rounded-lg p-6 mt-14 mb-4">
+			<div>
+				{{ form_row(new_form.message) }}
+			</div>
+			<div>
+				{{ form_row(new_form.discussion) }}
+			</div>
+			<button type="submit" class="mt-6 button button-blue" name="ea[newForm][btn]" value="saveAndReturn" data-action-name="saveAndReturn" form="new-Post-form">Créer</button>
+			{{ form_end(new_form) }}
+		{% endblock new_form %}
+	{% endblock %}

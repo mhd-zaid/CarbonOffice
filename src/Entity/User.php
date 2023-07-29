@@ -76,6 +76,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'employee', targetEntity: Post::class)]
     private Collection $posts;
 
+    #[ORM\ManyToMany(targetEntity: Reward::class, mappedBy: 'users')]
+    private Collection $rewards;
+
     public function __construct()
     {
         $this->missions = new ArrayCollection();
@@ -85,6 +88,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->mentors = new ArrayCollection();
         $this->dispenses = new ArrayCollection();
         $this->posts = new ArrayCollection();
+        $this->rewards = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -453,6 +457,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             if ($post->getEmployee() === $this) {
                 $post->setEmployee(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Reward>
+     */
+    public function getRewards(): Collection
+    {
+        return $this->rewards;
+    }
+
+    public function addReward(Reward $reward): static
+    {
+        if (!$this->rewards->contains($reward)) {
+            $this->rewards->add($reward);
+            $reward->addUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReward(Reward $reward): static
+    {
+        if ($this->rewards->removeElement($reward)) {
+            $reward->removeUser($this);
         }
 
         return $this;
