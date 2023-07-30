@@ -4,8 +4,11 @@
 %}
 
 <form action="{{ url_send_post }}" method="post">
-    <input type="hidden" name="discussionId" value="{{ discussionId }}">
-    <label for="message" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your message</label>
-    <textarea id="message" name="post" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Leave a comment..."></textarea>
-        <button type="submit" class="button button-blue">Envoyer</button>
+	<input type="hidden" name="discussionId" value="{{ discussionId }}">
+	<div class="flex gap-1">
+		<label for="message" class="block mb-2 text-xl font-medium text-gray-900 dark:text-white">Votre message</label>
+		<img class="w-4 h-4" src="{{ asset('images/Pictos/Noirs/Bulle de parole noir.png') }}" alt="Logo-message">
+	</div>
+	<textarea id="message" name="post" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Laissez un commentaire..."></textarea>
+	<button type="submit" class="mt-6 button button-blue no-underline hover:no-underline focus:no-underline focus:text-white hover:text-white">Envoyer</button>
 </form>

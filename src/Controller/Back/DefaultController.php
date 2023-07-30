@@ -30,7 +30,7 @@ class DefaultController extends AbstractDashboardController
     private $security;
     private $em;
 
-    public function __construct(UserRepository $userRepository, Security $security,EntityManagerInterface $em)
+    public function __construct(UserRepository $userRepository, Security $security, EntityManagerInterface $em)
     {
         $this->userRepository = $userRepository;
         $this->security = $security;
@@ -84,15 +84,15 @@ class DefaultController extends AbstractDashboardController
     public function configureUserMenu(User|UserInterface $user): UserMenu
     {
         return UserMenu::new()
-        ->displayUserName()
-        ->displayUserAvatar()
-        ->setName($user->getFullName())
-        ->setGravatarEmail($user->getEmail())
-        ->addMenuItems([
-            MenuItem::linkToRoute('Mon compte', 'fa fa-user', 'back_profile_index'),
-            MenuItem::linkToRoute('Paramètre', 'fa fa-sliders', ''),
-            MenuItem::linkToLogout("Déconnexion", 'fa fa-sign-out-alt'),
-        ]);
+            ->displayUserName()
+            ->displayUserAvatar()
+            ->setName($user->getFullName())
+            ->setGravatarEmail($user->getEmail())
+            ->addMenuItems([
+                MenuItem::linkToRoute('Mon compte', 'fa fa-user', 'back_profile_index'),
+                MenuItem::linkToRoute('Paramètre', 'fa fa-sliders', ''),
+                MenuItem::linkToLogout("Déconnexion", 'fa fa-sign-out-alt'),
+            ]);
     }
 
     #[Route('/mentor-formation/{formationId}', name: 'app_mentorByFormation')]

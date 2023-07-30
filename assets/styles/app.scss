@@ -64,13 +64,16 @@ body{
 
     & .button{
         &-blue{
-            @apply bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150;
+            @apply text-white active:bg-blue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150;
+            background-color: $color-charte-blue;
         }
         &-red{
             @apply bg-red-500 text-white active:bg-red-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150;
+            background-color: $color-charte-red;
         }
         &-green{
             @apply bg-green-500 text-white active:bg-green-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150;
+            background-color: $color-charte-green;
         }
         &-yellow{
             @apply bg-yellow-500 text-white active:bg-yellow-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150;
@@ -179,7 +182,7 @@ body{
 
                 .leaderboard__icon{
                     i.fa-calendar-days{
-                        color: #00BB7E;
+                        color: $color-charte-green;
                     }
 				}
 			}
