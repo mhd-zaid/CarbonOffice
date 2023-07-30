@@ -58,7 +58,6 @@ class UserCrudController extends AbstractCrudController
         foreach ($skills as $skill) {
             $skillChoices[$skill->getTitle()] = $skill;
         }
-        dump($skillChoices);
         return [
             FormField::addTab('Details'),
             TextField::new('lastname')->setLabel('Nom'),

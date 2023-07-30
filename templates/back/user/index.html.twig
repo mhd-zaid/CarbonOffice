@@ -15,9 +15,7 @@
 
 	<div class="bg-gray-100 p-4 dark:border-gray-700 mt-14 container mx-auto">
 		{% for menuItem in ea.mainMenu.items %}
-			{#      {{ dump(menuItem) }}#}
 		{% endfor %}
-		{#   {{ dump(users) }}#}
 		<div class="grid grid-cols-4 gap-x-6 space-y-4">
 			{% for user in entities %}
 				<div class="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">

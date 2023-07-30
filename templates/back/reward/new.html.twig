@@ -1,10 +1,6 @@
 {% extends 'back/base.html.twig' %}
 {% block main %}
     <div class="card">
-        {{ dump(dispense) }}
-        {% for rewards in dispense.rewards %}
-            Reward{{ dump(rewards) }}
-        {% endfor %}
         <table>
             <thead>
             <tr>

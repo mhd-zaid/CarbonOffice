@@ -15,11 +15,38 @@
 				</div>
 			</div>
 			<div class=" flex flex-col justify-start space-y-1">
-				<h1 class="text-2xl font-bold text-gray-900">{{ user.firstname }}
+				<div class="flex items-center space-x-2">
+				<h1 class="text-2xl font-bold text-gray-900 m-0">{{ user.firstname }}
 					{{ user.lastname }}</h1>
+					{{ include('components/mentor.html.twig') }}
+				</div>
 
 				<p class="text-sm font-medium text-gray-500">
 					<span class="text-gray-900">Software frontend architect</span>
+				</p>
+				<p class="flex">
+
+					{% if user.reward.level < 10 %}
+						{% include 'components/medal1.html.twig' with { 'color': '#CD7F32' } %}
+					{% elseif user.reward.level >= 10 and user.reward.level < 30 %}
+						{% include 'components/medal1.html.twig' with { 'color': '#C0C0C0' } %}
+					{% elseif user.reward.level >= 30 and user.reward.level < 60 %}
+						{% include 'components/medal1.html.twig' with { 'color': '#FFD700' } %}
+					{% elseif user.reward.level >= 60 and user.reward.level < 90 %}
+						{% include 'components/medal2.html.twig' with { 'color': '#CD7F32' } %}
+					{% elseif user.reward.level >= 90 and user.reward.level < 120 %}
+						{% include 'components/medal2.html.twig' with { 'color': '#C0C0C0' } %}
+					{% elseif user.reward.level >= 120 and user.reward.level < 150 %}
+						{% include 'components/medal2.html.twig' with { 'color': '#FFD700' } %}
+					{% elseif user.reward.level >= 150 and user.reward.level < 200 %}
+						{% include 'components/trophy.html.twig' with { 'color': '#C0C0C0' } %}
+					{% elseif user.reward.level >= 200 and user.reward.level < 250 %}
+						{% include 'components/trophy.html.twig' with { 'color': '#CD7F32' } %}
+					{% elseif user.reward.level >= 250 %}
+						{% include 'components/trophy.html.twig' with { 'color': '#FFD700' } %}
+					{% endif %}
+
+{#					{{ dump(user.reward) }}#}
 				</p>
 			</div>
 		</div>

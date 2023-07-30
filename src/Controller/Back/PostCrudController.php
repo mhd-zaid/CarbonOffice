@@ -73,8 +73,6 @@ class PostCrudController extends AbstractCrudController
 
     public function new(AdminContext $context)
     {
-        dump($newForm);
-        die();
         $post = new Post();
 
         $newForm = $this->createNewForm($context->getEntity(), $context->getCrud()->getNewFormOptions(), $context);
