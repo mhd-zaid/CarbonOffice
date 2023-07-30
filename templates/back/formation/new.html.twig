@@ -5,7 +5,7 @@
     {% include 'components/page_header.html.twig' with { page_title: 'Nouvelle formation'} %}
     {% block new_form %}
         {{ form_start(new_form) }}
-        <div class="border-gray-200 bg-white shadow-md shadow-gray-400 rounded-lg p-6 mt-14 mb-4">
+        <div class="card p-6 mt-14 mb-4">
         <div>
             {{ form_row(new_form.title) }}
         </div>

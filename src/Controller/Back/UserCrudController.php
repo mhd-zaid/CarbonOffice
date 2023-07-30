@@ -63,7 +63,7 @@ class UserCrudController extends AbstractCrudController
             TextField::new('lastname')->setLabel('Nom'),
             TextField::new('firstname')->setLabel('Prénom'),
             TextField::new('email')->onlyOnForms(),
-            TextField::new('plainPassword')->onlyOnForms(),
+            TextField::new('plainPassword')->setFormTypeOption('label' , 'Mot de passe')->onlyOnForms(),
             IntegerField::new('age')->onlyOnForms(),
             FormField::addTab('Address')->onlyOnForms(),
             TextField::new('phone')->onlyOnForms()->setLabel('Téléphone'),

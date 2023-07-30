@@ -69,7 +69,7 @@ class DefaultController extends AbstractDashboardController
             MenuItem::linkToCrud('Mentoring', 'fa fa-chalkboard', Mentor::class),
 
             MenuItem::section('Espace communauté'),
-            MenuItem::linkToCrud('Actualité', 'fa fa-people-group', Discussion::class),
+            MenuItem::linkToCrud('Discussions', 'fa fa-people-group', Discussion::class),
 
             MenuItem::section('Espace planification'),
             MenuItem::linkToCrud('Planning', 'fa fa-calendar-days', Planning::class),

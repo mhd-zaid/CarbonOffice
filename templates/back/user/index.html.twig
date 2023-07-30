@@ -1,41 +1,65 @@
 {% extends 'back/base.html.twig' %}
 
 {% block main %}
+	<div class="flex justify-between items-center">
+		<h1 class="font-bold text-3xl md:text-4xl lg:text-5xl font-heading text-gray-900">Liste des consultants</h1>
+		{% set url = ea_url()
+			.setController('App\\Controller\\Back\\UserCrudController')
+			.setAction('new')
+		%}
+		<a href="{{url}}" class="button button-blue no-underline hover:no-underline focus:no-underline focus:text-white hover:text-white">Créer un utilisateur</a>
+	</div>
 	<h2 class="text-base font-bold text-gray-900">Nous avons
 		<span class=" font-black text-emerald-600 text-lg">{{ entities|length }}</span>
 		consultant sur notre plateforme</h2>
-	<h1 class="font-bold text-3xl md:text-4xl lg:text-5xl font-heading text-gray-900">Liste des consultants</h1>
 
 
-	{% set url = ea_url()
-        .setController('App\\Controller\\Back\\UserCrudController')
-        .setAction('new')
-         %}
-	<a href="{{url}}" class="button button-blue no-underline hover:no-underline focus:no-underline focus:text-white hover:text-white">Créer un utilisateur</a>
 
-	<div class="bg-gray-100 p-4 dark:border-gray-700 mt-14 container mx-auto">
-		{% for menuItem in ea.mainMenu.items %}
-		{% endfor %}
+	<div class="p-4 dark:border-gray-700">
 		<div class="grid grid-cols-4 gap-x-6 space-y-4">
 			{% for user in entities %}
 				<div class="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
 					<div class="py-6 flex flex-col items-center pb-10">
 						<img class="w-24 h-24 mb-3 rounded-full shadow-lg" src="https://randomuser.me/api/portraits/men/{{ user.instance.id }}.jpg" alt="Bonnie image"/>
-						<h5 class="mb-1 text-xl font-medium text-gray-900 dark:text-white">{{ user.instance.firstname }}
-							{{ user.instance.lastname }}</h5>
+						<div class="flex items-center space-x-4">
+							<h5 class="mb-1 text-xl font-medium text-gray-900 dark:text-white">{{ user.instance.fullname }}</h5>
+							<p class="flex">
+								{% if user.instance.reward.level is defined %}
+									{% if user.instance.reward.level < 10 %}
+										{% include 'components/medal1.html.twig' with { 'color': '#CD7F32' } %}
+									{% elseif user.instance.reward.level >= 10 and user.instance.reward.level < 30 %}
+										{% include 'components/medal1.html.twig' with { 'color': '#C0C0C0' } %}
+									{% elseif user.instance.reward.level >= 30 and user.instance.reward.level < 60 %}
+										{% include 'components/medal1.html.twig' with { 'color': '#FFD700' } %}
+									{% elseif user.instance.reward.level >= 60 and user.instance.reward.level < 90 %}
+										{% include 'components/medal2.html.twig' with { 'color': '#CD7F32' } %}
+									{% elseif user.instance.reward.level >= 90 and user.instance.reward.level < 120 %}
+										{% include 'components/medal2.html.twig' with { 'color': '#C0C0C0' } %}
+									{% elseif user.instance.reward.level >= 120 and user.instance.reward.level < 150 %}
+										{% include 'components/medal2.html.twig' with { 'color': '#FFD700' } %}
+									{% elseif user.instance.reward.level >= 150 and user.instance.reward.level < 200 %}
+										{% include 'components/trophy.html.twig' with { 'color': '#C0C0C0' } %}
+									{% elseif user.instance.reward.level >= 200 and user.instance.reward.level < 250 %}
+										{% include 'components/trophy.html.twig' with { 'color': '#CD7F32' } %}
+									{% elseif user.instance.reward.level >= 250 %}
+										{% include 'components/trophy.html.twig' with { 'color': '#FFD700' } %}
+									{% endif %}
+								{% endif %}
+							</p>
+						</div>
 						<div class="flex mt-6 items-center pb-10">
 							{% for skill in user.instance.skills.toArray() %}
 								<span class="bg-emerald-100 text-emerald-700 text-sm font-medium mr-2  px-2.5 py-0.5 rounded-full">{{ skill.title }}</span>
 							{% endfor %}
 						</div>
 						<span class="text-sm text-gray-500 dark:text-gray-400">Developer</span>
-						<div class="flex flex-row justify-end px-4 pt-4">
+						<div class="flex flex-row justify-end px-4 pt-4 space-x-4">
 							{% set url = ea_url()
-                                .setController('App\\Controller\\Back\\UserCrudController')
-                                .setAction('edit')
-                                .set('entityId', user.instance.id)
-                                .set('userName', user.instance.firstname)
-                                 %}
+								.setController('App\\Controller\\Back\\UserCrudController')
+								.setAction('edit')
+								.set('entityId', user.instance.id)
+								.set('userName', user.instance.firstname)
+							%}
 							<a href="{{url}}" class="button button-blue no-underline hover:no-underline focus:no-underline focus:text-white hover:text-white">Modifier</a>
 							{% set url_delete_formation = ea_url()
 								.setController('App\\Controller\\Back\\UserCrudController')
@@ -54,12 +78,12 @@
 
 	<script>
 		document.addEventListener("DOMContentLoaded", function () {
-const categoryButton = document.getElementById("categoryButton");
-const categoryDropdown = document.getElementById("categoryDropdown");
+			const categoryButton = document.getElementById("categoryButton");
+			const categoryDropdown = document.getElementById("categoryDropdown");
 
-categoryButton.addEventListener("click", function () {
-categoryDropdown.classList.toggle("hidden");
-});
-});
+			categoryButton.addEventListener("click", function () {
+				categoryDropdown.classList.toggle("hidden");
+			});
+		});
 	</script>
 {% endblock %}

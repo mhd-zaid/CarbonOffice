@@ -33,46 +33,16 @@ body{
         }
     }
 
-    //& .button{
-    //    @apply rounded-md text-center py-2 px-4 text-white text-lg;
-    //    &-details{
-    //        @apply px-6 flex items-center justify-center;
-    //        background-color: $color-p-3;
-    //        &:hover{
-    //            background-color: $color-p-5;
-    //        }
-    //    }
-    //    &-valid{
-    //        @apply bg-green-400;
-    //        &:hover{
-    //            @apply bg-green-500;
-    //        }
-    //    }
-    //    &-invalid{
-    //        @apply bg-red-400;
-    //        &:hover{
-    //            @apply bg-red-600;
-    //        }
-    //    }
-    //    &-edit{
-    //        background-color: $color-p-1;
-    //        &:hover{
-    //        background-color: #0f2c38;
-    //        }
-    //    }
-    //}
-
     & .button{
         &-blue{
-            @apply text-white active:bg-blue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150;
-            background-color: $color-charte-blue;
+            @apply btn btn-primary shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150;
         }
         &-red{
-            @apply bg-red-500 text-white active:bg-red-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150;
+            @apply btn btn-danger shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150;
             background-color: $color-charte-red;
         }
         &-green{
-            @apply bg-green-500 text-white active:bg-green-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150;
+            @apply btn btn-success shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150;
             background-color: $color-charte-green;
         }
         &-yellow{

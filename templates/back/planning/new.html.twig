@@ -3,23 +3,25 @@
 
 {% block main %}
 	<h1 class="font-bold text-3xl md:text-4xl lg:text-5xl font-heading text-gray-900">
-		Créer le planning
+		Ajouter un évènement
 	</h1>
 
 	{% block new_form %}
 		{{ form_start(new_form) }}
-		<div class="border-gray-200 bg-white shadow-md shadow-gray-400 rounded-lg p-6 mt-14 mb-4">
-			{{ form_errors(new_form) }}
-			<div>
-				{{ form_row(new_form.dateStart) }}
+		<div class="card p-4" style="height: 425px">
+			<div class="gap-6 mb-6 grid-cols-3 space-y-4">
+				{{ form_errors(new_form) }}
+				<div>
+					{{ form_row(new_form.dateStart) }}
+				</div>
+				<div>
+					{{ form_row(new_form.dateEnd) }}
+				</div>
+				<div>
+					{{ form_row(new_form.type) }}
+				</div>
+				<button type="submit" class="mt-6 btn btn-primary" name="ea[newForm][btn]" value="saveAndReturn" data-action-name="saveAndReturn" form="new-Planning-form">Créer</button>
 			</div>
-			<div>
-				{{ form_row(new_form.dateEnd) }}
-			</div>
-			<div>
-				{{ form_row(new_form.type) }}
-			</div>
-			<button type="submit" class="mt-6 btn btn-primary" name="ea[newForm][btn]" value="saveAndReturn" data-action-name="saveAndReturn" form="new-Planning-form">Créer</button>
 		</div>
 		{{ form_end(new_form) }}
 	{% endblock new_form %}

@@ -1,15 +1,13 @@
 {% extends 'back/base.html.twig' %}
 {% block main %}
-	<h1>Planning de
-		{{user.lastname}}
-		-
-		{{user.firstname}}
-	</h1>
 	{% set url = ea_url()
                 .setController('App\\Controller\\Back\\PlanningCrudController')
                 .setAction('new') %}
+	<div class="flex justify-between items-center">
+		<h1>Planning de {{user.fullname}}</h1>
+		<a class="btn btn-primary" href="{{url}}">Créer un évènement</a>
+	</div>
 	<div class="container-link-create-event">
-		<a class="link-create-event button button-red no-underline hover:no-underline focus:no-underline focus:text-white hover:text-white" href="{{url}}">Créer un évènement</a>
 	</div>
 	<div id="calendar-holder"></div>
 

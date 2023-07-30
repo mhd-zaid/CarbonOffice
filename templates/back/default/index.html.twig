@@ -56,26 +56,26 @@ categoryDropdown.classList.toggle("hidden");
 		weekends: false,
 		eventClick:  function(arg) {
 				$('#show-dispense').modal('show');
-				$('#modal-header').html('<h5 class="modal-title">'+arg.event.title+'</h5>');
+				$('#modal-header').html('<h5 class="modal-title font-bold">'+arg.event.title+'</h5>');
 				var displayConsultants = '<ul>'+arg.event.extendedProps.consultants.map(consultant => '<li>'+consultant+'</li>').join('')+'</ul>';
 				$('#modal-body').html(
-					'<p>Début de formation: '+ (new Date(arg.event.start)).toLocaleString(
+					'<p><span class="font-bold">Début de formation:</span> '+ (new Date(arg.event.start)).toLocaleString(
 						'fr-FR', {
 							timeZone: 'Europe/Paris',
 							format: 'dd/MM/yyyy HH:mm:ss',
 							}
 						)+'</p>'+
-					'<p>Fin de formation: '+ (new Date(arg.event.end)).toLocaleString(
+					'<p><span class="font-bold">Fin de formation:</span> '+ (new Date(arg.event.end)).toLocaleString(
 						'fr-FR', {
 							timeZone: 'Europe/Paris',
 							format: 'dd/MM/yyyy HH:mm:ss',
 							}
 						)+'</p>'+
-					'<p>Durée de formation: '+arg.event.extendedProps.duration+' min</p>'+
-					'<p>Mentor: '+arg.event.extendedProps.mentor+'</p>'+
-					'participants: '+
+					'<p><span class="font-bold">Durée de formation:</span> '+arg.event.extendedProps.duration+' min</p>'+
+					'<p><span class="font-bold">Mentor:</span> '+arg.event.extendedProps.mentor+'</p>'+
+					'<p><span class="font-bold">Liste des articipants:</span> '+
 					displayConsultants+
-					'<a href="'+arg.event.extendedProps.link+'">'+arg.event.extendedProps.link+'</a>'
+					'<p><span class="font-bold">Lien: </span><a href="'+arg.event.extendedProps.link+'">'+arg.event.extendedProps.link+'</a>'
 					);
 			},
 	});

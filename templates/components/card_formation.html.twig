@@ -17,14 +17,14 @@
 <div class="card p-4">
 	<div class="flex justify-between items-center mb-2">
 		<div class="flex gap-1 items-center">
-			<p class="font-bold m-0">{{ formation.getTitle() }}</p>
 			<img class="w-4 h-4" src="{{ asset('images/Pictos/Noirs/Formation noir.png') }}" alt="Logo-formation">
+			<p class="font-bold m-0">{{ formation.getTitle() }}</p>
 		</div>
-		<div>
+		<div class="space-x-4">
 			{% if is_granted('ROLE_CONSULTANT') %}
-				<a href="#">
-					<button class="button button-blue">Je rejoins !</button>
-				</a>
+{#				<a href="#">#}
+{#					<button class="button button-blue">Je rejoins !</button>#}
+{#				</a>#}
 				<a href="{{ url_to_mentor }}">
 					<button class="button button-blue">Devenir Mentor</button>
 				</a>
@@ -39,7 +39,10 @@
 			{% endif %}
 		</div>
 	</div>
-	<p>{{ formation.description}}</p>
+	<p>
+		<span class="font-bold">Description:</span>
+		{{ formation.description}}
+	</p>
 	<p>
 		<span class="font-bold">Prérequis:</span>
 		{{ formation.requirements }}</p>

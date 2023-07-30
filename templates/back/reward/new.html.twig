@@ -1,6 +1,9 @@
 {% extends 'back/base.html.twig' %}
 {% block main %}
     <div class="card">
+        <div class="card-header bg-transparent">
+            <h1>{{ dispense.formation.title }}</h1>
+        </div>
         <table>
             <thead>
             <tr>
@@ -22,7 +25,6 @@
                     <td>{{ consultant.firstname }}</td>
                     <td>{{ consultant.email }}</td>
                     {% if dispense.rewards|length == 0 %}
-                        <td>ok</td>
                         <td>
                             <a href="{{ url_give_reward }}">
                                 <button type="button" class="button button-blue">Ajouter récompense</button>
