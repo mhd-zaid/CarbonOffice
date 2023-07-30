@@ -2,9 +2,6 @@
 {% block main %}
     <div class="card">
         {{ dump(dispense) }}
-        {% for consultant in dispense.consultants %}
-            cONSULTANT{{ dump(consultant) }}
-        {% endfor %}
         {% for rewards in dispense.rewards %}
             Reward{{ dump(rewards) }}
         {% endfor %}
@@ -36,18 +33,19 @@
                             </a>
                         </td>
                     {% endif %}
-                    {% for reward in dispense.rewards %}
-                        {% for rdispense in reward.dispenses %}
-                            {% if rdispense != dispense %}
-                                <td>ko</td>
-                                <td>
-                                    <a href="{{ url_give_reward }}">
-                                        <button type="button" class="button button-blue">Ajouter récompense</button>
-                                    </a>
-                                </td>
-                            {% endif %}
-                        {% endfor %}
-                      
+                    {% for reward in rewards %}
+                        {% if reward.consultant.id != consultant.id %}
+                            {% for rdispense in reward.dispenses %}
+                                {% if rdispense.id == dispense.id %}
+                                    <td>ko</td>
+                                    <td>
+                                        <a href="{{ url_give_reward }}">
+                                            <button type="button" class="button button-blue">Ajouter récompense</button>
+                                        </a>
+                                    </td>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
                     {% endfor %}
                 </tr>
             {% endfor %}

@@ -34,10 +34,10 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\UrlField;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use EasyCorp\Bundle\EasyAdminBundle\Security\Permission;
-use http\Env\Response;
 use phpDocumentor\Reflection\DocBlock\Tags\Link;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class DispenseCrudController extends AbstractCrudController
@@ -183,15 +183,16 @@ class DispenseCrudController extends AbstractCrudController
     {
         return $this->render('back/reward/new.html.twig', [
             'dispense' => $context->getEntity()->getInstance(),
+            'rewards' => $this->em->getRepository(Reward::class)->findAll(),
         ]);
     }
 
-    public function giveReward(AdminContext $context): RedirectResponse
+    public function giveReward(AdminContext $context): Response
     {
-
         $consultant = $this->em->getRepository(User::class)->find($context->getRequest()->get('consultantId'));
         $reward = $this->em->getRepository(Reward::class)->findOneBy(['consultant' => $consultant]);
         $dispense = $this->em->getRepository(Dispense::class)->find($context->getRequest()->get('dispenseId'));
+        $rewards = $this->em->getRepository(Reward::class)->findAll();
         if(empty($reward)){
             $reward = new Reward();
             $reward->setLevel(0);
@@ -207,7 +208,10 @@ class DispenseCrudController extends AbstractCrudController
         $this->em->persist($reward);
         $this->em->flush();
 
-        return $this->redirect($this->container->get(AdminUrlGenerator::class)->setAction(Action::INDEX)->unset(EA::ENTITY_ID)->generateUrl());
+        return $this->render('back/reward/new.html.twig', [
+            'dispense' => $dispense,
+            'rewards' => $rewards,
+        ]);
 
     }
 }
