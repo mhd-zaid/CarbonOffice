@@ -11,6 +11,7 @@
 {% block main %}
     <div class="flex justify-between items-center">
         {% include 'components/page_header.html.twig' with {'page_title': 'Liste des formations'} %}
+            {% if is_granted('ROLE_RH') %}
         <div class="flex space-x-2">
              <a href="{{url_new_dispense}}">
                 <button class="button button-blue">Planifier une formation</button>
@@ -19,8 +20,11 @@
                 <button class="button button-green">Ajouter une formation</button>
             </a>
         </div>
+            {% endif %}
     </div>
+    <div class="grid gap-4 grid-cols-2">
     {% for formation in entities %}
         {% include 'components/card_formation.html.twig' with {'formation': formation.instance} %}
     {% endfor %}
+    </div>
 {% endblock %}

@@ -36,9 +36,13 @@ class Dispense
     #[ORM\ManyToOne(inversedBy: 'dispenses')]
     private ?Formation $formation = null;
 
+    #[ORM\ManyToMany(targetEntity: Reward::class, mappedBy: 'dispenses')]
+    private Collection $rewards;
+
     public function __construct()
     {
         $this->consultants = new ArrayCollection();
+        $this->rewards = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -129,4 +133,32 @@ class Dispense
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, Reward>
+     */
+    public function getRewards(): Collection
+    {
+        return $this->rewards;
+    }
+
+    public function addReward(Reward $reward): static
+    {
+        if (!$this->rewards->contains($reward)) {
+            $this->rewards->add($reward);
+            $reward->addDispense($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReward(Reward $reward): static
+    {
+        if ($this->rewards->removeElement($reward)) {
+            $reward->removeDispense($this);
+        }
+
+        return $this;
+    }
+
 }

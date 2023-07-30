@@ -15,76 +15,69 @@ class Reward
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 1000)]
-    private ?string $title = null;
+    #[ORM\Column]
+    private ?int $level = 0;
 
-    #[ORM\Column(length: 1000)]
-    private ?string $description = null;
+    #[ORM\OneToOne(inversedBy: 'reward', cascade: ['persist', 'remove'])]
+    private ?User $consultant = null;
 
-    #[ORM\OneToMany(mappedBy: 'reward', targetEntity: Formation::class)]
-    private Collection $formations;
+    #[ORM\ManyToMany(targetEntity: Dispense::class, inversedBy: 'rewards')]
+    private Collection $dispenses;
 
     public function __construct()
     {
-        $this->formations = new ArrayCollection();
+        $this->dispenses = new ArrayCollection();
     }
 
     public function getId(): ?int
     {
         return $this->id;
     }
-
-    public function getTitle(): ?string
+    public function getLevel(): ?int
     {
-        return $this->title;
+        return $this->level;
     }
 
-    public function setTitle(string $title): self
+    public function setLevel(?int $level): self
     {
-        $this->title = $title;
-
+        $this->level = $level;
         return $this;
     }
 
-    public function getDescription(): ?string
+    public function getConsultant(): ?User
     {
-        return $this->description;
+        return $this->consultant;
     }
 
-    public function setDescription(string $description): self
+    public function setConsultant(?User $consultant): static
     {
-        $this->description = $description;
+        $this->consultant = $consultant;
 
         return $this;
     }
 
     /**
-     * @return Collection<int, Formation>
+     * @return Collection<int, Dispense>
      */
-    public function getFormations(): Collection
+    public function getDispenses(): Collection
     {
-        return $this->formations;
+        return $this->dispenses;
     }
 
-    public function addFormation(Formation $formation): self
+    public function addDispense(Dispense $dispense): static
     {
-        if (!$this->formations->contains($formation)) {
-            $this->formations->add($formation);
-            $formation->setReward($this);
+        if (!$this->dispenses->contains($dispense)) {
+            $this->dispenses->add($dispense);
         }
 
         return $this;
     }
 
-    public function removeFormation(Formation $formation): self
+    public function removeDispense(Dispense $dispense): static
     {
-        if ($this->formations->removeElement($formation)) {
-            // set the owning side to null (unless already changed)
-            if ($formation->getReward() === $this) {
-                $formation->setReward(null);
-            }
-        }
+        $this->dispenses->removeElement($dispense);
 
         return $this;
     }
+
 }

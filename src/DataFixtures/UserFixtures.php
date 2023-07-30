@@ -55,10 +55,10 @@ class UserFixtures extends Fixture implements OrderedFixtureInterface
         $manager->persist($object);
 
         $object = (new User())
-            ->setEmail('consultant@user.fr')
             ->setRoles(['ROLE_CONSULTANT'])
             ->setPassword($pwd)
             ->setFirstname($faker->firstName)
+            ->setEmail('consultant@user.fr')
             ->setLastname($faker->lastName)
             ->setAge($faker->randomDigit())
             ->setPhone($faker->phoneNumber)
@@ -67,12 +67,34 @@ class UserFixtures extends Fixture implements OrderedFixtureInterface
             ->setZipCode(str_replace(" ", "", $faker->postcode))
             ->setCreatedAt(new DateTime())
             ->setUpdatedAt(new DateTime())
-            ->addSkill($skills[0])
-            ->addSkill($skills[1])
-            ->addSkill($skills[2])
-            ->addSkill($skills[4])
         ;
+        $nbskills = random_int(1, 4);
+        for ($j = 0; $j < $nbskills; $j++) {
+            $object->addSkill($skills[random_int(0, count($skills) - 1)]);
+        }
         $manager->persist($object);
+
+        for ($i = 0; $i<8; $i++) {
+            $object = (new User())
+                ->setRoles(['ROLE_CONSULTANT'])
+                ->setPassword($pwd)
+                ->setFirstname($faker->firstName)
+                ->setEmail('consultant'.$i.'@user.fr')
+                ->setLastname($faker->lastName)
+                ->setAge($faker->randomDigit())
+                ->setPhone($faker->phoneNumber)
+                ->setAddress($faker->address)
+                ->setCity($faker->city)
+                ->setZipCode(str_replace(" ", "", $faker->postcode))
+                ->setCreatedAt(new DateTime())
+                ->setUpdatedAt(new DateTime())
+            ;
+            $nbskills = random_int(1, 4);
+            for ($j = 0; $j < $nbskills; $j++) {
+                $object->addSkill($skills[random_int(0, count($skills) - 1)]);
+            }
+            $manager->persist($object);
+        }
 
 
         $manager->flush();

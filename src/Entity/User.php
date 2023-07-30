@@ -76,6 +76,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'employee', targetEntity: Post::class)]
     private Collection $posts;
 
+    #[ORM\OneToOne(mappedBy: 'consultant', cascade: ['persist', 'remove'])]
+    private ?Reward $reward = null;
+
     public function __construct()
     {
         $this->missions = new ArrayCollection();
@@ -457,4 +460,27 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    public function getReward(): ?Reward
+    {
+        return $this->reward;
+    }
+
+    public function setReward(?Reward $reward): static
+    {
+        // unset the owning side of the relation if necessary
+        if ($reward === null && $this->reward !== null) {
+            $this->reward->setConsultant(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($reward !== null && $reward->getConsultant() !== $this) {
+            $reward->setConsultant($this);
+        }
+
+        $this->reward = $reward;
+
+        return $this;
+    }
+
 }

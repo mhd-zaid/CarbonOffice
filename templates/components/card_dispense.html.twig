@@ -3,28 +3,43 @@
     .setAction('delete')
     .setEntityId(dispense.id)
 %}
-
+{% set url_new_reward = ea_url()
+    .setController('App\\Controller\\Back\\DispenseCrudController')
+    .setAction('generateReward')
+    .setEntityId(dispense.id)
+%}
 <div class="card p-4">
-    <div class="flex justify-between items-center mb-2">
-        <p class="font-bold m-0">{{ dispense.mentor.formation.getTitle() }}</p>
-        <div>
-            {% if is_granted('ROLE_RH') or is_granted('ROLE_ADMIN') %}
-            <a href="{{ url_delete_formation }}">
-                <button class="button button-red">Supprimer</button>
+	<div class="flex justify-between items-center mb-2">
+		<div class="flex gap-1 items-center">
+			<p class="font-bold m-0">{{ dispense.mentor.formation.getTitle() }}</p>
+			<img class="w-4 h-4" src="{{ asset('images/Pictos/Noirs/Progresser noir.png') }}" alt="Logo-message">
+
+		</div>
+		<div>
+        <a href="{{ url_new_reward }}">
+                <button class="button button-green">Attribuer une récompense</button>
             </a>
-            {% endif %}
-        </div>
-    </div>
-    <p>{{ dispense.date | date('d/m/Y') }}</p>
-    <p>{{ dispense.mentor.consultant.lastname }} - {{ dispense.mentor.consultant.firstname }}</p>
-    <div class="flex items-center space-x-2">
-        <i class="fa fa-link" aria-hidden="true"></i>
-        <a href="{{dispense.link}}"><p class="m-0">{{ dispense.link}}</p></a>
-    </div>
-    <div class="flex space-x-4">
-        <div class="flex items-center space-x-2">
-            <p class="m-0">{{ dispense.mentor.formation.duration }}m</p>
-            <i class="fa-regular fa-clock"></i>
-        </div>
-    </div>
+			{% if is_granted('ROLE_RH') or is_granted('ROLE_ADMIN') %}
+				<a href="{{ url_delete_formation }}">
+					<button class="button button-red">Supprimer</button>
+				</a>
+			{% endif %}
+		</div>
+	</div>
+	<p>{{ dispense.date | date('d/m/Y') }}</p>
+	<p>{{ dispense.mentor.consultant.lastname }}
+		-
+		{{ dispense.mentor.consultant.firstname }}</p>
+	<div class="flex items-center space-x-2">
+		<i class="fa fa-link" aria-hidden="true"></i>
+		<a href="{{dispense.link}}">
+			<p class="m-0">{{ dispense.link}}</p>
+		</a>
+	</div>
+	<div class="flex space-x-4">
+		<div class="flex items-center space-x-2">
+			<p class="m-0">{{ dispense.mentor.formation.duration }}m</p>
+			<i class="fa-regular fa-clock"></i>
+		</div>
+	</div>
 </div>

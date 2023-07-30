@@ -1,103 +1,85 @@
 {% extends 'back/base.html.twig' %}
 {% block main %}
-	<h1>Planning de
-		{{user.lastname}}
-		-
-		{{user.firstname}}
-	</h1>
 	{% set url = ea_url()
                 .setController('App\\Controller\\Back\\PlanningCrudController')
                 .setAction('new') %}
+	<div class="flex justify-between items-center">
+		<h1>Planning de {{user.fullname}}</h1>
+		<a class="btn btn-primary" href="{{url}}">Créer un évènement</a>
+	</div>
 	<div class="container-link-create-event">
-		<a class="link-create-event" href="{{url}}">Créer un evenement</a>
 	</div>
 	<div id="calendar-holder"></div>
 
-    <div class="modal fade" id="show-dispense" tabindex="-1" role="dialog" aria-labelledby="show-dispense" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div id="modal-header" class="modal-header">
-                   
-                </div>
-                <div id="modal-body" class="modal-body">
-                   
-                </div>
-                <div id="modal-footer" class="modal-footer">
-                    <button id="close-dispense" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div id="calendar-holder"></div>
-<script>
- // Définir le format des en-têtes de jour
+	<div class="modal fade" id="show-dispense" tabindex="-1" role="dialog" aria-labelledby="show-dispense" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div id="modal-header" class="modal-header"></div>
+				<div id="modal-body" class="modal-body"></div>
+				<div id="modal-footer" class="modal-footer">
+					<button id="close-dispense" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="calendar-holder"></div>
+	<script>
+		// Définir le format des en-têtes de jour
 $(document).ready(function () {
-    $("#close-dispense").click(function(){
-        $('#show-dispense').modal('hide');
-    });
-  var calendarEl = document.getElementById('calendar-holder');
-  var userId = parseInt({{app.request.get('userId')}});
-  var calendar = new FullCalendar.Calendar(calendarEl, {
-      editable: false,
-      eventSources: [
-          {
-              url: "/fc-load-events",
-              method: "POST",
-              extraParams: {
-                  filters: JSON.stringify({}),
-                  userId: userId,
-              },
-              failure: () => {
-                  // alert("There was an error while fetching FullCalendar!");
-              }, 
-          },
-      ],
-      headerToolbar: {
-          start: 'prev,next today',
-          center: 'title',
-          end: 'dayGridMonth,timeGridWeek,timeGridDay'
-      },
-      timeZone: 'UTC',
-      firstDay: 1,
-      weekends: false,
-      dayHeaderFormat: {
-        weekday: 'long'
-        },
-      eventClick:  function(arg) {
-            $('#show-dispense').modal('show');
-            $('#modal-header').html('<h5 class="modal-title">'+arg.event.title+'</h5>');
-            var displayConsultants = '<ul>'+arg.event.extendedProps.consultants.map(consultant => '<li>'+consultant+'</li>').join('')+'</ul>';
-            $('#modal-body').html(
-                '<p>Début de formation: '+ (new Date(arg.event.start)).toLocaleString(
-                    'fr-FR', {
-                        timeZone: 'Europe/Paris',
-                        format: 'dd/MM/yyyy HH:mm:ss',
-                        }
-                    )+'</p>'+
-                '<p>Fin de formation: '+ (new Date(arg.event.end)).toLocaleString(
-                    'fr-FR', {
-                        timeZone: 'Europe/Paris',
-                        format: 'dd/MM/yyyy HH:mm:ss',
-                        }
-                    )+'</p>'+
-                '<p>Durée de formation: '+arg.event.extendedProps.duration+' min</p>'+
-                '<p>Mentor: '+arg.event.extendedProps.mentor+'</p>'+
-                'participants: '+
-                displayConsultants+
-                '<a href="'+arg.event.extendedProps.link+'">'+arg.event.extendedProps.link+'</a>'
-                );
-                 var url_delete_dispense = "{{path('back_app_dispense_delete', {'id': 'dispenseId', 'userId': 'uId'})}}".replace('dispenseId', arg.event.extendedProps.id).replace('uId', userId);
-                $('#modal-footer').html(
-                    '<a href="'+url_delete_dispense+'" class="btn btn-danger">Supprimer</a>'
-                );
-
-            
-
-         },
-  });
-  
-  calendar.render();
+$("#close-dispense").click(function () {
+$('#show-dispense').modal('hide');
 });
-</script>
+var calendarEl = document.getElementById('calendar-holder');
+var userId = parseInt({{ app.request.get('userId') }});
+var calendar = new FullCalendar.Calendar(calendarEl, {
+editable: false,
+eventSources: [
+{
+url: "/fc-load-events",
+method: "POST",
+extraParams: {
+filters: JSON.stringify({}),
+userId: userId
+},
+failure: () => { // alert("There was an error while fetching FullCalendar!");
+}
+},
+],
+headerToolbar: {
+start: 'prev,next today',
+center: 'title',
+end: 'dayGridMonth,timeGridWeek,timeGridDay'
+},
+timeZone: 'UTC',
+firstDay: 1,
+weekends: false,
+dayHeaderFormat: {
+weekday: 'long'
+},
+eventClick: function (arg) {
+$('#show-dispense').modal('show');
+$('#modal-header').html('<h5 class="modal-title">' + arg.event.title + '</h5>');
+var displayConsultants = '<ul>' + arg.event.extendedProps.consultants.map(consultant => '<li>' + consultant + '</li>').join('') + '</ul>';
+$('#modal-body').html('<p>Début de formation: ' + (
+new Date(arg.event.start)
+).toLocaleString('fr-FR', {
+timeZone: 'Europe/Paris',
+format: 'dd/MM/yyyy HH:mm:ss'
+}) + '</p>' + '<p>Fin de formation: ' + (
+new Date(arg.event.end)
+).toLocaleString('fr-FR', {
+timeZone: 'Europe/Paris',
+format: 'dd/MM/yyyy HH:mm:ss'
+}) + '</p>' + '<p>Durée de formation: ' + arg.event.extendedProps.duration + ' min</p>' + '<p>Mentor: ' + arg.event.extendedProps.mentor + '</p>' + 'participants: ' + displayConsultants + '<a href="' + arg.event.extendedProps.link + '">' + arg.event.extendedProps.link + '</a>');
+var url_delete_dispense = "{{ path('back_app_dispense_delete', {'id': 'dispenseId', 'userId': 'uId'}) }}".replace('dispenseId', arg.event.extendedProps.id).replace('uId', userId);
+$('#modal-footer').html('<a href="' + url_delete_dispense + '" class="btn btn-danger">Supprimer</a>');
+
+
+}
+});
+
+calendar.render();
+});
+	</script>
 
 {% endblock %}

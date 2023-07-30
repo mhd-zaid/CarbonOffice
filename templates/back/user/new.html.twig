@@ -2,14 +2,17 @@
 {% form_theme new_form 'bootstrap_5_layout.html.twig' %}
 
 {% block main %}
-	<h1 class="font-bold text-3xl md:text-4xl lg:text-5xl font-heading text-gray-900">
-		Créer un utilisateur
-	</h1>
+<h1 class="font-bold text-3xl md:text-4xl lg:text-5xl font-heading text-gray-900">
+	Créer un utilisateur
+</h1>
 
-	{% block new_form %}
+{% block new_form %}
 		{{ form_start(new_form) }}
-		<div class="border-gray-200 bg-white shadow-md shadow-gray-400 rounded-lg p-6 mt-14 mb-4">
-			{{ form_errors(new_form) }}
+<div class="card p-6 mt-4 mb-4">
+	{{ form_errors(new_form) }}
+	<div class="grid gap-6 mb-6 md:grid-cols-2">
+		<div>
+			<p class="text-main mb-3">Informations personnels</p>
 			<div>
 				{{ form_row(new_form.lastname) }}
 			</div>
@@ -17,30 +20,40 @@
 				{{ form_row(new_form.firstname) }}
 			</div>
 			<div>
-				{{ form_row(new_form.email) }}
-			</div>
-			<div>
-				{{ form_row(new_form.plainPassword) }}
-			</div>
-			<div>
 				{{ form_row(new_form.age) }}
+			</div>
+			<div>
+				{{ form_row(new_form.email) }}
 			</div>
 			<div>
 				{{ form_row(new_form.phone) }}
 			</div>
 			<div>
-				{{ form_row(new_form.address) }}
+				{{ form_row(new_form.plainPassword) }}
 			</div>
-			<div>
-				{{ form_row(new_form.city) }}
+			<p class="text-main mb-3 mt-3">Adresse</p>
+			<div class="grid gap-6 mb-6 md:grid-cols-2">
+				<div>
+					{{ form_row(new_form.zipCode) }}
+				</div>
+				<div>
+					{{ form_row(new_form.city) }}
+				</div>
+				<div>
+					{{ form_row(new_form.address) }}
+				</div>
 			</div>
-			<div>
-				{{ form_row(new_form.zipCode) }}
-			</div>
-			<button type="submit" class="mt-6 btn btn-primary" name="ea[newForm][btn]" value="saveAndReturn" data-action-name="saveAndReturn" form="new-User-form">Créer</button>
-
 		</div>
-		{{ form_end(new_form) }}
+		<div>
+			<p class="text-main mb-3">Compétences</p>
+			<div class="grid gap-6 mb-6 md:grid-cols-2">
+				<div>
+					{{ form_row(new_form.skills) }}
+				</div>
+			</div>
+		</div>
+	</div>
+	{{ form_end(new_form) }}
 	{% endblock new_form %}
 
-{% endblock %}
+	{% endblock %}

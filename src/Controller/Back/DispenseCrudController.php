@@ -6,6 +6,7 @@ use App\Entity\Dispense;
 use App\Entity\Formation;
 use App\Entity\Mentor;
 use App\Entity\Planning;
+use App\Entity\Reward;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
@@ -36,6 +37,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Security\Permission;
 use phpDocumentor\Reflection\DocBlock\Tags\Link;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class DispenseCrudController extends AbstractCrudController
@@ -54,7 +56,7 @@ class DispenseCrudController extends AbstractCrudController
         return $crud
             ->setPageTitle('index', 'Formations planifiées')
             ->setPageTitle('new', 'Planifier une formation')
-            ->setSearchFields(['title', 'description', 'skills.title'])
+            ->setSearchFields(['formation.title'])
             ->overrideTemplate('crud/new', 'back/dispense/new.html.twig')
             ->overrideTemplate('crud/index', 'back/dispense/index.html.twig')
             ->setFormOptions(['validation_groups' => false])
@@ -175,5 +177,41 @@ class DispenseCrudController extends AbstractCrudController
         #rediriger vers la page de show planning
 
         return $this->redirect($this->container->get(AdminUrlGenerator::class)->setController(PlanningCrudController::class)->set('userId',$userId)->setAction('show')->unset(EA::ENTITY_ID)->generateUrl());
+    }
+
+    public function generateReward(AdminContext $context): \Symfony\Component\HttpFoundation\Response
+    {
+        return $this->render('back/reward/new.html.twig', [
+            'dispense' => $context->getEntity()->getInstance(),
+            'rewards' => $this->em->getRepository(Reward::class)->findAll(),
+        ]);
+    }
+
+    public function giveReward(AdminContext $context): Response
+    {
+        $consultant = $this->em->getRepository(User::class)->find($context->getRequest()->get('consultantId'));
+        $reward = $this->em->getRepository(Reward::class)->findOneBy(['consultant' => $consultant]);
+        $dispense = $this->em->getRepository(Dispense::class)->find($context->getRequest()->get('dispenseId'));
+        $rewards = $this->em->getRepository(Reward::class)->findAll();
+        if(empty($reward)){
+            $reward = new Reward();
+            $reward->setLevel(0);
+            $reward->setConsultant($consultant);
+            $reward->addDispense($dispense);
+        }else{
+            if(!$reward->getDispenses()->contains($dispense)){
+                $reward->addDispense($dispense);
+            }
+            $reward->setLevel($reward->getLevel() + 1);
+        }
+
+        $this->em->persist($reward);
+        $this->em->flush();
+
+        return $this->render('back/reward/new.html.twig', [
+            'dispense' => $dispense,
+            'rewards' => $rewards,
+        ]);
+
     }
 }

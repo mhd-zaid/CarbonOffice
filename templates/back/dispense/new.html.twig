@@ -3,32 +3,35 @@
 {% block main %}
     {% include 'components/page_header.html.twig' with { page_title: 'Planification d \'une formation'} %}
     {% block new_form %}
-        {{ form_start(new_form,{'validation_groups': []}) }}
-        <div class="border-gray-200 bg-white shadow-md shadow-gray-400 rounded-lg p-6 mt-14 mb-4">
-        <div>
-            {{ form_row(new_form.date) }}
+        {{ form_start(new_form) }}
+        <div class="card p-4 h-96">
+            <div class="grid gap-6 mb-6 md:grid-cols-2">
+                <div class="space-y-4">
+                    <div class="flex space-x-4">
+                        {{ form_row(new_form.date) }}
+                        {{ form_row(new_form.startTime) }}
+                    </div>
+                    <div>
+                        {{ form_row(new_form.formation) }}
+                    </div>
+                    <div class="col-start-1">
+                        {{form_label(new_form.mentor)}}
+                        <select id="Dispense_mentor" name="{{ field_name(new_form.mentor) }}"  class="form-select">
+                            <option selected>Choisir une option</option>
+                        </select>
+                    </div>
+                    <div class="col-start-1">
+                        {{ form_row(new_form.link) }}
+                    </div>
+                </div>
+                <div>
+                    {{ form_row(new_form.consultants) }}
+                </div>
+                 {{ form_row(new_form._token) }}
+            </div>
         </div>
-        <div>
-            {{ form_row(new_form.startTime) }}
-        </div>
-        <div>
-            {{ form_row(new_form.formation) }}
-        </div>
-        <div>
-           {{form_label(new_form.mentor)}}
-           <select id="Dispense_mentor" name="{{ field_name(new_form.mentor) }}"  class="form-select">
-                <option selected>Choisir une option</option>
-            </select>
-        </div>
-        <div>
-            {{ form_row(new_form.consultants) }}
-        </div>
-        <div>
-            {{ form_row(new_form.link) }}
-        </div>
-        {{ form_row(new_form._token) }}
-        <button type="submit" class="mt-6 button button-blue" name="ea[newForm][btn]" value="saveAndReturn" data-action-name="saveAndReturn" form="new-Dispense-form">Créer</button>
-        {{ form_end(new_form,{render_rest: false}) }}
+        <button type="submit" class="mt-6 btn btn-primary" name="ea[newForm][btn]" value="saveAndReturn" data-action-name="saveAndReturn" form="new-Dispense-form">Créer</button>
+        {{ form_end(new_form) }}
 
         <script>
             $(document).ready(function() {

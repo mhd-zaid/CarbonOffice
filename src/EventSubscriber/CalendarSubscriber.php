@@ -40,7 +40,6 @@ class CalendarSubscriber implements EventSubscriberInterface
             $planningsToDisplay[] = $consultant->getDispenses();
         }else{
             $planningsToDisplay = $this->em->getRepository(Dispense::class)->findAll();
-            dump($planningsToDisplay);
         }
         $this->displayEvents($calendar, $planningsToDisplay);
     }

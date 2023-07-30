@@ -44,16 +44,18 @@ class PlanningCrudController extends AbstractCrudController
             DateField::new('dateStart')->onlyOnForms()->setFormTypeOptions([
                 'html5' => true,
                 'widget' => 'single_text',
+                'label' => 'Date de début',
             ]),
             DateField::new('dateEnd')->onlyOnForms()->setFormTypeOptions([
                 'html5' => true,
                 'widget' => 'single_text',
+                'label' => 'Date de fin',
             ]),
             ChoiceField::new('type')->onlyOnForms()->setChoices([
                 'Choisir une option' => null,
                 'Jour de travail' => 'Work',
                 'Jour de congé' => 'Leave',
-            ]),
+            ])->setFormTypeOption('label', 'Type d\'évènement'),
             TextField::new('consultant.lastname')->onlyOnIndex()->setLabel('Nom du consultant'),
             TextField::new('consultant.firstname')->onlyOnIndex()->setLabel('Prénom du consultant'),
         ];

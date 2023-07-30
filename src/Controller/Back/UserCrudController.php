@@ -23,6 +23,7 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\Routing\Annotation\Route;
 
 class UserCrudController extends AbstractCrudController
 {
@@ -57,13 +58,12 @@ class UserCrudController extends AbstractCrudController
         foreach ($skills as $skill) {
             $skillChoices[$skill->getTitle()] = $skill;
         }
-        dump($skillChoices);
         return [
             FormField::addTab('Details'),
             TextField::new('lastname')->setLabel('Nom'),
             TextField::new('firstname')->setLabel('Prénom'),
             TextField::new('email')->onlyOnForms(),
-            TextField::new('plainPassword')->onlyOnForms(),
+            TextField::new('plainPassword')->setFormTypeOption('label' , 'Mot de passe')->onlyOnForms(),
             IntegerField::new('age')->onlyOnForms(),
             FormField::addTab('Address')->onlyOnForms(),
             TextField::new('phone')->onlyOnForms()->setLabel('Téléphone'),

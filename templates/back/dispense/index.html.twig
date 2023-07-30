@@ -11,7 +11,44 @@
             <button class="button button-blue">Planifier une formation</button>
         </a>
     </div>
+    <div class="card">
+        <table>
+            <thead>
+            <tr>
+                <th scope="col">Mentor</th>
+                <th scope="col">Formation</th>
+                <th scope="col">Date de formation</th>
+                <th scope="col">Lien de formation</th>
+                <th scope="col">Durée</th>
+            </tr>
+            </thead>
+            <tbody>
     {% for dispense in entities %}
-        {% include 'components/card_dispense.html.twig' with {'dispense': dispense.instance} %}
-    {% endfor %}
+        {% set url_new_reward = ea_url()
+            .setController('App\\Controller\\Back\\DispenseCrudController')
+            .setAction('generateReward')
+            .setEntityId(dispense.instance.id)
+        %}
+                <tr>
+                    {#                <td>{{ product.id }}</td>#}
+                    <td>{{ dispense.instance.mentor.consultant.fullname }}</td>
+                    <td>{{ dispense.instance.mentor.formation.getTitle() }}</td>
+                    <td>{{ dispense.instance.date | date('d/m/Y') }}</td>
+                    <td>{{ dispense.instance.link }}</td>
+                    <td>{{ dispense.instance.mentor.formation.duration }} min</td>
+                    <td>
+                        <a href="{{ url_new_reward }}">
+                            <button class="button button-green">Attribuer une récompense</button>
+                        </a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="7">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{#        {% include 'components/card_dispense.html.twig' with {'dispense': dispense.instance} %}#}
 {% endblock %}
